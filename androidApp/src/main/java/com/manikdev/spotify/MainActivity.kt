@@ -16,8 +16,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.ui.graphics.Color
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.net.toUri
 import androidx.core.os.LocaleListCompat
@@ -288,7 +286,6 @@ class MainActivity : AppCompatActivity() {
                 controller = updateController,
                 appName = "Spotify",
                 currentVersion = VersionManager.getVersionName(),
-                icon = Icons.Default.Refresh,
             )
         }
     }
