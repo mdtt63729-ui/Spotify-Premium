@@ -57,14 +57,18 @@ fun Modifier.drawBackdropCustomShape(
                 contrast = 1f,
                 saturation = 1.5f,
             )
+            // Blur is the single most expensive thing on this screen: it runs a render
+            // shader over the whole surface every frame, and on 120 Hz panels the 16 dp
+            // radius was enough to drop frames while scrolling. A smaller radius plus a
+            // tighter lens keeps the look but costs roughly half the fill rate.
             blur(
                 if (l > 0f) {
-                    lerp(8f.dp.toPx(), 16f.dp.toPx(), l)
+                    lerp(5f.dp.toPx(), 10f.dp.toPx(), l)
                 } else {
-                    lerp(8f.dp.toPx(), 2f.dp.toPx(), -l)
+                    lerp(5f.dp.toPx(), 2f.dp.toPx(), -l)
                 },
             )
-            lens(24f.dp.toPx(), size.minDimension / 2f, true)
+            lens(14f.dp.toPx(), size.minDimension / 2f, true)
         },
         onDrawBackdrop = { drawBackdrop ->
             drawBackdrop()

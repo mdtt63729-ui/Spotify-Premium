@@ -124,6 +124,7 @@ class MainActivity : AppCompatActivity() {
     @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableHighRefreshRate()
         loadKoinModules(
             module {
                 single<AppCompatActivity> { this@MainActivity }
@@ -341,5 +342,25 @@ class MainActivity : AppCompatActivity() {
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         viewModel.activityRecreate()
+    }
+
+    /**
+     * Ask the display for its highest refresh rate (up to 120 Hz).
+     *
+     * Compose redraws at the display rate, so leaving the window on the default 60 Hz mode
+     * makes every scroll and every ripple look like it stutters on a 120 Hz panel. Pinning
+     * the fastest supported mode keeps the whole UI on the fast path.
+     */
+    private fun enableHighRefreshRate() {
+        runCatching {
+            @Suppress("DEPRECATION")
+            val display = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) display else windowManager.defaultDisplay
+            val best = display?.supportedModes?.maxByOrNull { it.refreshRate } ?: return
+            window.attributes =
+                window.attributes.apply {
+                    preferredDisplayModeId = best.modeId
+                    preferredRefreshRate = best.refreshRate
+                }
+        }.onFailure { Logger.w("MainActivity", "refresh rate: ${it.message}") }
     }
 }

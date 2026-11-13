@@ -1,0 +1,142 @@
+name: Release all APKs
+
+# Builds every Android variant this project produces (androidApp ABI splits +
+# universal, and the vivo build), signs them all with the repository signing
+# secrets, then publishes them as a GitHub Release so every APK has a direct
+# download link. Desktop bundles are attempted too and never block the release.
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release tag (leave empty for v<version-name>)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  android:
+    name: Build + sign Android APKs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'microsoft'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Decode keystore from SIGNING_KEY
+        env:
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "${SIGNING_KEY:-}" ]; then
+            echo "::error::SIGNING_KEY secret is missing"; exit 1
+          fi
+          echo "$SIGNING_KEY" | base64 -d > "$RUNNER_TEMP/release.jks"
+          ls -l "$RUNNER_TEMP/release.jks"
+
+      - name: Build phone + vivo release APKs
+        run: |
+          ./gradlew :androidApp:assembleRelease :vivoAndroidApp:assembleRelease \
+            -PisFullBuild=false --no-configuration-cache
+
+      - name: Zipalign and sign every APK
+        env:
+          ALIAS: ${{ secrets.ALIAS }}
+          KS_PASS: ${{ secrets.KEY_STORE_PASSWORD }}
+          KEY_PASS: ${{ secrets.KEY_PASSWORD }}
+          KS_FILE: ${{ runner.temp }}/release.jks
+        run: |
+          set -euo pipefail
+          BT=$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1)
+          mkdir -p dist
+          shopt -s nullglob
+          apks=(androidApp/build/outputs/apk/release/*.apk vivoAndroidApp/build/outputs/apk/release/*.apk)
+          if [ ${#apks[@]} -eq 0 ]; then echo "::error::no APK produced"; exit 1; fi
+          for apk in "${apks[@]}"; do
+            base=$(basename "$apk" .apk)
+            base=${base%-unsigned}
+            "${BT}zipalign" -p -f 4 "$apk" "dist/$base-aligned.apk"
+            "${BT}apksigner" sign \
+              --ks "$KS_FILE" --ks-key-alias "$ALIAS" \
+              --ks-pass env:KS_PASS --key-pass env:KEY_PASS \
+              --out "dist/$base-signed.apk" "dist/$base-aligned.apk"
+            rm -f "dist/$base-aligned.apk"
+          done
+          echo "--- signed:"; ls -lh dist
+
+      - name: Verify signatures
+        run: |
+          set -euo pipefail
+          BT=$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1)
+          for apk in dist/*.apk; do
+            echo "== $apk"
+            "${BT}apksigner" verify --print-certs "$apk" | head -6
+          done
+
+      - name: Upload workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: signed-apks
+          path: dist/*.apk
+          if-no-files-found: error
+
+      - name: Publish GitHub Release with every APK
+        env:
+          GH_TOKEN: ${{ github.token }}
+          INPUT_VERSION: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+          VN=$(grep -E '^version-name' gradle/libs.versions.toml | head -1 | sed -E 's/.*"([^"]+)".*/\1/')
+          VC=$(grep -E '^version-code' gradle/libs.versions.toml | head -1 | sed -E 's/.*"([^"]+)".*/\1/')
+          TAG="${INPUT_VERSION:-v$VN}"
+          NOTES="Spotify $VN (build $VC) — signed release APKs from $GITHUB_SHA.
+
+          Universal APK works on any phone; arm64-v8a is the small one for modern devices."
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" dist/*.apk --clobber
+          else
+            gh release create "$TAG" dist/*.apk --title "Spotify $VN" --notes "$NOTES" --latest
+          fi
+          gh release view "$TAG" --json assets --jq '.assets[] | "\(.name) \(.size) \(.url)"'
+
+  desktop:
+    name: Build desktop bundles (best effort)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'microsoft'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Package desktop app
+        run: |
+          ./gradlew :desktopApp:packageDistributionForCurrentOS --no-configuration-cache
+
+      - name: Collect bundles
+        if: always()
+        run: |
+          mkdir -p dist-desktop
+          find desktopApp/build -type f \( -name "*.deb" -o -name "*.rpm" -o -name "*.AppImage" -o -name "*.msi" -o -name "*.dmg" \) -exec cp {} dist-desktop/ \; || true
+          ls -lh dist-desktop || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: desktop-bundles
+          path: dist-desktop/*
+          if-no-files-found: warn
