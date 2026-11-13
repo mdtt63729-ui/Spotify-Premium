@@ -24,7 +24,7 @@ import kotlinx.coroutines.isActive
 import kotlin.math.abs
 
 private const val SAMPLE_SIZE = 5
-private const val SAMPLE_INTERVAL_MS = 2_500L
+private const val SAMPLE_INTERVAL_MS = 10_000L
 private const val LUMINANCE_CHANGE_THRESHOLD = 0.02f
 
 /** Samples a small GPU-rendered copy; reading pixels also handles Android hardware bitmaps. */

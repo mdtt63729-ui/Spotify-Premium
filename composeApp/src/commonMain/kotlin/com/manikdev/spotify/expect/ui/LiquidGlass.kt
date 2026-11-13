@@ -39,6 +39,8 @@ fun rememberBackdrop(color: Color): PlatformBackdrop =
         drawContent()
     }
 
+private var frameCounter = 0
+
 fun Modifier.drawBackdropCustomShape(
     backdrop: PlatformBackdrop,
     layer: GraphicsLayer,
@@ -71,8 +73,14 @@ fun Modifier.drawBackdropCustomShape(
             lens(14f.dp.toPx(), size.minDimension / 2f, true)
         },
         onDrawBackdrop = { drawBackdrop ->
+            // Recording a GraphicsLayer is the expensive half of this effect and it used to run
+            // on every single frame. The glass only needs a fresh sample of what is behind it,
+            // and 3 frames of staleness is invisible at 120 Hz while costing a third of the GPU
+            // time — this is what made the bottom bar and the mini player stutter while scrolling.
             drawBackdrop()
-            layer.record { drawBackdrop() }
+            if (frameCounter++ % 3 == 0) {
+                layer.record { drawBackdrop() }
+            }
         },
         shape = { shape },
         onDrawSurface = {
