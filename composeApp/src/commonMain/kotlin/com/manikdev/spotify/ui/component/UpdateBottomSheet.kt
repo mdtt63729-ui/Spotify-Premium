@@ -48,7 +48,6 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.foundation.Image
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -108,7 +107,9 @@ private fun UpdateSheet(
     // Reading state: collapsed shows the first few lines, "Read more" opens the rest, and the
     // scrollable area is capped at half the screen so the actions below stay reachable.
     var expanded by remember(info.versionName) { mutableStateOf(false) }
-    val halfScreen = (LocalConfiguration.current.screenHeightDp * 0.5f).dp
+    // 320dp is half of a typical phone viewport; the sheet never grows past this, so the
+    // pinned actions stay reachable while the notes scroll.
+    val halfScreen = 320.dp
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
