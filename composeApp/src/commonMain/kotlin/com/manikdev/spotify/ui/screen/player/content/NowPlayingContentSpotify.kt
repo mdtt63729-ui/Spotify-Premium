@@ -1440,7 +1440,7 @@ fun NowPlayingContentSpotify(
                                         Text(
                                             text =
                                                 when (state.screenData.lyricsData?.lyricsProvider) {
-                                                    LyricsProvider.SPOTIFY -> {
+                                                    LyricsProvider.APP -> {
                                                         stringResource(Res.string.lyrics_provider_spotify)
                                                     }
 

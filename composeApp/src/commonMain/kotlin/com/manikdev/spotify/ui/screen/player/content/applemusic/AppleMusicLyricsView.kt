@@ -385,7 +385,7 @@ private fun appleMusicLyricsSyncText(lyricsData: NowPlayingScreenData.LyricsData
 @Composable
 private fun appleMusicLyricsProviderText(lyricsData: NowPlayingScreenData.LyricsData): String =
     when (lyricsData.lyricsProvider) {
-        LyricsProvider.SPOTIFY -> stringResource(Res.string.lyrics_provider_spotify)
+        LyricsProvider.APP -> stringResource(Res.string.lyrics_provider_spotify)
         LyricsProvider.LRCLIB -> stringResource(Res.string.lyrics_provider_lrc)
         LyricsProvider.YOUTUBE -> stringResource(Res.string.lyrics_provider_youtube)
         LyricsProvider.SPOTIFY -> stringResource(Res.string.spotify_lyrics_provider)

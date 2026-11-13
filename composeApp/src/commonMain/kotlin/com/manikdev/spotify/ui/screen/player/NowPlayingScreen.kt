@@ -957,12 +957,12 @@ fun NowPlayingScreenContent(
     // Vote Dialog
     if (showVoteDialog) {
         val canVoteLyrics =
-            screenDataState.lyricsData?.lyricsProvider == LyricsProvider.SPOTIFY &&
+            screenDataState.lyricsData?.lyricsProvider == LyricsProvider.APP &&
                 screenDataState.lyricsData
                     ?.lyrics
                     ?.spotifyLyrics != null
         val canVoteTranslatedLyrics =
-            screenDataState.lyricsData?.translatedLyrics?.second == LyricsProvider.SPOTIFY &&
+            screenDataState.lyricsData?.translatedLyrics?.second == LyricsProvider.APP &&
                 screenDataState.lyricsData
                     ?.translatedLyrics
                     ?.first

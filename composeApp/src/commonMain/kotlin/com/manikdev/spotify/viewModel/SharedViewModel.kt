@@ -1343,7 +1343,7 @@ class SharedViewModel(
         duration: Int, // 0 if translated lyrics
         inputLyrics: Lyrics?,
         isTranslatedLyrics: Boolean,
-        lyricsProvider: LyricsProvider = LyricsProvider.SPOTIFY,
+        lyricsProvider: LyricsProvider = LyricsProvider.APP,
     ) {
         if (inputLyrics == null) {
             _nowPlayingScreenData.update {
@@ -1436,7 +1436,7 @@ class SharedViewModel(
                         )
                         log("Removed out-of-sync translated lyrics for $videoId")
                         val spotifyLyricsId = lyrics.spotifyLyrics?.id
-                        if (lyricsProvider == LyricsProvider.SPOTIFY && !spotifyLyricsId.isNullOrEmpty()) {
+                        if (lyricsProvider == LyricsProvider.APP && !spotifyLyricsId.isNullOrEmpty()) {
                             viewModelScope.launch {
                                 lyricsCanvasRepository
                                     .voteSpotifyTranslatedLyrics(
@@ -1471,12 +1471,12 @@ class SharedViewModel(
             runBlocking {
                 dataStoreManager.helpBuildLyricsDatabase.first() == TRUE
             } &&
-                lyricsProvider != LyricsProvider.SPOTIFY
+                lyricsProvider != LyricsProvider.APP
         if (_nowPlayingState.value?.songEntity?.videoId == videoId) {
             val track = _nowPlayingState.value?.track
             when (isTranslatedLyrics) {
                 true -> {
-                    if (lyricsProvider == LyricsProvider.SPOTIFY) {
+                    if (lyricsProvider == LyricsProvider.APP) {
                         _translatedVoteState.value =
                             VoteData(
                                 id = lyrics.spotifyLyrics?.id ?: "",
@@ -1516,7 +1516,7 @@ class SharedViewModel(
                 }
 
                 false -> {
-                    if (lyricsProvider == LyricsProvider.SPOTIFY) {
+                    if (lyricsProvider == LyricsProvider.APP) {
                         _lyricsVoteState.value =
                             VoteData(
                                 id = lyrics.spotifyLyrics?.id ?: "",
@@ -1655,7 +1655,7 @@ class SharedViewModel(
                     duration,
                     data,
                     false,
-                    LyricsProvider.SPOTIFY,
+                    LyricsProvider.APP,
                 )
                 insertLyrics(
                     data.toLyricsEntity(videoId),
@@ -1861,7 +1861,7 @@ class SharedViewModel(
                             0,
                             data,
                             true,
-                            LyricsProvider.SPOTIFY,
+                            LyricsProvider.APP,
                         )
                     }
                 }
@@ -2245,7 +2245,7 @@ class SharedViewModel(
         val lyricsProvider = lyricsData?.lyricsProvider
         val spotifyLyricsId = lyricsData?.lyrics?.spotifyLyrics?.id ?: return
 
-        if (lyricsProvider != LyricsProvider.SPOTIFY || spotifyLyricsId.isEmpty()) {
+        if (lyricsProvider != LyricsProvider.APP || spotifyLyricsId.isEmpty()) {
             Logger.w(tag, "Cannot vote: not a Spotify lyrics or missing ID")
             return
         }
@@ -2300,7 +2300,7 @@ class SharedViewModel(
         val lyricsProvider = translatedLyrics?.second
         val spotifyLyricsId = translatedLyrics?.first?.spotifyLyrics?.id ?: return
 
-        if (lyricsProvider != LyricsProvider.SPOTIFY || spotifyLyricsId.isEmpty()) {
+        if (lyricsProvider != LyricsProvider.APP || spotifyLyricsId.isEmpty()) {
             Logger.w(tag, "Cannot vote: not a Spotify translated lyrics or missing ID")
             return
         }
@@ -2388,7 +2388,7 @@ sealed class UIEvent {
 }
 
 enum class LyricsProvider {
-    SPOTIFY,
+    APP,
     YOUTUBE,
     SPOTIFY,
     LRCLIB,

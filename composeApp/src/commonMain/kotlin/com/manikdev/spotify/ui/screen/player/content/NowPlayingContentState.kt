@@ -36,9 +36,9 @@ import kotlin.math.roundToInt
 internal fun NowPlayingScreenData.LyricsData?.canVote(): Boolean {
     val data = this ?: return false
     val votableLyrics =
-        data.lyricsProvider == LyricsProvider.SPOTIFY && data.lyrics.spotifyLyrics != null
+        data.lyricsProvider == LyricsProvider.APP && data.lyrics.spotifyLyrics != null
     val votableTranslation =
-        data.translatedLyrics?.second == LyricsProvider.SPOTIFY &&
+        data.translatedLyrics?.second == LyricsProvider.APP &&
             data.translatedLyrics?.first?.spotifyLyrics != null
     return votableLyrics || votableTranslation
 }
