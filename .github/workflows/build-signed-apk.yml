@@ -36,7 +36,7 @@ jobs:
           ls -l "$RUNNER_TEMP/release.jks"
 
       - name: Build unsigned release APK
-        run: ./gradlew :androidApp:assembleRelease -PisFullBuild=false
+        run: ./gradlew :androidApp:assembleRelease -PisFullBuild=false --no-configuration-cache
 
       - name: Zipalign and sign APKs
         env:
