@@ -29,11 +29,22 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.manikdev.kotlinytmusicscraper.models.SongItem
 
-/** Cards per shelf row; the engine produces 60, so Home gets four full rows. */
-private const val ROWS_PER_SHELF = 15
+/**
+ * Shelf order, copied from Echo Music's HomeSection weights: the hero carousel first, then
+ * Daily Discover, Keep Listening, Forgotten Favorites, From the community, and Similar last.
+ * Each entry is a title and how many cards it claims from the shared pool.
+ */
+private val SHELVES =
+    listOf(
+        "Your daily discover" to 15,
+        "Keep listening" to 10,
+        "Forgotten favorites" to 10,
+        "From the community" to 10,
+        "Similar to your picks" to 15,
+    )
 
-/** Titles for the first rows; anything beyond falls back to "More for you". */
-private val SHELF_TITLES = listOf("Made for you", "Picked for you", "Because you listened", "Fresh for you")
+/** The hero carousel takes whatever the named shelves left over. */
+private const val HERO_CARDS = 10
 
 /**
  * "For you" — the cold-start carousel.
@@ -52,14 +63,27 @@ fun EchoForYouSection(
     if (cards.isEmpty()) return
 
     // One pool, several shelves. distinctBy runs once over the whole list, so a song can only
-    // ever appear in the first row that claims it — no card is shown twice on Home.
-    val pool = remember(cards) { cards.distinctBy { it.id } }
-    val rows = remember(pool) { pool.chunked(ROWS_PER_SHELF) }
+    // ever appear in the first shelf that claims it — nothing repeats anywhere on Home.
+    val rows =
+        remember(cards) {
+            val pool = cards.distinctBy { it.id }
+            var cursor = 0
+            buildList {
+                add("Made for you" to pool.take(HERO_CARDS))
+                cursor = minOf(HERO_CARDS, pool.size)
+                SHELVES.forEach { (title, count) ->
+                    if (cursor >= pool.size) return@forEach
+                    val end = minOf(cursor + count, pool.size)
+                    add(title to pool.subList(cursor, end))
+                    cursor = end
+                }
+            }.filter { it.second.isNotEmpty() }
+        }
 
     Column(modifier = modifier.fillMaxWidth()) {
-        rows.forEachIndexed { index, row ->
+        rows.forEachIndexed { index, (title, row) ->
             Text(
-                text = SHELF_TITLES.getOrElse(index) { "More for you" },
+                text = title,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(horizontal = 15.dp, vertical = 8.dp),
@@ -69,7 +93,11 @@ fun EchoForYouSection(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 items(row, key = { it.id }) { song ->
-                    EchoSongCard(song = song, onClick = { onSongClick(song) })
+                    EchoSongCard(
+                        song = song,
+                        width = if (index == 0) 200.dp else 148.dp,
+                        onClick = { onSongClick(song) },
+                    )
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
@@ -80,12 +108,13 @@ fun EchoForYouSection(
 @Composable
 private fun EchoSongCard(
     song: SongItem,
+    width: androidx.compose.ui.unit.Dp,
     onClick: () -> Unit,
 ) {
     Column(
         modifier =
             Modifier
-                .width(148.dp)
+                .width(width)
                 .clickable(onClick = onClick),
     ) {
         Box(
