@@ -16,8 +16,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.ui.graphics.Color
+import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.res.painterResource
+import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.lifecycleScope
@@ -283,11 +285,20 @@ class MainActivity : AppCompatActivity() {
         if (!BuildConfig.DEBUG) viewModel.checkOfficialBuild(packageName, signingCertSha256())
         setContent {
             App(viewModel)
+            // The launcher icon is an adaptive XML icon on modern Android and painterResource
+            // refuses to decode those ("Only VectorDrawables and rasterized asset types are
+            // supported"). Ask the PackageManager for the icon and rasterise it instead.
+            val appIcon =
+                remember {
+                    runCatching {
+                        packageManager.getApplicationIcon(packageName).toBitmap(144, 144).asImageBitmap()
+                    }.getOrNull()
+                }
             UpdateHost(
                 controller = updateController,
                 appName = "Spotify",
                 currentVersion = VersionManager.getVersionName(),
-                icon = painterResource(id = R.mipmap.ic_launcher),
+                icon = appIcon,
             )
         }
     }

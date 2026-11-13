@@ -47,7 +47,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.foundation.Image
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -67,7 +67,7 @@ fun UpdateHost(
     controller: UpdateHostController,
     appName: String = "Spotify",
     currentVersion: String = "",
-    icon: Painter? = null,
+    icon: ImageBitmap? = null,
 ) {
     val state by controller.state.collectAsStateWithLifecycle()
     if (state is UpdateUiState.Idle) return
@@ -89,7 +89,7 @@ private fun UpdateSheet(
     state: UpdateUiState,
     appName: String,
     currentVersion: String,
-    icon: Painter?,
+    icon: ImageBitmap?,
     onDownload: () -> Unit,
     onInstall: () -> Unit,
     onDismiss: () -> Unit,
@@ -121,7 +121,7 @@ private fun UpdateSheet(
                 // The app's own launcher icon, clipped to a rounded square.
                 if (icon != null) {
                     Image(
-                        painter = icon,
+                        bitmap = icon,
                         contentDescription = null,
                         modifier =
                             Modifier
