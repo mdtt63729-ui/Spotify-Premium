@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.ui.graphics.Color
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.net.toUri
 import androidx.core.os.LocaleListCompat
@@ -42,7 +44,9 @@ import com.manikdev.spotify.di.viewModelModule
 import com.manikdev.spotify.service.rss.RssFeedNotifyWork
 import com.manikdev.spotify.service.test.notification.NotifyWork
 import com.manikdev.spotify.utils.ComposeResUtils
+import com.manikdev.spotify.update.AndroidUpdateController
 import com.manikdev.spotify.utils.VersionManager
+import com.manikdev.spotify.ui.component.UpdateHost
 import com.manikdev.spotify.viewModel.SharedViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -57,6 +61,9 @@ import java.util.concurrent.TimeUnit
 
 // Process-wide, so a recreated activity (rotation, theme change) does not count as opening the app.
 private var lastLibrarySyncAt = 0L
+
+// In-app updater: checks the release feed, downloads the APK and hands it to the installer.
+private lateinit var updateController: AndroidUpdateController
 
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
@@ -125,6 +132,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableHighRefreshRate()
+        updateController = AndroidUpdateController(this, VersionManager.getVersionName())
+        requestInstallPermission()
+        updateController.start()
         loadKoinModules(
             module {
                 single<AppCompatActivity> { this@MainActivity }
@@ -274,6 +284,12 @@ class MainActivity : AppCompatActivity() {
         if (!BuildConfig.DEBUG) viewModel.checkOfficialBuild(packageName, signingCertSha256())
         setContent {
             App(viewModel)
+            UpdateHost(
+                controller = updateController,
+                appName = "Spotify",
+                currentVersion = VersionManager.getVersionName(),
+                icon = Icons.Default.Refresh,
+            )
         }
     }
 
@@ -362,5 +378,24 @@ class MainActivity : AppCompatActivity() {
                     preferredRefreshRate = best.refreshRate
                 }
         }.onFailure { Logger.w("MainActivity", "refresh rate: ${it.message}") }
+    }
+
+    /**
+     * The updater installs APKs from inside the app, which needs the "install unknown apps"
+     * permission. Ask for it once at startup so a download never dead-ends on a settings screen
+     * the user did not expect.
+     */
+    private fun requestInstallPermission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
+        runCatching {
+            if (!packageManager.canRequestPackageInstalls()) {
+                startActivity(
+                    Intent(
+                        android.provider.Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
+                        android.net.Uri.parse("package:$packageName"),
+                    ),
+                )
+            }
+        }.onFailure { Logger.w("MainActivity", "install permission: ${it.message}") }
     }
 }
