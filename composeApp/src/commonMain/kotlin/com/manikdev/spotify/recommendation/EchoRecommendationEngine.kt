@@ -3,7 +3,7 @@ package com.manikdev.spotify.recommendation
 import com.manikdev.kotlinytmusicscraper.YouTube
 import com.manikdev.kotlinytmusicscraper.models.SongItem
 import com.manikdev.kotlinytmusicscraper.models.WatchEndpoint
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
