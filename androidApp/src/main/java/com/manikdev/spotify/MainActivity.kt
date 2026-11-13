@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.res.painterResource
 import androidx.core.net.toUri
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.lifecycleScope
@@ -286,6 +287,7 @@ class MainActivity : AppCompatActivity() {
                 controller = updateController,
                 appName = "Spotify",
                 currentVersion = VersionManager.getVersionName(),
+                icon = painterResource(id = R.mipmap.ic_launcher),
             )
         }
     }

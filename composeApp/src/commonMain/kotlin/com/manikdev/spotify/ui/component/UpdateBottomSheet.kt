@@ -21,6 +21,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -44,7 +46,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.foundation.Image
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -65,7 +68,7 @@ fun UpdateHost(
     controller: UpdateHostController,
     appName: String = "Spotify",
     currentVersion: String = "",
-    icon: ImageVector? = null,
+    icon: Painter? = null,
 ) {
     val state by controller.state.collectAsStateWithLifecycle()
     if (state is UpdateUiState.Idle) return
@@ -87,7 +90,7 @@ private fun UpdateSheet(
     state: UpdateUiState,
     appName: String,
     currentVersion: String,
-    icon: ImageVector?,
+    icon: Painter?,
     onDownload: () -> Unit,
     onInstall: () -> Unit,
     onDismiss: () -> Unit,
@@ -114,21 +117,22 @@ private fun UpdateSheet(
     ) {
         Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Surface(
-                    shape = CircleShape,
-                    color = MaterialTheme.colorScheme.primaryContainer,
-                    modifier = Modifier.size(44.dp),
-                ) {
-                    Box(contentAlignment = Alignment.Center) {
-                        if (icon != null) {
-                            Icon(
-                                imageVector = icon,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                                modifier = Modifier.size(24.dp),
-                            )
-                        }
-                    }
+                // The app's own launcher icon, clipped to a rounded square.
+                if (icon != null) {
+                    Image(
+                        painter = icon,
+                        contentDescription = null,
+                        modifier =
+                            Modifier
+                                .size(44.dp)
+                                .clip(RoundedCornerShape(12.dp)),
+                    )
+                } else {
+                    Surface(
+                        shape = RoundedCornerShape(12.dp),
+                        color = MaterialTheme.colorScheme.primaryContainer,
+                        modifier = Modifier.size(44.dp),
+                    ) {}
                 }
                 Spacer(Modifier.width(12.dp))
                 Column(modifier = Modifier.weight(1f)) {
