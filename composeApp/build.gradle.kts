@@ -708,7 +708,8 @@ val mpvSetupLinuxCi by tasks.registering {
 // ===========================================================================
 // Kept in a repo of its own rather than Spotify's own releases: these archives are ~196 MB per
 // mpv bump and would otherwise sit in the release list users browse for the app itself.
-val mpvNativesRepo = "maxrave-dev/simpmusic-files"
+// Where the prebuilt libmpv slices live. Override with -PmpvNativesRepo=<owner>/<repo>
+val mpvNativesRepo = providers.gradleProperty("mpvNativesRepo").getOrElse("mdtt63729-ui/Spotify-Premium")
 val mpvNativesTag = "abc"
 val mpvSlices = listOf("linux-x64", "macos-arm64", "macos-x64", "windows-x64", "windows-arm64")
 

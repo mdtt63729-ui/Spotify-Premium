@@ -25,6 +25,10 @@ import java.net.URL
  * Everything happens inside the app: check the release feed, download the APK for this device's
  * ABI into app storage, then hand it to the system installer. No browser, no Play Store.
  *
+ * The ABI match is strict: every entry in [Build.SUPPORTED_ABIS] is tried in order and the
+ * universal APK is never picked, so the download is always the smallest binary that actually
+ * runs on this device.
+ *
  * Two states are persisted, and they are what make the sheet behave the way it should:
  *  - a downloaded-but-not-installed APK is remembered by version, so the next launch offers
  *    "Install update" instead of downloading the same file again;
@@ -234,13 +238,23 @@ class AndroidUpdateController(
         var url = ""
         var size = 0L
         if (assets != null) {
-            val abi = Build.SUPPORTED_ABIS.firstOrNull().orEmpty()
+            // Only an ABI-specific build may be installed. The universal APK is deliberately
+            // never a candidate — a phone that supports arm64-v8a gets the arm64-v8a APK, one
+            // that supports x86_64 gets that, and if this device matches nothing we offer no
+            // update at all rather than quietly pushing the fat binary.
             val all = (0 until assets.length()).map { assets.getJSONObject(it) }
-            val apks = all.filter { it.optString("name").endsWith(".apk") }
+            val apks =
+                all.filter { asset ->
+                    val name = asset.optString("name").lowercase()
+                    name.endsWith(".apk") && !name.contains("universal") && !name.contains("vivo")
+                }
             val chosen =
-                apks.firstOrNull { it.optString("name").contains(abi) }
-                    ?: apks.firstOrNull { it.optString("name").contains("universal") }
-                    ?: apks.firstOrNull()
+                Build.SUPPORTED_ABIS
+                    .asSequence()
+                    .map { it.lowercase() }
+                    .firstNotNullOfOrNull { abi ->
+                        apks.firstOrNull { it.optString("name").lowercase().contains(abi) }
+                    }
             if (chosen != null) {
                 url = chosen.optString("browser_download_url")
                 size = chosen.optLong("size")
