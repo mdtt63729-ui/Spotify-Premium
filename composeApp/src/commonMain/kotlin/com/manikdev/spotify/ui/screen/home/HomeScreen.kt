@@ -133,6 +133,7 @@ import com.manikdev.spotify.extension.mouseDragScroll
 import com.manikdev.spotify.extension.rgbFactor
 import com.manikdev.spotify.extension.ultraThinBarStyle
 import com.manikdev.spotify.getPlatform
+import com.manikdev.spotify.ui.component.EchoForYouSection
 import com.manikdev.spotify.ui.component.BlogPromoDialog
 import com.manikdev.spotify.ui.component.CenterLoadingBox
 import com.manikdev.spotify.ui.component.Chip
@@ -284,6 +285,7 @@ fun HomeScreen(
     val isScrollingUp by scrollState.isScrollingUp()
     val accountInfo by viewModel.accountInfo.collectAsStateWithLifecycle()
     val homeData by viewModel.homeItemList.collectAsStateWithLifecycle()
+    val echoCards by viewModel.echoCards.collectAsStateWithLifecycle()
     // Any shelf YouTube heads with the listener's own avatar over its title (Listen again is one of
     // several). Home's header already shows the avatar, so those shelves drop it and keep their name
     // and title. Matched on the name rather than on any shelf title, the way the old Welcome back row did.
@@ -785,6 +787,9 @@ fun HomeScreen(
                         state = scrollState,
                         verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
+                        item(key = "echo-for-you") {
+                            EchoForYouSection(cards = echoCards)
+                        }
                         itemsIndexed(homeShelves, key = { _, item ->
                             item.hashCode().toString() + (mainHomeThumbnail ?: "nothumb")
                         }) { index, item ->

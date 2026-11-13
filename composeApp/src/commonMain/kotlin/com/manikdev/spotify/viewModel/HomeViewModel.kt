@@ -13,6 +13,8 @@ import com.manikdev.domain.manager.DataStoreManager.Values.TRUE
 import com.manikdev.domain.repository.HomeRepository
 import com.manikdev.domain.utils.Resource
 import com.maxrave.logger.Logger
+import com.manikdev.kotlinytmusicscraper.models.SongItem
+import com.manikdev.spotify.recommendation.EchoRecommendationEngine
 import com.manikdev.spotify.viewModel.base.BaseViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -61,6 +63,11 @@ class HomeViewModel(
     val chart: StateFlow<Chart?> = _chart
     private val _newRelease: MutableStateFlow<List<HomeItem>> = MutableStateFlow(arrayListOf())
     val newRelease: StateFlow<List<HomeItem>> = _newRelease
+
+    // Cold-start "Made for you" carousel. Empty until the Echo engine has its first tier.
+    private val _echoCards: MutableStateFlow<List<SongItem>> = MutableStateFlow(emptyList())
+    val echoCards: StateFlow<List<SongItem>> = _echoCards
+    private var echoJob: Job? = null
     var regionCodeChart: MutableStateFlow<String?> = MutableStateFlow(null)
 
     val loading = MutableStateFlow<Boolean>(true)
@@ -183,7 +190,30 @@ class HomeViewModel(
         }
     }
 
+    /**
+     * Fills the first screen for a user with no history yet.
+     *
+     * Runs the Echo engine's tiers and publishes each partial result, so the carousel appears
+     * with the new-release pool and keeps growing as the radio lookups land. Safe to call
+     * repeatedly: it no-ops once the carousel has content.
+     */
+    fun loadEchoRecommendations() {
+        if (_echoCards.value.isNotEmpty()) return
+        echoJob?.cancel()
+        echoJob =
+            viewModelScope.launch {
+                runCatching {
+                    EchoRecommendationEngine().build { cards ->
+                        if (cards.size >= EchoRecommendationEngine.MIN_CARDS) {
+                            _echoCards.value = cards
+                        }
+                    }
+                }.onFailure { Logger.w("EchoEngine", "cold start failed: ${it.message}") }
+            }
+    }
+
     fun getHomeItemList(params: String? = null) {
+        loadEchoRecommendations()
         loading.value = true
         _homeListState.value = ListState.LOADING
         language =
