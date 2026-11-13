@@ -40,7 +40,7 @@ class EchoRecommendationEngine(
 ) {
     companion object {
         /** Cards produced on a cold start. Deliberately larger than a warm start's 20. */
-        const val TARGET_CARDS = 40
+        const val TARGET_CARDS = 60
 
         /** Below this the caller should keep the upstream shelves only. */
         const val MIN_CARDS = 12

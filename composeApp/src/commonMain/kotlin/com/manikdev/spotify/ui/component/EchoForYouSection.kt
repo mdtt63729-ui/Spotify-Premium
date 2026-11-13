@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,6 +28,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.manikdev.kotlinytmusicscraper.models.SongItem
+
+/** Cards per shelf row; the engine produces 60, so Home gets four full rows. */
+private const val ROWS_PER_SHELF = 15
+
+/** Titles for the first rows; anything beyond falls back to "More for you". */
+private val SHELF_TITLES = listOf("Made for you", "Picked for you", "Because you listened", "Fresh for you")
 
 /**
  * "For you" — the cold-start carousel.
@@ -44,22 +51,29 @@ fun EchoForYouSection(
 ) {
     if (cards.isEmpty()) return
 
+    // One pool, several shelves. distinctBy runs once over the whole list, so a song can only
+    // ever appear in the first row that claims it — no card is shown twice on Home.
+    val pool = remember(cards) { cards.distinctBy { it.id } }
+    val rows = remember(pool) { pool.chunked(ROWS_PER_SHELF) }
+
     Column(modifier = modifier.fillMaxWidth()) {
-        Text(
-            text = "Made for you",
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(horizontal = 15.dp, vertical = 8.dp),
-        )
-        LazyRow(
-            contentPadding = PaddingValues(horizontal = 15.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-        ) {
-            items(cards, key = { it.id }) { song ->
-                EchoSongCard(song = song, onClick = { onSongClick(song) })
+        rows.forEachIndexed { index, row ->
+            Text(
+                text = SHELF_TITLES.getOrElse(index) { "More for you" },
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(horizontal = 15.dp, vertical = 8.dp),
+            )
+            LazyRow(
+                contentPadding = PaddingValues(horizontal = 15.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                items(row, key = { it.id }) { song ->
+                    EchoSongCard(song = song, onClick = { onSongClick(song) })
+                }
             }
+            Spacer(modifier = Modifier.height(8.dp))
         }
-        Spacer(modifier = Modifier.height(8.dp))
     }
 }
 
