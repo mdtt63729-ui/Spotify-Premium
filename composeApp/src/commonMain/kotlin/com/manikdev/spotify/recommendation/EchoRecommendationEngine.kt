@@ -33,6 +33,7 @@ import kotlinx.coroutines.withTimeoutOrNull
  * identically. Only the limit is larger — 40 cards instead of 20.
  */
 class EchoRecommendationEngine(
+    private val youTube: YouTube,
     private val hideExplicit: Boolean = false,
     private val hideVideoSongs: Boolean = false,
     private val hiddenSongIds: Set<String> = emptySet(),
@@ -92,7 +93,7 @@ class EchoRecommendationEngine(
     /** New releases from explore(), expanded into their songs. One call plus one per album. */
     private suspend fun newReleaseSongs(): List<SongItem> {
         val albums =
-            YouTube
+            youTube
                 .newRelease()
                 .getOrNull()
                 ?.released
@@ -106,7 +107,7 @@ class EchoRecommendationEngine(
                     async {
                         semaphore.withPermit {
                             withTimeoutOrNull(LOOKUP_TIMEOUT_MS) {
-                                YouTube.album(album.browseId).getOrNull()?.songs
+                                youTube.album(album.browseId).getOrNull()?.songs
                             }.orEmpty()
                         }
                     }
@@ -138,7 +139,7 @@ class EchoRecommendationEngine(
                     async {
                         semaphore.withPermit {
                             withTimeoutOrNull(LOOKUP_TIMEOUT_MS) {
-                                YouTube
+                                youTube
                                     .next(WatchEndpoint(videoId = seed.id))
                                     .getOrNull()
                                     ?.items

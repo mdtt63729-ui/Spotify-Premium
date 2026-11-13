@@ -13,6 +13,7 @@ import com.manikdev.domain.manager.DataStoreManager.Values.TRUE
 import com.manikdev.domain.repository.HomeRepository
 import com.manikdev.domain.utils.Resource
 import com.maxrave.logger.Logger
+import com.manikdev.kotlinytmusicscraper.YouTube
 import com.manikdev.kotlinytmusicscraper.models.SongItem
 import com.manikdev.spotify.recommendation.EchoRecommendationEngine
 import com.manikdev.spotify.viewModel.base.BaseViewModel
@@ -38,6 +39,7 @@ import spotify.composeapp.generated.resources.view_count
 
 class HomeViewModel(
     private val dataStoreManager: DataStoreManager,
+    private val youTube: YouTube,
     private val homeRepository: HomeRepository,
 ) : BaseViewModel() {
     private val _homeItemList: MutableStateFlow<List<HomeItem>> =
@@ -203,7 +205,7 @@ class HomeViewModel(
         echoJob =
             viewModelScope.launch {
                 runCatching {
-                    EchoRecommendationEngine().build { cards ->
+                    EchoRecommendationEngine(youTube = youTube).build { cards ->
                         if (cards.size >= EchoRecommendationEngine.MIN_CARDS) {
                             _echoCards.value = cards
                         }
