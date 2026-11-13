@@ -7,9 +7,9 @@
         android:icon="@drawable/round_home_24"
         android:shortcutShortLabel="@string/home">
         <intent
-            android:targetClass="com.maxrave.simpmusic.MainActivity"
+            android:targetClass="com.manikdev.spotify.MainActivity"
             android:targetPackage="com.spotify.music"
-            android:action="com.maxrave.simpmusic.action.HOME" />
+            android:action="com.manikdev.spotify.action.HOME" />
     </shortcut>
     <shortcut
         android:shortcutId="search"
@@ -17,9 +17,9 @@
         android:icon="@drawable/round_search_24"
         android:shortcutShortLabel="@string/search">
         <intent
-            android:targetClass="com.maxrave.simpmusic.MainActivity"
+            android:targetClass="com.manikdev.spotify.MainActivity"
             android:targetPackage="com.spotify.music"
-            android:action="com.maxrave.simpmusic.action.SEARCH" />
+            android:action="com.manikdev.spotify.action.SEARCH" />
     </shortcut>
     <shortcut
         android:shortcutId="library"
@@ -27,8 +27,8 @@
         android:icon="@drawable/round_library_music_24"
         android:shortcutShortLabel="@string/library">
         <intent
-            android:targetClass="com.maxrave.simpmusic.MainActivity"
+            android:targetClass="com.manikdev.spotify.MainActivity"
             android:targetPackage="com.spotify.music"
-            android:action="com.maxrave.simpmusic.action.LIBRARY" />
+            android:action="com.manikdev.spotify.action.LIBRARY" />
     </shortcut>
 </shortcuts>

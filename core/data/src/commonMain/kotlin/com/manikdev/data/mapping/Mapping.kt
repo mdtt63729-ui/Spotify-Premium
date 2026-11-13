@@ -1,0 +1,649 @@
+package com.manikdev.data.mapping
+
+import com.manikdev.data.parser.toListThumbnail
+import com.manikdev.domain.data.model.browse.album.Track
+import com.manikdev.domain.data.model.comments.CommentLikeState
+import com.manikdev.domain.data.model.comments.YouTubeComment
+import com.manikdev.domain.data.model.comments.YouTubeCommentsHeader
+import com.manikdev.domain.data.model.comments.YouTubeCommentsPage
+import com.manikdev.domain.data.model.canvas.CanvasResult
+import com.manikdev.domain.data.model.home.Content
+import com.manikdev.domain.data.model.mediaService.SponsorSkipSegments
+import com.manikdev.domain.data.model.metadata.Line
+import com.manikdev.domain.data.model.metadata.Lyrics
+import com.manikdev.domain.data.model.searchResult.albums.AlbumsResult
+import com.manikdev.domain.data.model.searchResult.artists.ArtistsResult
+import com.manikdev.domain.data.model.searchResult.playlists.PlaylistsResult
+import com.manikdev.domain.data.model.searchResult.songs.Album
+import com.manikdev.domain.data.model.searchResult.songs.Artist
+import com.manikdev.domain.data.model.searchResult.songs.SongsResult
+import com.manikdev.domain.data.model.searchResult.songs.Thumbnail
+import com.manikdev.domain.data.model.searchResult.videos.VideosResult
+import com.manikdev.domain.data.model.streams.YouTubeWatchEndpoint
+import com.manikdev.domain.utils.LIVE_RESULT_TYPE
+import com.manikdev.kotlinytmusicscraper.models.AccountInfo
+import com.manikdev.kotlinytmusicscraper.models.AlbumItem
+import com.manikdev.kotlinytmusicscraper.models.ArtistItem
+import com.manikdev.kotlinytmusicscraper.models.PlaylistItem
+import com.manikdev.kotlinytmusicscraper.models.SearchSuggestions
+import com.manikdev.kotlinytmusicscraper.models.SongItem
+import com.manikdev.kotlinytmusicscraper.models.VideoItem
+import com.manikdev.kotlinytmusicscraper.models.WatchEndpoint
+import com.manikdev.kotlinytmusicscraper.models.YTItem
+import com.manikdev.kotlinytmusicscraper.models.response.PipedResponse
+import com.manikdev.kotlinytmusicscraper.models.sponsorblock.SkipSegments
+import com.manikdev.kotlinytmusicscraper.models.youtube.Transcript
+import com.manikdev.kotlinytmusicscraper.models.youtube.YouTubeInitialPage
+import com.manikdev.kotlinytmusicscraper.pages.CommentItem
+import com.manikdev.kotlinytmusicscraper.pages.CommentsPage
+import com.manikdev.spotify.model.response.spotify.CanvasResponse
+import com.manikdev.spotify.model.response.spotify.SpotifyLyricsResponse
+import org.spotify.lyrics.models.response.LyricsResponse
+import org.spotify.lyrics.models.response.TranslatedLyricsResponse
+import org.spotify.lyrics.parser.parseRichSyncLyrics
+import org.spotify.lyrics.parser.parseSyncedLyrics
+import org.spotify.lyrics.parser.parseUnsyncedLyrics
+import kotlin.jvm.JvmName
+
+internal fun SongItem.toTrack(): Track =
+    Track(
+        album = this.album.let { Album(it?.id ?: "", it?.name ?: "") },
+        artists = this.artists.map { artist -> Artist(id = artist.id ?: "", name = artist.name) },
+        duration = this.duration.toString(),
+        durationSeconds = this.duration,
+        isAvailable = false,
+        isExplicit = this.explicit,
+        likeStatus = null,
+        thumbnails = this.thumbnails?.thumbnails?.toListThumbnail() ?: listOf(),
+        title = this.title,
+        videoId = this.id,
+        videoType = this.musicVideoType,
+        category = null,
+        feedbackTokens = null,
+        resultType = if (this.isLive) LIVE_RESULT_TYPE else null,
+        year = null,
+    )
+
+internal fun VideoItem.toTrack(): Track =
+    Track(
+        album = this.album.let { Album(it?.id ?: "", it?.name ?: "") },
+        artists = this.artists.map { artist -> Artist(id = artist.id ?: "", name = artist.name) },
+        duration = this.duration.toString(),
+        durationSeconds = this.duration,
+        isAvailable = false,
+        isExplicit = false,
+        likeStatus = null,
+        thumbnails = this.thumbnails?.thumbnails?.toListThumbnail() ?: listOf(),
+        title = this.title,
+        videoId = this.id,
+        videoType = this.musicVideoType,
+        category = null,
+        feedbackTokens = null,
+        resultType = if (this.isLive) LIVE_RESULT_TYPE else null,
+        year = null,
+    )
+
+@JvmName("SongItemtoTrack")
+internal fun List<SongItem>?.toListTrack(): ArrayList<Track> {
+    val listTrack = arrayListOf<Track>()
+    if (this != null) {
+        for (item in this) {
+            listTrack.add(item.toTrack())
+        }
+    }
+    return listTrack
+}
+
+internal fun Track.toSongItemForDownload(): SongItem =
+    SongItem(
+        id = this.videoId,
+        title = this.title,
+        artists =
+            this.artists?.map {
+                com.manikdev.kotlinytmusicscraper.models.Artist(
+                    id = it.id ?: "",
+                    name = it.name,
+                )
+            } ?: emptyList(),
+        album =
+            com.manikdev.kotlinytmusicscraper.models.Album(
+                id = this.album?.id ?: "",
+                name = this.album?.name ?: "",
+            ),
+        duration = this.durationSeconds,
+        thumbnail = this.thumbnails?.lastOrNull()?.url ?: "",
+        explicit = this.isExplicit,
+    )
+
+internal fun org.spotify.lyrics.domain.Lyrics.toLyrics(): Lyrics {
+    val lines: ArrayList<Line> = arrayListOf()
+    if (this.lyrics != null) {
+        this.lyrics?.lines?.forEach {
+            lines.add(
+                Line(
+                    endTimeMs = it.endTimeMs,
+                    startTimeMs = it.startTimeMs,
+                    syllables = it.syllables ?: listOf(),
+                    words = it.words,
+                ),
+            )
+        }
+        return Lyrics(
+            error = false,
+            lines = lines,
+            syncType = this.lyrics!!.syncType,
+        )
+    } else {
+        return Lyrics(
+            error = true,
+            lines = null,
+            syncType = null,
+        )
+    }
+}
+
+internal fun Lyrics.toLibraryLyrics(): org.spotify.lyrics.domain.Lyrics =
+    org.spotify.lyrics.domain.Lyrics(
+        lyrics =
+            org.spotify.lyrics.domain.Lyrics.LyricsX(
+                lines =
+                    this.lines?.map {
+                        org.spotify.lyrics.domain.Lyrics.LyricsX.Line(
+                            endTimeMs = it.endTimeMs,
+                            startTimeMs = it.startTimeMs,
+                            syllables = listOf(),
+                            words = it.words,
+                        )
+                    },
+                syncType = this.syncType,
+            ),
+    )
+
+internal fun SpotifyLyricsResponse.toLyrics(): Lyrics {
+    val lines: ArrayList<Line> = arrayListOf()
+    this.lyrics.lines.forEach {
+        lines.add(
+            Line(
+                endTimeMs = it.endTimeMs,
+                startTimeMs = it.startTimeMs,
+                syllables = listOf(),
+                words = it.words,
+            ),
+        )
+    }
+    return Lyrics(
+        error = false,
+        lines = lines,
+        syncType = this.lyrics.syncType,
+    )
+}
+
+internal fun PipedResponse.toTrack(videoId: String): Track =
+    Track(
+        album = null,
+        artists =
+            listOf(
+                Artist(
+                    this.uploaderUrl?.replace("/channel/", ""),
+                    this.uploader.toString(),
+                ),
+            ),
+        duration = "",
+        durationSeconds = 0,
+        isAvailable = false,
+        isExplicit = false,
+        likeStatus = "INDIFFERENT",
+        thumbnails =
+            listOf(
+                Thumbnail(
+                    720,
+                    this.thumbnailUrl ?: "https://i.ytimg.com/vi/$videoId/maxresdefault.jpg",
+                    1080,
+                ),
+            ),
+        title = this.title ?: " ",
+        videoId = videoId,
+        // Piped is not YouTube Music and never reports musicVideoType.
+        videoType = null,
+        category = "",
+        feedbackTokens = null,
+        resultType = null,
+        year = "",
+    )
+
+internal fun YouTubeInitialPage.toTrack(): Track {
+    val initialPage = this
+
+    return Track(
+        album = null,
+        artists =
+            listOf(
+                Artist(
+                    name = initialPage.videoDetails?.author ?: "",
+                    id = initialPage.videoDetails?.channelId,
+                ),
+            ),
+        duration = initialPage.videoDetails?.lengthSeconds,
+        durationSeconds = initialPage.videoDetails?.lengthSeconds?.toInt() ?: 0,
+        isAvailable = false,
+        isExplicit = false,
+        likeStatus = null,
+        thumbnails =
+            initialPage.videoDetails
+                ?.thumbnail
+                ?.thumbnails
+                ?.toListThumbnail() ?: listOf(),
+        title = initialPage.videoDetails?.title ?: "",
+        videoId = initialPage.videoDetails?.videoId ?: "",
+        // The plain-YouTube player response has no musicVideoType; only the YouTube *Music* one
+        // (PlayerResponse.VideoDetails) carries it.
+        videoType = null,
+        category = "",
+        feedbackTokens = null,
+        resultType = "",
+        year = "",
+    )
+}
+
+internal fun Transcript.toLyrics(): Lyrics {
+    val lines =
+        this.text.map {
+            Line(
+                endTimeMs = "0",
+                startTimeMs = (it.start.toFloat() * 1000).toInt().toString(),
+                syllables = listOf(),
+                words = it.content.replace(Regex("<[^>]*>"), ""),
+            )
+        }
+    val sortedLine = lines.sortedBy { it.startTimeMs.toInt() }
+    return Lyrics(
+        error = false,
+        lines = sortedLine,
+        syncType = "LINE_SYNCED",
+    )
+}
+
+internal fun AlbumItem.toAlbumsResult(): AlbumsResult =
+    AlbumsResult(
+        artists =
+            this.artists?.map {
+                Artist(
+                    id = it.id ?: "",
+                    name = it.name,
+                )
+            } ?: emptyList(),
+        browseId = this.id,
+        category = this.title,
+        duration = "",
+        isExplicit = this.explicit,
+        resultType = "ALBUM",
+        thumbnails =
+            listOf(
+                Thumbnail(
+                    width = 720,
+                    url = this.thumbnail,
+                    height = 720,
+                ),
+            ),
+        title = this.title,
+        type = if (isSingle) "SINGLE" else "ALBUM",
+        year = this.year?.toString() ?: "",
+    )
+
+// Spotify Lyrics Extension
+internal fun LyricsResponse.toLyrics(): Lyrics? =
+    (
+        richSyncLyrics?.takeIf { it.isNotEmpty() }?.let {
+            parseRichSyncLyrics(it)
+        }
+            ?: syncedLyrics?.let { if (it.isNotEmpty() && it.isNotBlank()) parseSyncedLyrics(it) else null }
+            ?: (
+                if (plainLyric.isNotEmpty() && plainLyric.isNotBlank()) {
+                    parseUnsyncedLyrics(plainLyric)
+                } else {
+                    null
+                }
+            )
+    )?.toLyrics()
+
+internal fun TranslatedLyricsResponse.toLyrics(): Lyrics = parseSyncedLyrics(this.translatedLyric).toLyrics()
+
+internal fun SearchSuggestions.toDomainSearchSuggestions(): com.manikdev.domain.data.model.searchResult.SearchSuggestions =
+    com.manikdev.domain.data.model.searchResult.SearchSuggestions(
+        queries = this.queries,
+        recommendedItems =
+            this.recommendedItems.map {
+                when (it) {
+                    is SongItem -> {
+                        SongsResult(
+                            album =
+                                Album(
+                                    id = it.album?.id ?: "",
+                                    name = it.album?.name ?: "",
+                                ),
+                            artists =
+                                it.artists.map { artist ->
+                                    Artist(
+                                        id = artist.id ?: "",
+                                        name = artist.name,
+                                    )
+                                },
+                            category = "",
+                            duration = it.duration.toString(),
+                            durationSeconds = it.duration,
+                            feedbackTokens = null,
+                            isExplicit = it.explicit,
+                            resultType = if (it.isLive) LIVE_RESULT_TYPE else "Song",
+                            thumbnails = it.thumbnails?.thumbnails?.toListThumbnail() ?: listOf(),
+                            title = it.title,
+                            videoId = it.id,
+                            videoType = it.musicVideoType,
+                            year = "",
+                        )
+                    }
+
+                    is AlbumItem -> {
+                        AlbumsResult(
+                            artists =
+                                it.artists?.map {
+                                    Artist(
+                                        id = it.id ?: "",
+                                        name = it.name,
+                                    )
+                                } ?: emptyList(),
+                            browseId = it.browseId,
+                            category = "",
+                            duration = "",
+                            isExplicit = it.explicit,
+                            resultType = "ALBUM",
+                            thumbnails =
+                                listOf(
+                                    Thumbnail(
+                                        width = 720,
+                                        url = it.thumbnail,
+                                        height = 720,
+                                    ),
+                                ),
+                            title = it.title,
+                            type = if (it.isSingle) "SINGLE" else "ALBUM",
+                            year = it.year?.toString() ?: "",
+                        )
+                    }
+
+                    is ArtistItem -> {
+                        ArtistsResult(
+                            artist = it.title,
+                            browseId = it.id,
+                            category = "",
+                            radioId = it.radioEndpoint?.playlistId ?: "",
+                            resultType = "ARTIST",
+                            shuffleId = it.shuffleEndpoint?.playlistId ?: "",
+                            thumbnails =
+                                listOf(
+                                    Thumbnail(
+                                        width = 720,
+                                        url = it.thumbnail,
+                                        height = 720,
+                                    ),
+                                ),
+                        )
+                    }
+
+                    is PlaylistItem -> {
+                        PlaylistsResult(
+                            author = it.author?.name ?: "YouTube Music",
+                            browseId = it.id,
+                            category = "",
+                            itemCount = "0",
+                            resultType = "PLAYLIST",
+                            thumbnails =
+                                listOf(
+                                    Thumbnail(
+                                        width = 720,
+                                        url = it.thumbnail,
+                                        height = 720,
+                                    ),
+                                ),
+                            title = it.title,
+                        )
+                    }
+
+                    is VideoItem -> {
+                        VideosResult(
+                            artists =
+                                it.artists.map { artist ->
+                                    Artist(
+                                        id = artist.id ?: "",
+                                        name = artist.name,
+                                    )
+                                },
+                            category = null,
+                            duration = it.duration?.toString(),
+                            durationSeconds = it.duration,
+                            resultType = if (it.isLive) LIVE_RESULT_TYPE else "VIDEO",
+                            thumbnails = it.thumbnails?.thumbnails?.toListThumbnail() ?: listOf(),
+                            title = it.title,
+                            videoId = it.id,
+                            videoType = it.musicVideoType,
+                            views = it.view,
+                            year = "",
+                        )
+                    }
+                }
+            },
+    )
+
+internal fun CanvasResponse.toCanvasResult(): CanvasResult? {
+    val canvasUrl = this.canvases.firstOrNull()?.canvas_url ?: return null
+    val canvasThumbs = this.canvases.firstOrNull()?.thumbsOfCanva
+    val thumbUrl =
+        if (!canvasThumbs.isNullOrEmpty()) {
+            (
+                canvasThumbs.let { thumb ->
+                    thumb
+                        .maxByOrNull {
+                            (it.height ?: 0) + (it.width ?: 0)
+                        }?.url
+                } ?: canvasThumbs.first().url
+            )
+        } else {
+            null
+        }
+    return CanvasResult(
+        isVideo = canvasUrl.contains(".mp4"),
+        canvasUrl = canvasUrl,
+        canvasThumbUrl = thumbUrl,
+    )
+}
+
+internal fun YouTubeWatchEndpoint.toWatchEndpoint(): WatchEndpoint =
+    WatchEndpoint(
+        videoId = this.videoId,
+        playlistId = this.playlistId,
+        playlistSetVideoId = this.playlistSetVideoId,
+        params = this.params,
+        index = this.index,
+        watchEndpointMusicSupportedConfigs =
+            this.watchEndpointMusicSupportedConfigs?.let { supportedConfig ->
+                WatchEndpoint.WatchEndpointMusicSupportedConfigs(
+                    watchEndpointMusicConfig =
+                        WatchEndpoint.WatchEndpointMusicSupportedConfigs.WatchEndpointMusicConfig(
+                            musicVideoType =
+                                supportedConfig.watchEndpointMusicConfig.musicVideoType,
+                        ),
+                )
+            },
+    )
+
+internal fun WatchEndpoint.toYouTubeWatchEndpoint(): YouTubeWatchEndpoint =
+    YouTubeWatchEndpoint(
+        videoId = this.videoId,
+        playlistId = this.playlistId,
+        playlistSetVideoId = this.playlistSetVideoId,
+        params = this.params,
+        index = this.index,
+        watchEndpointMusicSupportedConfigs =
+            this.watchEndpointMusicSupportedConfigs?.let { supportedConfig ->
+                YouTubeWatchEndpoint.WatchEndpointMusicSupportedConfigs(
+                    watchEndpointMusicConfig =
+                        YouTubeWatchEndpoint.WatchEndpointMusicSupportedConfigs.WatchEndpointMusicConfig(
+                            musicVideoType =
+                                supportedConfig.watchEndpointMusicConfig.musicVideoType,
+                        ),
+                )
+            },
+    )
+
+internal fun SkipSegments.toSponsorSkipSegments(): SponsorSkipSegments =
+    SponsorSkipSegments(
+        actionType = this.actionType,
+        category = this.category,
+        description = this.description,
+        locked = this.locked,
+        segment = this.segment,
+        uUID = this.uUID,
+        videoDuration = this.videoDuration,
+        votes = this.votes,
+    )
+
+internal fun AccountInfo.toDomainAccountInfo(): com.manikdev.domain.data.model.account.AccountInfo =
+    com.manikdev.domain.data.model.account.AccountInfo(
+        name = this.name,
+        email = this.email,
+        pageId = this.pageId,
+        authUser = this.authUser,
+        thumbnails = thumbnails.toListThumbnail(),
+    )
+
+/**
+ * One item of a "More" page as the [Content] a home card is drawn from. The card works out what the
+ * item is from which id is set — a videoId plays it, a browseId opens an album or artist, a
+ * playlistId opens a playlist — and draws a wide thumbnail as a video card and a square one as a
+ * song card, so the sizes are set here to say which, not read off the response.
+ */
+internal fun YTItem.toHomeContent(): Content =
+    when (this) {
+        is SongItem -> {
+            Content(
+                album = album?.let { Album(id = it.id, name = it.name) },
+                artists = artists.map { Artist(id = it.id, name = it.name) },
+                description = null,
+                isExplicit = explicit,
+                playlistId = null,
+                browseId = null,
+                thumbnails = listOf(Thumbnail(height = 544, url = thumbnail, width = 544)),
+                title = title,
+                videoId = id,
+                views = null,
+                durationSeconds = duration,
+                videoType = musicVideoType,
+                isLive = isLive,
+            )
+        }
+
+        is VideoItem -> {
+            Content(
+                album = album?.let { Album(id = it.id, name = it.name) },
+                artists = artists.map { Artist(id = it.id, name = it.name) },
+                description = null,
+                isExplicit = explicit,
+                playlistId = null,
+                browseId = null,
+                thumbnails = listOf(Thumbnail(height = 720, url = thumbnail, width = 1280)),
+                title = title,
+                videoId = id,
+                views = view,
+                durationSeconds = duration,
+                videoType = musicVideoType,
+                isLive = isLive,
+            )
+        }
+
+        is AlbumItem -> {
+            Content(
+                album = null,
+                artists = artists?.map { Artist(id = it.id, name = it.name) },
+                description = null,
+                isExplicit = explicit,
+                playlistId = null,
+                browseId = browseId,
+                thumbnails = listOf(Thumbnail(height = 544, url = thumbnail, width = 544)),
+                title = title,
+                videoId = null,
+                views = null,
+            )
+        }
+
+        is PlaylistItem -> {
+            Content(
+                album = null,
+                artists = author?.let { listOf(Artist(id = it.id, name = it.name)) },
+                description = songCountText,
+                isExplicit = false,
+                playlistId = id,
+                browseId = null,
+                thumbnails = listOf(Thumbnail(height = 544, url = thumbnail, width = 544)),
+                title = title,
+                videoId = null,
+                views = null,
+            )
+        }
+
+        is ArtistItem -> {
+            Content(
+                album = null,
+                artists = null,
+                description = subscribers,
+                isExplicit = false,
+                playlistId = null,
+                browseId = id,
+                thumbnails = listOf(Thumbnail(height = 544, url = thumbnail, width = 544)),
+                title = title,
+                videoId = null,
+                views = null,
+            )
+        }
+    }
+
+internal fun CommentItem.toYouTubeComment(): YouTubeComment =
+    YouTubeComment(
+        id = id,
+        author = author,
+        authorAvatar = authorAvatar,
+        authorChannelId = authorChannelId,
+        isVerified = isVerified,
+        isCreator = isCreator,
+        text = text,
+        publishedTime = publishedTime,
+        likeCount = likeCount,
+        likeCountLiked = likeCountLiked,
+        likeState = CommentLikeState.valueOf(likeState.name),
+        isHearted = isHearted,
+        isPinned = isPinned,
+        repliesLabel = repliesLabel,
+        repliesToken = repliesToken,
+        likeAction = likeAction,
+        unlikeAction = unlikeAction,
+        dislikeAction = dislikeAction,
+        undislikeAction = undislikeAction,
+        replyParams = replyParams,
+        replyPlaceholder = replyPlaceholder,
+    )
+
+internal fun CommentsPage.toYouTubeCommentsPage(): YouTubeCommentsPage =
+    YouTubeCommentsPage(
+        header =
+            header?.let {
+                YouTubeCommentsHeader(
+                    countText = it.countText,
+                    countShort = it.countShort,
+                    createParams = it.createParams,
+                    placeholder = it.placeholder,
+                    userAvatar = it.userAvatar,
+                )
+            },
+        comments = comments.map { it.toYouTubeComment() },
+        nextToken = nextToken,
+        nextLabel = nextLabel,
+    )
+

@@ -3835,9 +3835,9 @@
             ]
         },
         {
-            "uniqueId": "com.github.maxrave-dev.PipePipeExtractor:PipePipeExtractor",
+            "uniqueId": "com.github.manik-dev.PipePipeExtractor:PipePipeExtractor",
             "artifactVersion": "27aac1e14e",
-            "name": "com.github.maxrave-dev.PipePipeExtractor:PipePipeExtractor",
+            "name": "com.github.manik-dev.PipePipeExtractor:PipePipeExtractor",
             "description": "",
             "developers": [
                 
@@ -3850,9 +3850,9 @@
             ]
         },
         {
-            "uniqueId": "com.github.maxrave-dev.PipePipeExtractor:extractor",
+            "uniqueId": "com.github.manik-dev.PipePipeExtractor:extractor",
             "artifactVersion": "27aac1e14e",
-            "name": "com.github.maxrave-dev.PipePipeExtractor:extractor",
+            "name": "com.github.manik-dev.PipePipeExtractor:extractor",
             "description": "",
             "developers": [
                 
@@ -3865,9 +3865,9 @@
             ]
         },
         {
-            "uniqueId": "com.github.maxrave-dev.PipePipeExtractor:timeago-parser",
+            "uniqueId": "com.github.manik-dev.PipePipeExtractor:timeago-parser",
             "artifactVersion": "27aac1e14e",
-            "name": "com.github.maxrave-dev.PipePipeExtractor:timeago-parser",
+            "name": "com.github.manik-dev.PipePipeExtractor:timeago-parser",
             "description": "",
             "developers": [
                 
@@ -3880,7 +3880,7 @@
             ]
         },
         {
-            "uniqueId": "com.github.maxrave-dev:BravePipeExtractor",
+            "uniqueId": "com.github.manik-dev:BravePipeExtractor",
             "artifactVersion": "105aad96c7",
             "name": "NewPipe Extractor",
             "description": "A library for extracting data from streaming websites, used in NewPipe",
@@ -3903,9 +3903,9 @@
             ]
         },
         {
-            "uniqueId": "com.github.maxrave-dev:PipePipeExtractor",
+            "uniqueId": "com.github.manik-dev:PipePipeExtractor",
             "artifactVersion": "27aac1e14e",
-            "name": "com.github.maxrave-dev:PipePipeExtractor",
+            "name": "com.github.manik-dev:PipePipeExtractor",
             "description": "",
             "developers": [
                 
@@ -5758,20 +5758,20 @@
             ]
         },
         {
-            "uniqueId": "io.github.maxrave-dev:ffmpeg-kit-audio",
+            "uniqueId": "io.github.manik-dev:ffmpeg-kit-audio",
             "artifactVersion": "6.0.1",
             "name": "FFMPEG Android 16KB",
             "description": "FFmpeg Kit Audio for Android.",
-            "website": "https://github.com/maxrave-dev/ffmpeg-kit-16KB",
+            "website": "https://github.com/manikdev-dev/ffmpeg-kit-16KB",
             "developers": [
                 {
                     "name": "Minh Nguyen"
                 }
             ],
             "scm": {
-                "connection": "scm:git@github.com:maxrave-dev/ffmpeg-kit-16KB.git",
-                "developerConnection": "scm:git@github.com:maxrave-dev/ffmpeg-kit-16KB.git",
-                "url": "https://github.com/maxrave-dev/ffmpeg-kit-16KB"
+                "connection": "scm:git@github.com:manik-dev/ffmpeg-kit-16KB.git",
+                "developerConnection": "scm:git@github.com:manik-dev/ffmpeg-kit-16KB.git",
+                "url": "https://github.com/manikdev-dev/ffmpeg-kit-16KB"
             },
             "licenses": [
                 "c398818ee178152d6b9561ab9daa823a"
@@ -8829,20 +8829,20 @@
             ]
         },
         {
-            "uniqueId": "org.simpmusic.gemini-kotlin:openai-client",
+            "uniqueId": "org.spotify.gemini-kotlin:openai-client",
             "artifactVersion": "4.0.2",
             "name": "OpenAI API Kotlin Client",
             "description": "Fork for Gemini",
-            "website": "https://github.com/maxrave-dev/gemini-kotlin",
+            "website": "https://github.com/manikdev-dev/gemini-kotlin",
             "developers": [
                 {
                     "name": "Nguyen Duc Tuan Minh"
                 }
             ],
             "scm": {
-                "connection": "scm:git:git://github.com/maxrave-dev/gemini-kotlin.git",
-                "developerConnection": "scm:git:ssh://github.com/maxrave-dev/gemini-kotlin.git",
-                "url": "https://github.com/maxrave-dev/gemini-kotlin"
+                "connection": "scm:git:git://github.com/manikdev-dev/gemini-kotlin.git",
+                "developerConnection": "scm:git:ssh://github.com/manikdev-dev/gemini-kotlin.git",
+                "url": "https://github.com/manikdev-dev/gemini-kotlin"
             },
             "licenses": [
                 "MIT"
@@ -8852,20 +8852,20 @@
             ]
         },
         {
-            "uniqueId": "org.simpmusic.gemini-kotlin:openai-core",
+            "uniqueId": "org.spotify.gemini-kotlin:openai-core",
             "artifactVersion": "4.0.2",
             "name": "OpenAI API Kotlin Client Core",
             "description": "Fork for Gemini",
-            "website": "https://github.com/maxrave-dev/gemini-kotlin",
+            "website": "https://github.com/manikdev-dev/gemini-kotlin",
             "developers": [
                 {
                     "name": "Nguyen Duc Tuan Minh"
                 }
             ],
             "scm": {
-                "connection": "scm:git:git://github.com/maxrave-dev/gemini-kotlin.git",
-                "developerConnection": "scm:git:ssh://github.com/maxrave-dev/gemini-kotlin.git",
-                "url": "https://github.com/maxrave-dev/gemini-kotlin"
+                "connection": "scm:git:git://github.com/manikdev-dev/gemini-kotlin.git",
+                "developerConnection": "scm:git:ssh://github.com/manikdev-dev/gemini-kotlin.git",
+                "url": "https://github.com/manikdev-dev/gemini-kotlin"
             },
             "licenses": [
                 "MIT"
@@ -8875,20 +8875,20 @@
             ]
         },
         {
-            "uniqueId": "org.simpmusic:jmtc",
+            "uniqueId": "org.spotify:jmtc",
             "artifactVersion": "0.0.3",
             "name": "JMTC",
             "description": "JMTC forked version",
-            "website": "https://github.com/maxrave-dev/NowPlayingCenter",
+            "website": "https://github.com/manikdev-dev/NowPlayingCenter",
             "developers": [
                 {
                     "name": "Nguyen Duc Tuan Minh"
                 }
             ],
             "scm": {
-                "connection": "scm:git:git://github.com/maxrave-dev/NowPlayingCenter.git",
-                "developerConnection": "scm:git:ssh://git@github.com/maxrave-dev/NowPlayingCenter.git",
-                "url": "https://github.com/maxrave-dev/NowPlayingCenter"
+                "connection": "scm:git:git://github.com/manikdev-dev/NowPlayingCenter.git",
+                "developerConnection": "scm:git:ssh://git@github.com/manikdev-dev/NowPlayingCenter.git",
+                "url": "https://github.com/manikdev-dev/NowPlayingCenter"
             },
             "licenses": [
                 "MIT"
@@ -8898,20 +8898,20 @@
             ]
         },
         {
-            "uniqueId": "org.simpmusic:nowplayingcenter",
+            "uniqueId": "org.spotify:nowplayingcenter",
             "artifactVersion": "0.0.3",
             "name": "NowPlayingCenter",
             "description": "Wrapper MacOS API's MPNowPlayingCenter to JMTC libray",
-            "website": "https://github.com/maxrave-dev/NowPlayingCenter",
+            "website": "https://github.com/manikdev-dev/NowPlayingCenter",
             "developers": [
                 {
                     "name": "Nguyen Duc Tuan Minh"
                 }
             ],
             "scm": {
-                "connection": "scm:git:git://github.com/maxrave-dev/NowPlayingCenter.git",
-                "developerConnection": "scm:git:ssh://git@github.com/maxrave-dev/NowPlayingCenter.git",
-                "url": "https://github.com/maxrave-dev/NowPlayingCenter"
+                "connection": "scm:git:git://github.com/manikdev-dev/NowPlayingCenter.git",
+                "developerConnection": "scm:git:ssh://git@github.com/manikdev-dev/NowPlayingCenter.git",
+                "url": "https://github.com/manikdev-dev/NowPlayingCenter"
             },
             "licenses": [
                 "MIT"

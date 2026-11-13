@@ -10,9 +10,9 @@
         neutral grey at that tone. Letting it follow the system instead gave dark-theme users a
         white flash on light-mode devices.
     -->
-    <color name="simpmusic_cold_start_background">#FF131313</color>
+    <color name="spotify_cold_start_background">#FF131313</color>
 
-    <style name="Theme.SimpMusic" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <item name="android:windowBackground">@color/simpmusic_cold_start_background</item>
+    <style name="Theme.Spotify" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/spotify_cold_start_background</item>
     </style>
 </resources>

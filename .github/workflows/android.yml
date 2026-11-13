@@ -93,7 +93,7 @@ jobs:
           name: app
           path: androidApp/build/outputs/apk/release/*-signed.apk
 
-  # SimpMusic for vivo (vivoAndroidApp, com.spotify.music), same Full build as above.
+  # Spotify for vivo (vivoAndroidApp, com.spotify.music), same Full build as above.
   build-vivo:
     runs-on: ubuntu-latest
     steps:

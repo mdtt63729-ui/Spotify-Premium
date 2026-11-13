@@ -1,0 +1,79 @@
+name: Build signed release APK
+
+# Builds the FOSS release APK and signs it with the 4 signing secrets stored in
+# repository secrets: SIGNING_KEY (base64 keystore), ALIAS, KEY_STORE_PASSWORD,
+# KEY_PASSWORD. Produces zipaligned, signed APKs as a workflow artifact.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-signed:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'microsoft'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Decode keystore from SIGNING_KEY
+        env:
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "${SIGNING_KEY:-}" ]; then
+            echo "::error::SIGNING_KEY secret is missing"; exit 1
+          fi
+          echo "$SIGNING_KEY" | base64 -d > "$RUNNER_TEMP/release.jks"
+          ls -l "$RUNNER_TEMP/release.jks"
+
+      - name: Build unsigned release APK
+        run: ./gradlew :androidApp:assembleRelease -PisFullBuild=false
+
+      - name: Zipalign and sign APKs
+        env:
+          ALIAS: ${{ secrets.ALIAS }}
+          KS_PASS: ${{ secrets.KEY_STORE_PASSWORD }}
+          KEY_PASS: ${{ secrets.KEY_PASSWORD }}
+          KS_FILE: ${{ runner.temp }}/release.jks
+        run: |
+          set -euo pipefail
+          BT=$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1)
+          mkdir -p signed
+          shopt -s nullglob
+          apks=(androidApp/build/outputs/apk/release/*-unsigned.apk)
+          if [ ${#apks[@]} -eq 0 ]; then echo "::error::no unsigned APK produced"; exit 1; fi
+          for apk in "${apks[@]}"; do
+            base=$(basename "$apk" -unsigned.apk)
+            "${BT}zipalign" -p -f 4 "$apk" "signed/$base-aligned.apk"
+            "${BT}apksigner" sign \
+              --ks "$KS_FILE" --ks-key-alias "$ALIAS" \
+              --ks-pass env:KS_PASS --key-pass env:KEY_PASS \
+              --out "signed/$base-signed.apk" "signed/$base-aligned.apk"
+            rm -f "signed/$base-aligned.apk"
+          done
+          ls -lh signed
+
+      - name: Verify signatures
+        run: |
+          set -euo pipefail
+          BT=$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1)
+          for apk in signed/*.apk; do
+            echo "== $apk"
+            "${BT}apksigner" verify --verbose --print-certs "$apk" | head -12
+          done
+
+      - name: Upload signed APKs
+        uses: actions/upload-artifact@v4
+        with:
+          name: signed-release-apk
+          path: signed/*.apk
+          if-no-files-found: error

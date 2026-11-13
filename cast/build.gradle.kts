@@ -12,7 +12,7 @@ kotlin {
 }
 
 android {
-    namespace = "org.simpmusic.cast"
+    namespace = "org.spotify.cast"
     compileSdk = 37
 
     defaultConfig {
