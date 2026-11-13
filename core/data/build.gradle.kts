@@ -74,7 +74,7 @@ kotlin {
                 implementation(projects.aiService)
                 implementation(projects.autoEqService)
                 implementation(projects.lyricsService)
-                implementation(projects.spotify)
+                implementation(projects.spotifyApi)
                 implementation(projects.kotlinYtmusicScraper)
                 implementation(projects.kizzy)
                 // Rich Presence over OAuth, used instead of kizzy when the build carries a Discord

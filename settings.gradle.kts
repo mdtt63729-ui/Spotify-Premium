@@ -45,7 +45,7 @@ include(
     ":domain",
     ":ktorExt",
     ":kotlinYtmusicScraper",
-    ":spotify",
+    ":spotifyApi",
     ":aiService",
     ":autoEqService",
     ":lyricsService",
@@ -76,7 +76,7 @@ project(":aiService").projectDir = File(serviceDir, "aiService")
 project(":autoEqService").projectDir = File(serviceDir, "autoEqService")
 project(":lyricsService").projectDir = File(serviceDir, "lyricsService")
 project(":kotlinYtmusicScraper").projectDir = File(serviceDir, "kotlinYtmusicScraper")
-project(":spotify").projectDir = File(serviceDir, "spotify")
+project(":spotifyApi").projectDir = File(serviceDir, "spotify")
 project(":kizzy").projectDir = File(serviceDir, "kizzy")
 project(":discord").projectDir = File(serviceDir, "discord")
 project(":listenTogether").projectDir = File(serviceDir, "listenTogether")
