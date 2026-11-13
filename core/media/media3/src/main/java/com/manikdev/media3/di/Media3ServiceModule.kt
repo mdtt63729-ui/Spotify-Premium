@@ -61,7 +61,7 @@ import com.manikdev.domain.repository.PlaylistRepository
 import com.manikdev.domain.repository.SearchRepository
 import com.manikdev.domain.repository.SongRepository
 import com.manikdev.domain.repository.StreamRepository
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.media3.cast.CastHandoffManager
 import com.manikdev.media3.waveform.WaveformReader
 import com.manikdev.media3.cast.CastStreamResolver

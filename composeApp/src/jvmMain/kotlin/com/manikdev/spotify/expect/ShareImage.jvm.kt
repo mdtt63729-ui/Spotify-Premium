@@ -1,6 +1,6 @@
 package com.manikdev.spotify.expect
 
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.awt.Desktop

@@ -8,7 +8,7 @@ import androidx.media3.common.ForwardingPlayer
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 
 private const val TAG = "DelegatingForwardingPlayer"
 

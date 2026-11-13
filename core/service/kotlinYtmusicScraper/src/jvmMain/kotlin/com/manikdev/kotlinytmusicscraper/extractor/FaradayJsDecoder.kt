@@ -4,10 +4,10 @@ import com.manikdev.kotlinytmusicscraper.cipher.FaradayCipherEngine
 import com.manikdev.kotlinytmusicscraper.cipher.InnerTubeLogLevel
 import com.manikdev.kotlinytmusicscraper.cipher.InnerTubeLogger
 import com.manikdev.ktorext.getEngine
-import com.manikdev.logger.Logger
-import dev.manikdev.pipepipe.extractor.exceptions.ParsingException
-import dev.manikdev.pipepipe.extractor.services.youtube.YoutubeApiDecoder
-import dev.manikdev.pipepipe.extractor.services.youtube.YoutubeJavaScriptDecoder
+import com.maxrave.logger.Logger
+import dev.maxrave.pipepipe.extractor.exceptions.ParsingException
+import dev.maxrave.pipepipe.extractor.services.youtube.YoutubeApiDecoder
+import dev.maxrave.pipepipe.extractor.services.youtube.YoutubeJavaScriptDecoder
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.runBlocking

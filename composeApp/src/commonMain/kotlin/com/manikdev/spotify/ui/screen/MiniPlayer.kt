@@ -110,7 +110,7 @@ import coil3.request.crossfade
 import com.manikdev.domain.data.entities.SongEntity
 import com.manikdev.domain.manager.DataStoreManager
 import com.manikdev.domain.utils.connectArtists
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.Platform
 import com.manikdev.spotify.expect.toggleMiniPlayer
 import com.manikdev.spotify.expect.ui.PlatformBackdrop

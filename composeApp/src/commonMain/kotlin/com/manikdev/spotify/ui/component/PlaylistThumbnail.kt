@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import org.jetbrains.compose.resources.painterResource
 import spotify.composeapp.generated.resources.Res
 import spotify.composeapp.generated.resources.monochrome

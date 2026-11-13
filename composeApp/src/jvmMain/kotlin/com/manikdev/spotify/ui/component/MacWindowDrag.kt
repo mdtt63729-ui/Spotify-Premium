@@ -1,7 +1,7 @@
 package com.manikdev.spotify.ui.component
 
 import androidx.compose.ui.awt.ComposeWindow
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.sun.jna.Callback
 import com.sun.jna.NativeLibrary
 import com.sun.jna.Pointer

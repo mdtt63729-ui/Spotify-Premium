@@ -10,7 +10,7 @@
 package org.spotify.listentogether
 
 import com.manikdev.ktorext.getEngine
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.UserAgent
 import io.ktor.client.plugins.websocket.DefaultClientWebSocketSession

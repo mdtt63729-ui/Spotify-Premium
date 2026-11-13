@@ -25,7 +25,7 @@ import androidx.media3.session.SessionResult
 import androidx.media3.session.SessionToken
 import com.google.common.util.concurrent.ListenableFuture
 import com.manikdev.common.MEDIA_CUSTOM_COMMAND
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.media3.service.SimpleMediaService
 
 /**

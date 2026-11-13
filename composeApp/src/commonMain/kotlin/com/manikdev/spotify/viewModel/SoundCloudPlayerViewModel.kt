@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.manikdev.domain.data.model.comments.YouTubeComment
 import com.manikdev.domain.repository.SongRepository
 import com.manikdev.domain.utils.Resource
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.viewModel.base.BaseViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers

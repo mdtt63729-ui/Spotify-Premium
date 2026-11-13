@@ -92,7 +92,7 @@ import com.manikdev.spotify.ui.component.DownloadingIndicator
 import com.manikdev.domain.data.entities.DownloadState
 import com.manikdev.domain.data.model.browse.album.Track
 import com.manikdev.domain.utils.toSongEntity
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.ui.component.SearchBarExit
 import com.manikdev.spotify.ui.component.SearchBarEnter
 import com.manikdev.spotify.ui.component.rememberHolderPainter

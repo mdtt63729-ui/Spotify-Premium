@@ -12,7 +12,7 @@ import com.manikdev.common.EXOPLAYER_DB_NAME
 import com.manikdev.common.SETTINGS_FILENAME
 import com.manikdev.domain.manager.DataStoreManager
 import com.manikdev.domain.repository.CommonRepository
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext

@@ -3,7 +3,7 @@ package com.manikdev.data.repository
 import com.manikdev.domain.data.model.discord.DiscordSession
 import com.manikdev.domain.manager.DataStoreManager
 import com.manikdev.domain.repository.DiscordRepository
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

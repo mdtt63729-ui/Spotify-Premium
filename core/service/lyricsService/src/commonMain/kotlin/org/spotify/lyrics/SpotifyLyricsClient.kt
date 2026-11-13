@@ -2,7 +2,7 @@ package org.spotify.lyrics
 
 import com.manikdev.ktorext.crypto.Hmac
 import com.manikdev.ktorext.crypto.HmacUri
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText

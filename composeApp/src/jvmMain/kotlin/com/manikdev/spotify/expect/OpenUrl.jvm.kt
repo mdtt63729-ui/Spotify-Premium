@@ -1,6 +1,6 @@
 package com.manikdev.spotify.expect
 
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import multiplatform.network.cmptoast.showToast
 import java.awt.Desktop
 import java.awt.Toolkit

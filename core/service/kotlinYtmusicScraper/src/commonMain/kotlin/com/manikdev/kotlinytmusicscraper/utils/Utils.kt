@@ -1,7 +1,7 @@
 package com.manikdev.kotlinytmusicscraper.utils
 
 import com.manikdev.kotlinytmusicscraper.models.response.AudioData
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.serialization.json.Json
 import java.security.MessageDigest
 import java.time.Instant

@@ -46,7 +46,7 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.manikdev.domain.data.player.GenericMediaItem
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.expect.ui.PlatformBackdrop
 import com.manikdev.spotify.ui.navigation.destination.home.AnalyticsDestination
 import com.manikdev.spotify.ui.navigation.destination.home.HomeDestination

@@ -14,7 +14,7 @@ import androidx.media3.exoplayer.scheduler.Scheduler
 import com.manikdev.common.MERGING_DATA_TYPE
 import com.manikdev.media3.R
 import com.manikdev.domain.mediaservice.handler.DownloadHandler
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

@@ -22,7 +22,7 @@ import com.manikdev.kotlinytmusicscraper.models.PlaylistItem
 import com.manikdev.kotlinytmusicscraper.models.SongItem
 import com.manikdev.kotlinytmusicscraper.models.VideoItem
 import com.manikdev.kotlinytmusicscraper.pages.ArtistPage
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 
 internal fun parseArtistData(data: ArtistPage): ArtistBrowse {
     for (i in data.sections) {

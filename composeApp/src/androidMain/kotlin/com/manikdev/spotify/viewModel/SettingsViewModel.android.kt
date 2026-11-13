@@ -18,7 +18,7 @@ import com.manikdev.common.EXOPLAYER_DB_NAME
 import com.manikdev.common.SETTINGS_FILENAME
 import com.manikdev.domain.repository.CacheRepository
 import com.manikdev.domain.repository.CommonRepository
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.media3.di.stopService
 import com.manikdev.spotify.extension.bytesToMB
 import com.manikdev.spotify.extension.getSizeOfFile

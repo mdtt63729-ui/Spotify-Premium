@@ -7,7 +7,7 @@ import com.manikdev.kotlinytmusicscraper.models.WatchEndpoint
 import com.manikdev.kotlinytmusicscraper.models.getContinuation
 import com.manikdev.kotlinytmusicscraper.models.response.BrowseResponse
 import com.manikdev.kotlinytmusicscraper.models.response.LikeStatus
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 
 fun BrowseResponse.fromPlaylistToTrack(): List<SongItem> =
     (

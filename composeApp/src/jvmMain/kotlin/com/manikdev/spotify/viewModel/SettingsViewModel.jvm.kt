@@ -6,7 +6,7 @@ import com.manikdev.common.SETTINGS_FILENAME
 import com.manikdev.data.io.getHomeFolderPath
 import com.manikdev.domain.repository.CacheRepository
 import com.manikdev.domain.repository.CommonRepository
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.extension.zipOutputStream
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

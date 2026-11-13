@@ -35,7 +35,7 @@ import com.manikdev.domain.mediaservice.handler.ToastType
 import com.manikdev.domain.notification.DesktopNotificationManager
 import com.manikdev.domain.repository.LibrarySyncHostRepository
 import com.manikdev.data.io.getHomeFolderPath
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.di.viewModelModule
 import com.manikdev.spotify.expect.ui.LibrarySyncLoginPrompt
 import com.manikdev.spotify.extension.DesktopWindowChrome

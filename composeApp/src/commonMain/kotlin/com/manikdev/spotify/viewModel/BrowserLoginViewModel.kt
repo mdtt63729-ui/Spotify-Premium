@@ -8,7 +8,7 @@ import com.manikdev.domain.repository.BrowserLoginRepository
 import com.manikdev.domain.repository.BrowserLoginTarget
 import com.manikdev.domain.repository.BrowserProfile
 import com.manikdev.domain.repository.BrowserProfileStatus
-import com.manikdev.logger.LogLevel
+import com.maxrave.logger.LogLevel
 import com.manikdev.spotify.viewModel.base.BaseViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job

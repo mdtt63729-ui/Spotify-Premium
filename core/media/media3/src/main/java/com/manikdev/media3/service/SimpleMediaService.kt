@@ -19,7 +19,7 @@ import androidx.media3.session.SessionToken
 import com.google.common.util.concurrent.MoreExecutors
 import com.manikdev.common.MEDIA_NOTIFICATION
 import com.manikdev.domain.mediaservice.handler.MediaPlayerHandler
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.media3.R
 import com.manikdev.media3.extension.toCommandButton
 import com.manikdev.media3.utils.CoilBitmapLoader

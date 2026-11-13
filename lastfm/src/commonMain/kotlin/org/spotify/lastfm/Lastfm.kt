@@ -1,6 +1,6 @@
 package org.spotify.lastfm
 
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 
 // LAST.FM build: the real scrobbler. `lastfm-empty` mirrors every declaration in this file as a
 // no-op, so callers never branch on the build flavour — see `cast` / `cast-empty` for the same

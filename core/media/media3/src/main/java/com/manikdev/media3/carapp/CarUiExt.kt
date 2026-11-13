@@ -19,7 +19,7 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.MediaBrowser
 import com.google.common.util.concurrent.ListenableFuture
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.media3.R
 import com.manikdev.media3.utils.CoilBitmapLoader
 import kotlinx.coroutines.CancellationException

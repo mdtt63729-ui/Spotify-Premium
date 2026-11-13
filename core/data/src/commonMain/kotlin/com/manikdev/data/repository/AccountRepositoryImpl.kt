@@ -6,7 +6,7 @@ import com.manikdev.domain.data.entities.GoogleAccountEntity
 import com.manikdev.domain.data.model.account.AccountInfo
 import com.manikdev.domain.repository.AccountRepository
 import com.manikdev.kotlinytmusicscraper.YouTube
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow

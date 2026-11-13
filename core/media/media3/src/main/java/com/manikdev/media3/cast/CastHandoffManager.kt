@@ -7,7 +7,7 @@ import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import com.manikdev.domain.data.player.GenericMediaItem
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.media3.exoplayer.CrossfadeExoPlayerAdapter
 import com.manikdev.media3.exoplayer.toMedia3MediaItem
 import kotlinx.coroutines.CancellationException

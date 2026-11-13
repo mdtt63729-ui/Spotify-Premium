@@ -6,7 +6,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.PathNode
 import androidx.compose.ui.graphics.vector.VectorPath
 import androidx.compose.ui.graphics.vector.path
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlin.math.abs
 import kotlin.math.max
 

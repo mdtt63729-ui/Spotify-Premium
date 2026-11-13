@@ -3,7 +3,7 @@ package com.manikdev.spotify.viewModel
 import androidx.lifecycle.viewModelScope
 import com.manikdev.domain.manager.DataStoreManager
 import com.manikdev.domain.repository.DiscordRepository
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.viewModel.base.BaseViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

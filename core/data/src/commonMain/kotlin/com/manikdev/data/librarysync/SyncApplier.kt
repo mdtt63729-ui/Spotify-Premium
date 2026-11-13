@@ -7,7 +7,7 @@ import com.manikdev.domain.data.entities.PairSongLocalPlaylist
 import com.manikdev.domain.data.entities.SetVideoIdEntity
 import com.manikdev.domain.data.entities.analytics.PlaybackEventEntity
 import com.manikdev.domain.extension.now
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.coroutines.CancellationException
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer

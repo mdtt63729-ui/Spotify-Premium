@@ -51,7 +51,7 @@ import com.manikdev.domain.data.type.ChartItem
 import com.manikdev.domain.data.type.MonthlyRecapItem
 import com.manikdev.domain.data.type.PlaylistType
 import com.manikdev.domain.utils.LocalResource
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.expect.ui.DesktopMiniPlayerClearance
 import com.manikdev.spotify.expect.ui.VerticalScrollBar
 import com.manikdev.spotify.extension.angledGradientBackground

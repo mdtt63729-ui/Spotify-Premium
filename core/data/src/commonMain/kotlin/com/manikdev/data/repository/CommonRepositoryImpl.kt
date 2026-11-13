@@ -13,7 +13,7 @@ import com.manikdev.domain.manager.DataStoreManager
 import com.manikdev.domain.repository.CommonRepository
 import com.manikdev.kotlinytmusicscraper.YouTube
 import com.manikdev.kotlinytmusicscraper.models.YouTubeLocale
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.Spotify
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

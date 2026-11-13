@@ -7,7 +7,7 @@ import com.manikdev.domain.data.model.loginsync.LoginSyncService
 import com.manikdev.domain.manager.DataStoreManager
 import com.manikdev.domain.manager.DataStoreManager.Values.TRUE
 import com.manikdev.domain.repository.CommonRepository
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.coroutines.flow.first
 
 /** Reads this device's sign-ins, and writes a received bundle in the same shape the login screens do. */

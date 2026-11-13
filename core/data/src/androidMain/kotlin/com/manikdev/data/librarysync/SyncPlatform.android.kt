@@ -7,7 +7,7 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
 import com.manikdev.data.db.MusicDatabase
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.coroutines.CancellationException
 import okio.Path.Companion.toPath
 import org.koin.mp.KoinPlatform.getKoin

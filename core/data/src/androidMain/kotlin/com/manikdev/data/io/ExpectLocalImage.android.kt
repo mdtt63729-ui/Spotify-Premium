@@ -2,7 +2,7 @@ package com.manikdev.data.io
 
 import android.content.Context
 import android.net.Uri
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.koin.mp.KoinPlatform.getKoin

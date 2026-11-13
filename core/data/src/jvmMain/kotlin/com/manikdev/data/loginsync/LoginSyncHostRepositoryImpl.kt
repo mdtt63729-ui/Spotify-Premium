@@ -4,7 +4,7 @@ import com.manikdev.domain.data.model.loginsync.LoginSyncHostState
 import com.manikdev.domain.data.model.loginsync.LoginSyncService
 import com.manikdev.domain.data.model.loginsync.NetAddress
 import com.manikdev.domain.repository.LoginSyncHostRepository
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

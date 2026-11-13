@@ -2,7 +2,7 @@ package org.spotify.discord
 
 import com.manikdev.domain.data.entities.SongEntity
 import com.manikdev.ktorext.getEngine
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.request.header

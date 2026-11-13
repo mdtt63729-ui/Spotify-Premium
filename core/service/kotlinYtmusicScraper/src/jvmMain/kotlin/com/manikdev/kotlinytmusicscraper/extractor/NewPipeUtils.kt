@@ -2,15 +2,15 @@ package com.manikdev.kotlinytmusicscraper.extractor
 
 import com.manikdev.kotlinytmusicscraper.models.YouTubeClient
 import com.manikdev.kotlinytmusicscraper.models.response.PlayerResponse
-import com.manikdev.logger.Logger
-import dev.manikdev.pipepipe.extractor.NewPipe
-import dev.manikdev.pipepipe.extractor.downloader.CancellableCall
-import dev.manikdev.pipepipe.extractor.downloader.Downloader
-import dev.manikdev.pipepipe.extractor.downloader.Request
-import dev.manikdev.pipepipe.extractor.downloader.Response
-import dev.manikdev.pipepipe.extractor.exceptions.ParsingException
-import dev.manikdev.pipepipe.extractor.exceptions.ReCaptchaException
-import dev.manikdev.pipepipe.extractor.services.youtube.YoutubeJavaScriptPlayerManager
+import com.maxrave.logger.Logger
+import dev.maxrave.pipepipe.extractor.NewPipe
+import dev.maxrave.pipepipe.extractor.downloader.CancellableCall
+import dev.maxrave.pipepipe.extractor.downloader.Downloader
+import dev.maxrave.pipepipe.extractor.downloader.Request
+import dev.maxrave.pipepipe.extractor.downloader.Response
+import dev.maxrave.pipepipe.extractor.exceptions.ParsingException
+import dev.maxrave.pipepipe.extractor.exceptions.ReCaptchaException
+import dev.maxrave.pipepipe.extractor.services.youtube.YoutubeJavaScriptPlayerManager
 import io.ktor.http.URLBuilder
 import io.ktor.http.parseQueryString
 import okhttp3.OkHttpClient

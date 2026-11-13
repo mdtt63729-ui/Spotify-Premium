@@ -12,7 +12,7 @@ import com.manikdev.domain.repository.AlbumRepository
 import com.manikdev.domain.utils.Resource
 import com.manikdev.kotlinytmusicscraper.YouTube
 import com.manikdev.kotlinytmusicscraper.models.AlbumItem
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

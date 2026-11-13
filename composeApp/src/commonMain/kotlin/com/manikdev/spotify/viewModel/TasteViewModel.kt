@@ -16,7 +16,7 @@ import com.manikdev.domain.repository.AnalyticsRepository
 import com.manikdev.domain.repository.ArtistRepository
 import com.manikdev.domain.repository.SongRepository
 import com.manikdev.domain.repository.TasteRepository
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.viewModel.base.BaseViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

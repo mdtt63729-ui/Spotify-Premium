@@ -1,6 +1,6 @@
 package com.manikdev.spotify
 
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 
 /**
  * Registers the "spotify://" custom URI protocol handler in Windows Registry

@@ -9,7 +9,7 @@ import androidx.sqlite.execSQL
 import com.manikdev.common.DB_NAME
 import com.manikdev.domain.data.entities.PairSongLocalPlaylist
 import com.manikdev.domain.data.entities.SetVideoIdEntity
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 import kotlinx.serialization.json.Json

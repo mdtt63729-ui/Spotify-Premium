@@ -4,7 +4,7 @@ import com.manikdev.domain.mediaservice.automix.TrackStructure
 import com.manikdev.domain.mediaservice.automix.TrackStructureAnalyzer
 import com.manikdev.domain.mediaservice.player.WAVEFORM_BARS_PER_SECOND
 import com.manikdev.domain.mediaservice.player.WaveformProgress
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive

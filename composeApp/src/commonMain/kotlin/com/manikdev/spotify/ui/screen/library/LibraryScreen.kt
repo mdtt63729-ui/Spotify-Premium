@@ -57,7 +57,7 @@ import com.manikdev.common.LibraryChipType
 import com.manikdev.domain.data.entities.SongEntity
 import com.manikdev.domain.data.model.taste.TasteProfile
 import com.manikdev.domain.utils.LocalResource
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.Platform
 import com.manikdev.spotify.expect.ui.DesktopMiniPlayerClearance
 import com.manikdev.spotify.expect.ui.VerticalScrollBar

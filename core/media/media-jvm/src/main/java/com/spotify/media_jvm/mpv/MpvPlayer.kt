@@ -3,7 +3,7 @@ package com.spotify.media_jvm.mpv
 import com.manikdev.domain.data.player.AudioEffects
 import com.manikdev.domain.data.player.EightDEffect
 import com.manikdev.domain.data.player.EightDOrbit
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.sun.jna.Memory
 import com.sun.jna.Pointer
 import java.util.Locale

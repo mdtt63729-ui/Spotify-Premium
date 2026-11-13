@@ -1,6 +1,6 @@
 package com.manikdev.spotify.extension
 
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 
 fun levenshtein(
     lhs: CharSequence,

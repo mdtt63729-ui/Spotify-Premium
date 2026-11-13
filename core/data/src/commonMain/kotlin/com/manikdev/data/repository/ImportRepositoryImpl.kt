@@ -10,7 +10,7 @@ import com.manikdev.domain.data.model.importdata.ImportSong
 import com.manikdev.domain.repository.ImportProgress
 import com.manikdev.domain.repository.ImportRepository
 import com.manikdev.domain.utils.MusicVideoType
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow

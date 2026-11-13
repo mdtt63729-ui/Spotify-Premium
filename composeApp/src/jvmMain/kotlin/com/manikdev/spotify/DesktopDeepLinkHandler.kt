@@ -2,7 +2,7 @@ package com.manikdev.spotify
 
 import com.eygraber.uri.Uri
 import com.manikdev.domain.data.model.intent.GenericIntent
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import java.io.File
 
 /**

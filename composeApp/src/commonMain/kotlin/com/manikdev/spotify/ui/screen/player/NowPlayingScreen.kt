@@ -66,7 +66,7 @@ import com.manikdev.common.MERGING_DATA_TYPE
 import com.manikdev.domain.extension.isVideo
 import com.manikdev.domain.manager.DataStoreManager
 import com.manikdev.domain.mediaservice.handler.MediaPlayerHandler
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.Platform
 import com.manikdev.spotify.expect.ui.rememberVideoAspectRatio
 import com.manikdev.spotify.extension.GradientAngle

@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.eygraber.uri.Uri
 import com.manikdev.domain.repository.ImportProgress
 import com.manikdev.domain.repository.ImportRepository
-import com.manikdev.logger.LogLevel
+import com.maxrave.logger.LogLevel
 import com.manikdev.spotify.viewModel.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

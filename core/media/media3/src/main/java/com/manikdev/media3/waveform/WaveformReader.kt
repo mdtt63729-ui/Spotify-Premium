@@ -17,7 +17,7 @@ import com.manikdev.domain.mediaservice.automix.TrackStructure
 import com.manikdev.domain.mediaservice.automix.TrackStructureAnalyzer
 import com.manikdev.domain.mediaservice.player.WAVEFORM_BARS_PER_SECOND
 import com.manikdev.domain.repository.StreamRepository
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.currentCoroutineContext

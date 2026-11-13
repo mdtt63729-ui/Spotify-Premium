@@ -1,6 +1,6 @@
 package com.manikdev.spotify.expect
 
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.ui.mini_player.MiniPlayerManager
 
 actual fun toggleMiniPlayer() {

@@ -9,7 +9,7 @@ import com.manikdev.domain.repository.SongRepository
 import com.manikdev.domain.repository.StreamRepository
 import com.manikdev.domain.utils.isLive
 import com.manikdev.domain.utils.toTrack
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

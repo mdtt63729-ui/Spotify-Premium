@@ -15,7 +15,7 @@ import androidx.media3.exoplayer.upstream.LoadErrorHandlingPolicy
 import com.manikdev.common.MERGING_DATA_TYPE
 import com.manikdev.domain.data.player.LiveStreamRegistry
 import com.manikdev.domain.manager.DataStoreManager
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.media3.extension.isFullyCached
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first

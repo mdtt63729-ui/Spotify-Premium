@@ -4,7 +4,7 @@ import com.manikdev.domain.data.model.lyrics.RomanizationDictionaryState
 import com.manikdev.domain.data.model.lyrics.RomanizationLanguage
 import com.manikdev.domain.manager.DataStoreManager
 import com.manikdev.domain.repository.LyricsRomanizerRepository
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

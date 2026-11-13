@@ -34,7 +34,7 @@ import com.manikdev.kotlinytmusicscraper.pages.NextPage
 import com.manikdev.kotlinytmusicscraper.parser.getPlaylistContinuation
 import com.manikdev.kotlinytmusicscraper.parser.getPlaylistRadioEndpoint
 import com.manikdev.kotlinytmusicscraper.parser.getPlaylistShuffleEndpoint
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow

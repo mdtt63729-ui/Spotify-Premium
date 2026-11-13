@@ -3,7 +3,7 @@ package org.spotify.lyrics
 import com.manikdev.ktorext.curl.CurlLogger
 import com.manikdev.ktorext.encoding.brotli
 import com.manikdev.ktorext.getEngine
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.ProxyConfig
 import io.ktor.client.plugins.HttpSend

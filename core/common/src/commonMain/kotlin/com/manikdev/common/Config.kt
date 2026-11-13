@@ -2,7 +2,7 @@
 
 package com.manikdev.common
 
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime

@@ -15,8 +15,8 @@ import com.manikdev.domain.repository.HomeRepository
 import com.manikdev.domain.repository.SearchRepository
 import com.manikdev.domain.utils.Resource
 import com.manikdev.domain.utils.toQueryList
-import com.manikdev.logger.LogLevel
-import com.manikdev.logger.Logger
+import com.maxrave.logger.LogLevel
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.viewModel.base.BaseViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow

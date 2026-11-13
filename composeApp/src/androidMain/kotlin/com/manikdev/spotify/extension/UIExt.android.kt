@@ -19,7 +19,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.app.PictureInPictureModeChangedInfo
 import androidx.core.util.Consumer
 import com.manikdev.domain.data.model.ui.ScreenSizeInfo
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 
 fun Context.getActivityOrNull(): Activity? {
     var context = this

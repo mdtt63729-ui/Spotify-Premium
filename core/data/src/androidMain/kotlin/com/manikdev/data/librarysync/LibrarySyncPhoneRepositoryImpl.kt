@@ -17,7 +17,7 @@ import com.manikdev.domain.data.model.librarysync.SyncPeer
 import com.manikdev.domain.data.model.loginsync.DesktopInfo
 import com.manikdev.domain.data.model.loginsync.LoginSyncService
 import com.manikdev.domain.repository.LibrarySyncPhoneRepository
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

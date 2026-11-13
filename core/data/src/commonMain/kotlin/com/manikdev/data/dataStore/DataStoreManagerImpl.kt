@@ -27,7 +27,7 @@ import com.manikdev.domain.manager.DataStoreManager.Values.REPEAT_MODE_OFF
 import com.manikdev.domain.manager.DataStoreManager.Values.REPEAT_ONE
 import com.manikdev.domain.manager.DataStoreManager.Values.SPOTIFY
 import com.manikdev.domain.manager.DataStoreManager.Values.TRUE
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow

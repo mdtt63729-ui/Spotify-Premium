@@ -19,7 +19,7 @@ import com.manikdev.domain.data.player.PlayerConstants
 import com.manikdev.domain.data.player.PlayerError
 import com.manikdev.domain.mediaservice.player.MediaPlayerInterface
 import com.manikdev.domain.mediaservice.player.MediaPlayerListener
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.media3.utils.BetterShuffleOrder
 
 /**

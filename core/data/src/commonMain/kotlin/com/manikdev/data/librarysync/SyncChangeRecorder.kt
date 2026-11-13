@@ -2,7 +2,7 @@ package com.manikdev.data.librarysync
 
 import com.manikdev.data.db.SyncDao
 import com.manikdev.domain.data.entities.sync.SyncChangeEntity
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.currentCoroutineContext
 

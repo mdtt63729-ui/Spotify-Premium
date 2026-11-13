@@ -1,7 +1,7 @@
 package org.spotify.lastfm
 
 import com.manikdev.ktorext.getEngine
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.request.forms.submitForm

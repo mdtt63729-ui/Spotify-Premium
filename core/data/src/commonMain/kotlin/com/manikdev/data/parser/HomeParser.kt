@@ -19,7 +19,7 @@ import com.manikdev.kotlinytmusicscraper.models.VideoItem
 import com.manikdev.kotlinytmusicscraper.pages.ArtistPage
 import com.manikdev.kotlinytmusicscraper.pages.ExplorePage
 import com.manikdev.kotlinytmusicscraper.pages.RelatedPage
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 
 internal fun parseMixedContent(
     data: List<SectionListRenderer.Content>?,

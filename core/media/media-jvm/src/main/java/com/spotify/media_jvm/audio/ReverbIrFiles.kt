@@ -2,7 +2,7 @@ package com.spotify.media_jvm.audio
 
 import com.manikdev.domain.data.player.ReverbImpulseResponse
 import com.manikdev.domain.data.player.ReverbPreset
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import java.io.File
 import java.nio.ByteBuffer
 import java.nio.ByteOrder

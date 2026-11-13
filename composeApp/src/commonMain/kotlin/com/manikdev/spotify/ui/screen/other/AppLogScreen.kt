@@ -57,7 +57,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.Platform
 import com.manikdev.spotify.expect.copyToClipboard
 import com.manikdev.spotify.expect.ui.DesktopMiniPlayerClearance

@@ -2,7 +2,7 @@ package com.manikdev.spotify.ui.screen.other
 
 import com.manikdev.domain.extension.epochMillisToLocalDateTime
 import com.manikdev.domain.extension.now
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.expect.shareImage
 import com.manikdev.spotify.getPlatform
 import com.manikdev.spotify.utils.VersionManager

@@ -6,7 +6,7 @@ import androidx.compose.ui.platform.InfiniteAnimationPolicy
 import androidx.compose.ui.window.ApplicationScope
 import androidx.compose.ui.window.awaitApplication
 import com.manikdev.domain.data.player.AppOnScreen
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterIsInstance

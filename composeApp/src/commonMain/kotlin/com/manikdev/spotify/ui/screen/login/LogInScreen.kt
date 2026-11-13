@@ -45,7 +45,7 @@ import com.manikdev.domain.repository.BrowserLoginFailure
 import com.manikdev.domain.repository.BrowserLoginTarget
 import com.manikdev.domain.repository.BrowserProfile
 import com.manikdev.domain.repository.BrowserProfileStatus
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.Platform
 import com.manikdev.spotify.expect.ui.DesktopMiniPlayerClearance
 import com.manikdev.spotify.expect.ui.VerticalScrollBar

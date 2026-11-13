@@ -67,7 +67,7 @@ import com.manikdev.domain.data.model.metadata.Lyrics
 import com.manikdev.domain.data.model.streams.TimeLine
 import com.manikdev.domain.data.model.ui.ScreenSizeInfo
 import com.manikdev.domain.manager.DataStoreManager
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.media3.ui.extension.KeepScreenOn
 import org.koin.compose.koinInject
 import org.koin.core.qualifier.named

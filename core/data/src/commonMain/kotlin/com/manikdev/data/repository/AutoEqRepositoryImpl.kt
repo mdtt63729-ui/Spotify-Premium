@@ -6,7 +6,7 @@ import com.manikdev.domain.data.entities.AutoEqEntryEntity
 import com.manikdev.domain.data.entities.AutoEqIndexMetaEntity
 import com.manikdev.domain.data.model.autoeq.AutoEqCurve
 import com.manikdev.domain.repository.AutoEqRepository
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.spotify.autoeq.AutoEq

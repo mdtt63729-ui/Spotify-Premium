@@ -92,7 +92,7 @@ import com.manikdev.kotlinytmusicscraper.parser.getPlaylistContinuation
 import com.manikdev.kotlinytmusicscraper.parser.getReloadParams
 import com.manikdev.kotlinytmusicscraper.parser.getSuggestionSongItems
 import com.manikdev.kotlinytmusicscraper.parser.hasReloadParams
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.mohamedrejeb.ksoup.html.parser.KsoupHtmlHandler
 import com.mohamedrejeb.ksoup.html.parser.KsoupHtmlParser
 import io.ktor.client.call.body

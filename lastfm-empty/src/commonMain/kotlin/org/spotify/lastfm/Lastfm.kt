@@ -1,6 +1,6 @@
 package org.spotify.lastfm
 
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 
 // NON-LASTFM build: direct scrobbling is not available in this build flavour, because a FOSS build
 // ships no API secret. Every declaration mirrors the real module so callers never need to branch on

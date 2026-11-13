@@ -6,7 +6,7 @@ import com.manikdev.domain.data.model.mood.moodmoments.MoodsMomentObject
 import com.manikdev.domain.manager.DataStoreManager
 import com.manikdev.domain.repository.HomeRepository
 import com.manikdev.domain.utils.Resource
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.viewModel.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

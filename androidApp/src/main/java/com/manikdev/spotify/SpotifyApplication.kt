@@ -21,7 +21,7 @@ import com.manikdev.common.AppIdentity
 import com.manikdev.data.di.loader.loadAllModules
 import com.manikdev.domain.manager.DataStoreManager
 import com.manikdev.domain.repository.LibrarySyncPhoneRepository
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.di.viewModelModule
 import com.manikdev.spotify.service.backup.AutoBackupScheduler
 import com.manikdev.spotify.service.sync.LibrarySyncScheduler

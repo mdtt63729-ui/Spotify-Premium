@@ -117,7 +117,7 @@ import com.manikdev.domain.mediaservice.handler.PlaylistType
 import com.manikdev.domain.mediaservice.handler.QueueData
 import com.manikdev.domain.utils.toSongEntity
 import com.manikdev.domain.utils.toTrack
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.Platform
 import com.manikdev.spotify.expect.openUrl
 import com.manikdev.spotify.expect.ui.DesktopMiniPlayerClearance

@@ -9,7 +9,7 @@ import com.manikdev.domain.data.model.browse.artist.ArtistBrowse
 import com.manikdev.domain.repository.ArtistRepository
 import com.manikdev.domain.utils.Resource
 import com.manikdev.kotlinytmusicscraper.YouTube
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import com.manikdev.domain.manager.DataStoreManager

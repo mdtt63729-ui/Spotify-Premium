@@ -8,7 +8,7 @@ import androidx.media3.exoplayer.audio.AudioSink
 import androidx.media3.exoplayer.audio.AudioOffloadSupport
 import androidx.media3.exoplayer.audio.ForwardingAudioSink
 import com.manikdev.domain.data.player.LiveStreamRegistry
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import java.nio.ByteBuffer
 
 /** Reads only PCM actually consumed by the existing sink; never owns playback or another decoder. */

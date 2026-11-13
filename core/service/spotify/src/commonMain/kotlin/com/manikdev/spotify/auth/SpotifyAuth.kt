@@ -1,6 +1,6 @@
 package com.manikdev.spotify.auth
 
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.SpotifyClient
 import com.manikdev.spotify.model.response.spotify.PersonalTokenResponse
 import io.ktor.client.call.body

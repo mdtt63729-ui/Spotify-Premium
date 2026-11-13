@@ -9,7 +9,7 @@ import com.manikdev.domain.data.entities.NotificationEntity
 import com.manikdev.domain.extension.epochMillisToLocalDateTime
 import com.manikdev.domain.extension.now
 import com.manikdev.domain.repository.CommonRepository
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.service.test.notification.NotificationHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

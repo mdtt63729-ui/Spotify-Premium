@@ -9,7 +9,7 @@ import com.manikdev.domain.mediaservice.handler.MediaPlayerHandler
 import com.manikdev.domain.mediaservice.handler.QueueData
 import com.manikdev.domain.mediaservice.handler.SimpleMediaState
 import com.manikdev.domain.repository.ListenTogetherRepository
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlin.math.abs
 import kotlin.time.TimeSource
 import kotlinx.coroutines.CoroutineScope

@@ -11,8 +11,8 @@ import com.manikdev.domain.mediaservice.handler.QueueData
 import com.manikdev.domain.repository.SongRepository
 import com.manikdev.domain.utils.Resource
 import com.manikdev.domain.utils.isRadioQueueId
-import com.manikdev.logger.LogLevel
-import com.manikdev.logger.Logger
+import com.maxrave.logger.LogLevel
+import com.maxrave.logger.Logger
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

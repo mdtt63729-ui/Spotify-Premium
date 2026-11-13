@@ -66,7 +66,7 @@ import com.manikdev.common.LibraryChipType
 import com.manikdev.domain.data.player.GenericMediaItem
 import com.manikdev.domain.manager.DataStoreManager
 import com.manikdev.domain.manager.DataStoreManager.Values.TRUE
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.expect.Orientation
 import com.manikdev.spotify.expect.currentOrientation
 import com.manikdev.spotify.expect.openUrl

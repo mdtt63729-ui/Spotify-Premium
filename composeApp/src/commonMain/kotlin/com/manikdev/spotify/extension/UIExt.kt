@@ -76,7 +76,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.kmpalette.palette.graphics.Palette
 import com.manikdev.domain.data.model.ui.ScreenSizeInfo
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.Platform
 import com.manikdev.spotify.getPlatform
 import com.manikdev.spotify.ui.theme.LocalAppColors

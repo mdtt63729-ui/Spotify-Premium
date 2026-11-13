@@ -12,7 +12,7 @@ import com.manikdev.domain.manager.DataStoreManager
 import com.manikdev.domain.manager.DataStoreManager.Values.TRUE
 import com.manikdev.domain.repository.HomeRepository
 import com.manikdev.domain.utils.Resource
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.viewModel.base.BaseViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

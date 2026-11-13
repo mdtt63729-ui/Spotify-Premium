@@ -4,7 +4,7 @@ import com.manikdev.common.MERGING_DATA_TYPE
 import com.manikdev.domain.extension.now
 import com.manikdev.domain.manager.DataStoreManager
 import com.manikdev.domain.repository.StreamRepository
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.lastOrNull
 

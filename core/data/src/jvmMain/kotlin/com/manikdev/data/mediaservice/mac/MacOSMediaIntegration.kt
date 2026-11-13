@@ -1,6 +1,6 @@
 package com.manikdev.data.mediaservice.mac
 
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.sun.jna.Callback
 import com.sun.jna.CallbackReference
 import com.sun.jna.Library

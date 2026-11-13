@@ -36,7 +36,7 @@ import com.manikdev.domain.manager.DataStoreManager
 import com.manikdev.domain.mediaservice.handler.MediaPlayerHandler
 import com.manikdev.domain.mediaservice.handler.ToastType
 import com.manikdev.domain.repository.LibrarySyncPhoneRepository
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.media3.di.setServiceActivitySession
 import com.manikdev.spotify.di.viewModelModule
 import com.manikdev.spotify.service.rss.RssFeedNotifyWork

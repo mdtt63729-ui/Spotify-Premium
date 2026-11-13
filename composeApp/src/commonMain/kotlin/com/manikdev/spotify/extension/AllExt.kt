@@ -8,7 +8,7 @@ import com.manikdev.domain.extension.now
 import com.manikdev.domain.utils.FilterState
 import com.manikdev.domain.utils.toTrack
 import kotlin.math.roundToLong
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.viewModel.ArtistScreenData
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime

@@ -48,7 +48,7 @@ import com.manikdev.domain.utils.toListTrack
 import com.manikdev.domain.utils.toPlaylistEntity
 import com.manikdev.domain.utils.toSongEntity
 import com.manikdev.domain.utils.toTrack
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.media3.R
 import com.manikdev.media3.extension.toMediaItem
 import kotlinx.coroutines.CoroutineScope

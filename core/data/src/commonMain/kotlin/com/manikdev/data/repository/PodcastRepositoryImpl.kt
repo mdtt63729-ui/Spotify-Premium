@@ -14,7 +14,7 @@ import com.manikdev.domain.data.model.searchResult.songs.Thumbnail
 import com.manikdev.domain.repository.PodcastRepository
 import com.manikdev.domain.utils.Resource
 import com.manikdev.kotlinytmusicscraper.YouTube
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

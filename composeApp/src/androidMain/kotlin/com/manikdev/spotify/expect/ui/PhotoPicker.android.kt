@@ -7,7 +7,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 
 @Composable
 actual fun photoPickerResult(onResultUri: (String?) -> Unit): PhotoPickerLauncher {

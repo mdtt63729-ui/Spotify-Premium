@@ -7,7 +7,7 @@ import com.manikdev.data.db.datasource.LocalDataSource
 import com.manikdev.domain.data.entities.PairSongLocalPlaylist
 import com.manikdev.domain.data.entities.SongEntity
 import com.manikdev.domain.utils.FilterState
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 
 internal class LocalPlaylistPagingSource(
     private val playlistId: Long,

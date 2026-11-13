@@ -8,7 +8,7 @@ import com.manikdev.domain.data.model.searchResult.songs.Artist
 import com.manikdev.domain.data.model.searchResult.songs.Thumbnail
 import com.manikdev.domain.utils.LIVE_RESULT_TYPE
 import com.manikdev.kotlinytmusicscraper.pages.AlbumPage
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 
 internal fun parseAlbumData(data: AlbumPage): AlbumBrowse {
     val artist: ArrayList<Artist> = arrayListOf()

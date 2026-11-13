@@ -1,6 +1,6 @@
 package com.spotify.media_jvm.mpv
 
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.sun.jna.Callback
 import com.sun.jna.Library
 import com.sun.jna.Memory

@@ -2,7 +2,7 @@ package com.manikdev.data.lastfm
 
 import com.manikdev.domain.data.entities.SongEntity
 import com.manikdev.domain.manager.DataStoreManager
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock

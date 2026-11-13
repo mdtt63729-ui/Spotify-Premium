@@ -36,8 +36,8 @@ import com.manikdev.domain.utils.collectResource
 import com.manikdev.domain.utils.toArrayListTrack
 import com.manikdev.domain.utils.toSongEntity
 import com.manikdev.domain.utils.toTrack
-import com.manikdev.logger.LogLevel
-import com.manikdev.logger.Logger
+import com.maxrave.logger.LogLevel
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.pagination.PagingActions
 import com.manikdev.spotify.viewModel.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers

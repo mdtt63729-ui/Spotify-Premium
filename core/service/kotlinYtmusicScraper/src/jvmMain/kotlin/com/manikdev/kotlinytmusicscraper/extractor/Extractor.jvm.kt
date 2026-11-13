@@ -2,11 +2,11 @@ package com.manikdev.kotlinytmusicscraper.extractor
 
 import com.manikdev.kotlinytmusicscraper.models.SongItem
 import com.manikdev.kotlinytmusicscraper.models.response.DownloadProgress
-import com.manikdev.logger.Logger
-import dev.manikdev.pipepipe.extractor.NewPipe
-import dev.manikdev.pipepipe.extractor.ServiceList
-import dev.manikdev.pipepipe.extractor.services.youtube.YoutubeApiDecoder
-import dev.manikdev.pipepipe.extractor.stream.StreamInfo
+import com.maxrave.logger.Logger
+import dev.maxrave.pipepipe.extractor.NewPipe
+import dev.maxrave.pipepipe.extractor.ServiceList
+import dev.maxrave.pipepipe.extractor.services.youtube.YoutubeApiDecoder
+import dev.maxrave.pipepipe.extractor.stream.StreamInfo
 import org.schabi.newpipe.extractor.NewPipe as BraveNewPipe
 import org.schabi.newpipe.extractor.ServiceList as BraveServiceList
 import org.schabi.newpipe.extractor.stream.StreamInfo as BraveStreamInfo

@@ -29,8 +29,8 @@ import com.manikdev.domain.repository.CommonRepository
 import com.manikdev.domain.repository.LyricsRomanizerRepository
 import com.manikdev.domain.repository.SongRepository
 import com.manikdev.domain.utils.LocalResource
-import com.manikdev.logger.LogLevel
-import com.manikdev.logger.Logger
+import com.maxrave.logger.LogLevel
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.expect.isOnUnmeteredNetwork
 import com.manikdev.spotify.viewModel.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers

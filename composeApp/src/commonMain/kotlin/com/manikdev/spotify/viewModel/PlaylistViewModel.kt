@@ -26,7 +26,7 @@ import com.manikdev.domain.utils.toListVideoId
 import com.manikdev.domain.utils.toPlaylistEntity
 import com.manikdev.domain.utils.toSongEntity
 import com.manikdev.domain.utils.toTrack
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.viewModel.PlaylistUIState.Error
 import com.manikdev.spotify.viewModel.PlaylistUIState.Loading
 import com.manikdev.spotify.viewModel.PlaylistUIState.Success

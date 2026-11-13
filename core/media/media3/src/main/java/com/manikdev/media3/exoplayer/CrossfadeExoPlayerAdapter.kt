@@ -40,7 +40,7 @@ import com.manikdev.domain.manager.DataStoreManager
 import com.manikdev.domain.mediaservice.player.MediaPlayerInterface
 import com.manikdev.domain.mediaservice.player.MediaPlayerListener
 import com.manikdev.domain.repository.StreamRepository
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.media3.audio.BiquadFilter
 import com.manikdev.media3.waveform.WaveformReader
 import com.manikdev.media3.audio.ConvolutionReverbAudioProcessor

@@ -16,7 +16,7 @@ import com.manikdev.domain.data.model.librarysync.SyncPeer
 import com.manikdev.domain.data.model.loginsync.LoginSyncService
 import com.manikdev.domain.data.model.loginsync.NetAddress
 import com.manikdev.domain.repository.LibrarySyncHostRepository
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope

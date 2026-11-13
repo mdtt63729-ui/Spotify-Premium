@@ -118,7 +118,7 @@ import com.manikdev.domain.data.entities.PairSongLocalPlaylist
 import com.manikdev.domain.data.entities.SongEntity
 import com.manikdev.domain.utils.FilterState
 import com.manikdev.domain.utils.toTrack
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.Platform
 import com.manikdev.spotify.expect.ui.layerBackdrop
 import com.manikdev.spotify.expect.ui.rememberBackdrop

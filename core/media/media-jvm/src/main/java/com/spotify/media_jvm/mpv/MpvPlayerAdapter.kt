@@ -20,7 +20,7 @@ import com.manikdev.domain.manager.DataStoreManager
 import com.manikdev.domain.mediaservice.player.MediaPlayerInterface
 import com.manikdev.domain.mediaservice.player.MediaPlayerListener
 import com.manikdev.domain.repository.StreamRepository
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.spotify.media_jvm.audio.ReverbIrFiles
 import com.spotify.media_jvm.download.getDownloadPath
 import com.spotify.media_jvm.memory.MemoryTrimmer

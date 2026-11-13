@@ -69,8 +69,8 @@ import com.manikdev.domain.utils.toLyricsEntity
 import com.manikdev.domain.utils.toSongEntity
 import com.manikdev.domain.utils.toSyncedLyrics
 import com.manikdev.domain.utils.toTrack
-import com.manikdev.logger.LogLevel
-import com.manikdev.logger.Logger
+import com.maxrave.logger.LogLevel
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.Platform
 import com.manikdev.spotify.expect.getDownloadFolderPath
 import com.manikdev.spotify.expect.isOnUnmeteredNetwork

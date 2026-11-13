@@ -11,7 +11,7 @@ import com.manikdev.domain.extension.now
 import com.manikdev.domain.repository.AlbumRepository
 import com.manikdev.domain.repository.ArtistRepository
 import com.manikdev.domain.repository.CommonRepository
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.extension.isNewRelease
 import com.manikdev.spotify.viewModel.MoreAlbumsViewModel
 import kotlinx.coroutines.Dispatchers

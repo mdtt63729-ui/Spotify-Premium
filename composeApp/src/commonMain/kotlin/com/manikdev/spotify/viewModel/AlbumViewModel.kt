@@ -17,7 +17,7 @@ import com.manikdev.domain.utils.Resource
 import com.manikdev.domain.utils.toAlbumEntity
 import com.manikdev.domain.utils.toArrayListTrack
 import com.manikdev.domain.utils.toSongEntity
-import com.manikdev.logger.LogLevel
+import com.maxrave.logger.LogLevel
 import com.manikdev.spotify.viewModel.base.BaseViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow

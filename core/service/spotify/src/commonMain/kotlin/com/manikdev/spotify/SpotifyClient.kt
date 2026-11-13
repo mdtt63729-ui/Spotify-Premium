@@ -65,7 +65,7 @@ class SpotifyClient {
                 validateResponse { response ->
                     if (response.status == HttpStatusCode.Unauthorized || response.status == HttpStatusCode.Forbidden) {
                         val url = response.request.url
-                        com.manikdev.logger.Logger.w("Auth", "Spotify: ${url.host}${url.encodedPath} answered ${response.status.value}")
+                        com.maxrave.logger.Logger.w("Auth", "Spotify: ${url.host}${url.encodedPath} answered ${response.status.value}")
                     }
                 }
             }

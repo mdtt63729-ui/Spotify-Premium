@@ -9,7 +9,7 @@ import com.atilika.kuromoji.ipadic.Tokenizer
 import com.atilika.kuromoji.trie.DoubleArrayTrie
 import com.atilika.kuromoji.util.ResourceResolver
 import com.manikdev.ktorext.getEngine
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import io.ktor.client.HttpClient
 import io.ktor.client.request.prepareGet
 import io.ktor.client.statement.bodyAsChannel

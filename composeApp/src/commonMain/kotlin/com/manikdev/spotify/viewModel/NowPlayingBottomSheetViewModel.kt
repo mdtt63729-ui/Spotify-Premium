@@ -26,7 +26,7 @@ import com.manikdev.domain.utils.collectLatestResource
 import com.manikdev.domain.utils.collectResource
 import com.manikdev.domain.utils.isLive
 import com.manikdev.domain.utils.toTrack
-import com.manikdev.logger.LogLevel
+import com.maxrave.logger.LogLevel
 import com.manikdev.spotify.expect.shareUrl
 import com.manikdev.spotify.viewModel.base.BaseViewModel
 import kotlinx.coroutines.Job

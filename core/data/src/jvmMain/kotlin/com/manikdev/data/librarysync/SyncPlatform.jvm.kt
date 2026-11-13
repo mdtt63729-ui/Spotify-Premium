@@ -10,7 +10,7 @@ import androidx.datastore.preferences.core.emptyPreferences
 import com.manikdev.data.dataStore.ReadsWaitForWritesStorage
 import com.manikdev.data.db.MusicDatabase
 import com.manikdev.data.io.getHomeFolderPath
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.coroutines.CancellationException
 import java.io.File
 

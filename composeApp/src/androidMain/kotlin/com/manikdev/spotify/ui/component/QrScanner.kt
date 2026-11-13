@@ -22,7 +22,7 @@ import com.google.zxing.PlanarYUVLuminanceSource
 import com.google.zxing.ReaderException
 import com.google.zxing.common.HybridBinarizer
 import com.google.zxing.qrcode.QRCodeReader
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import java.util.concurrent.Executors
 
 /**

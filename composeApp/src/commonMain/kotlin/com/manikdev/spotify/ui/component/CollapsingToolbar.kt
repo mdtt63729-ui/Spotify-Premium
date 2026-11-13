@@ -65,7 +65,7 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import coil3.toBitmap
 import com.kmpalette.rememberPaletteState
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.expect.ui.toImageBitmap
 import com.manikdev.spotify.extension.getColorFromPalette
 import com.manikdev.spotify.extension.getScreenSizeInfo

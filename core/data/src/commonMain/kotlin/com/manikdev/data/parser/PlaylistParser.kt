@@ -16,7 +16,7 @@ import com.manikdev.kotlinytmusicscraper.models.SectionListRenderer
 import com.manikdev.kotlinytmusicscraper.models.response.BrowseResponse
 import com.manikdev.kotlinytmusicscraper.models.response.SearchResponse
 import com.manikdev.kotlinytmusicscraper.pages.PodcastItem
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.datetime.LocalDateTime
 
 internal fun parsePlaylistData(

@@ -1,4 +1,4 @@
-package com.manikdev.logger
+package com.maxrave.logger
 
 import co.touchlab.kermit.Logger
 import co.touchlab.kermit.Message

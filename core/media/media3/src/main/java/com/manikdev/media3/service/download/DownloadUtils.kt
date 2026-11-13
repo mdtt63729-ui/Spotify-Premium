@@ -28,7 +28,7 @@ import com.manikdev.domain.mediaservice.handler.DownloadHandler
 import com.manikdev.domain.repository.SongRepository
 import com.manikdev.domain.repository.StreamRepository
 import com.manikdev.domain.utils.isLive
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.media3.extension.isFullyCached
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

@@ -77,7 +77,7 @@ import com.manikdev.domain.utils.toArrayListTrack
 import com.manikdev.domain.utils.toListName
 import com.manikdev.domain.utils.toSongEntity
 import com.manikdev.domain.utils.toTrack
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

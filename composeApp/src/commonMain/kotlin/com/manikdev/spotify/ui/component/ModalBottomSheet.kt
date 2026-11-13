@@ -136,7 +136,7 @@ import com.manikdev.domain.repository.LocalPlaylistRepository
 import com.manikdev.domain.utils.FilterState
 import com.manikdev.domain.utils.connectArtists
 import com.manikdev.domain.utils.toListName
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.expect.copyToClipboard
 import com.manikdev.spotify.expect.shareUrl
 import com.manikdev.spotify.expect.ui.VerticalScrollBar

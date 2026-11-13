@@ -32,7 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import com.manikdev.spotify.expect.ui.DesktopMiniPlayerClearance
 import com.manikdev.spotify.expect.ui.VerticalScrollBar
 import com.manikdev.spotify.extension.ultraThinBarStyle

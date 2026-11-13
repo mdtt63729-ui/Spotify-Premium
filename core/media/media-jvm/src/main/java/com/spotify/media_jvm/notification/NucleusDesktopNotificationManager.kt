@@ -3,7 +3,7 @@ package com.spotify.media_jvm.notification
 import com.manikdev.domain.manager.DataStoreManager
 import com.manikdev.domain.notification.DesktopNotificationManager
 import com.manikdev.domain.notification.DesktopNotificationPermissionState
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import dev.nucleusframework.notification.AuthorizationOption
 import dev.nucleusframework.notification.AuthorizationStatus
 import dev.nucleusframework.notification.NotificationCenter

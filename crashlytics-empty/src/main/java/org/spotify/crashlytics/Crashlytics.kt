@@ -2,7 +2,7 @@ package org.spotify.crashlytics
 
 import android.content.Context
 import com.manikdev.domain.data.player.PlayerError
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 
 // Sent crash to Sentry
 fun reportCrash(throwable: Throwable) {

@@ -35,7 +35,7 @@ import com.manikdev.kotlinytmusicscraper.models.WatchEndpoint
 import com.manikdev.kotlinytmusicscraper.models.response.LikeStatus
 import com.manikdev.kotlinytmusicscraper.pages.NextPage
 import com.manikdev.kotlinytmusicscraper.parser.getPlaylistContinuation
-import com.manikdev.logger.Logger
+import com.maxrave.logger.Logger
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
