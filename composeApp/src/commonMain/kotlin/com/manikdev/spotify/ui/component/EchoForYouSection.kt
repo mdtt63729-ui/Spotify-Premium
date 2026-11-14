@@ -58,6 +58,8 @@ private const val HERO_CARDS = 10
 fun EchoForYouSection(
     cards: List<SongItem>,
     modifier: Modifier = Modifier,
+    /** When false the hero carousel renders at the bottom of the block instead of the top. */
+    heroFirst: Boolean = true,
     onSongClick: (SongItem) -> Unit = {},
 ) {
     if (cards.isEmpty()) return
@@ -77,7 +79,10 @@ fun EchoForYouSection(
                     add(title to pool.subList(cursor, end))
                     cursor = end
                 }
-            }.filter { it.second.isNotEmpty() }
+            }.filter { it.second.isNotEmpty() }.let { rows ->
+                // Echo moves its hero carousel between the top and the bottom of Home.
+                if (heroFirst || rows.size < 2) rows else rows.drop(1) + rows.first()
+            }
         }
 
     Column(modifier = modifier.fillMaxWidth()) {

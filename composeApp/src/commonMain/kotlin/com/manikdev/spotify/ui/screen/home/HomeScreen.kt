@@ -133,6 +133,7 @@ import com.manikdev.spotify.extension.mouseDragScroll
 import com.manikdev.spotify.extension.rgbFactor
 import com.manikdev.spotify.extension.ultraThinBarStyle
 import com.manikdev.spotify.getPlatform
+import com.manikdev.spotify.ui.component.EchoCategoryChips
 import com.manikdev.spotify.ui.component.EchoForYouSection
 import com.manikdev.spotify.ui.component.BlogPromoDialog
 import com.manikdev.spotify.ui.component.CenterLoadingBox
@@ -286,6 +287,7 @@ fun HomeScreen(
     val accountInfo by viewModel.accountInfo.collectAsStateWithLifecycle()
     val homeData by viewModel.homeItemList.collectAsStateWithLifecycle()
     val echoCards by viewModel.echoCards.collectAsStateWithLifecycle()
+    val heroFirstThisSession = androidx.compose.runtime.rememberSaveable { kotlin.random.Random.nextBoolean() }
     // Any shelf YouTube heads with the listener's own avatar over its title (Listen again is one of
     // several). Home's header already shows the avatar, so those shelves drop it and keep their name
     // and title. Matched on the name rather than on any shelf title, the way the old Welcome back row did.
@@ -787,8 +789,22 @@ fun HomeScreen(
                         state = scrollState,
                         verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
+                        // Echo's category chips, from the mood/genre browse this screen already loads.
+                        item(key = "echo_categories") {
+                            EchoCategoryChips(
+                                mood = moodMomentAndGenre,
+                                onCategoryClick = { params -> navController.navigate(MoodDestination(params)) },
+                            )
+                        }
                         item(key = "echo-for-you") {
-                            EchoForYouSection(cards = echoCards)
+                            EchoForYouSection(
+                                cards = echoCards,
+                                // Echo's hero carousel is not pinned to the top: it moves between
+                                // the top and the bottom of the recommendation block. Remembered
+                                // per screen instance, so it stays put while you scroll but can
+                                // land either way on the next open.
+                                heroFirst = heroFirstThisSession,
+                            )
                         }
                         itemsIndexed(homeShelves, key = { _, item ->
                             item.hashCode().toString() + (mainHomeThumbnail ?: "nothumb")
