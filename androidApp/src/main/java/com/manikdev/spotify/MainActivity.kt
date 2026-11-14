@@ -133,9 +133,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableHighRefreshRate()
-        updateController = AndroidUpdateController(this, VersionManager.getVersionName())
-        requestInstallPermission()
-        updateController.start()
         loadKoinModules(
             module {
                 single<AppCompatActivity> { this@MainActivity }
@@ -145,6 +142,9 @@ class MainActivity : AppCompatActivity() {
         unloadKoinModules(viewModelModule)
         loadKoinModules(viewModelModule)
         VersionManager.initialize()
+        updateController = AndroidUpdateController(this, VersionManager.getVersionName())
+        requestInstallPermission()
+        updateController.start()
         checkForUpdate()
         if (viewModel.recreateActivity.value || viewModel.isServiceRunning) {
             viewModel.activityRecreateDone()

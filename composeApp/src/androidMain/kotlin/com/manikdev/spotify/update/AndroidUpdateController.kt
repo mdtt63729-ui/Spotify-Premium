@@ -51,6 +51,19 @@ class AndroidUpdateController(
         private const val TAG = "AndroidUpdateController"
     }
 
+    /**
+     * The version this APK actually carries, read from the package manager.
+     *
+     * The constructor argument used to be the only source, and it was filled from
+     * VersionManager before that was initialised — an empty string. Compared against a release
+     * tag, "" sorts below everything, so the app believed it was behind on every single launch
+     * and raised the sheet even when it was already on the newest build.
+     */
+    private val appVersion: String =
+        runCatching {
+            context.packageManager.getPackageInfo(context.packageName, 0).versionName
+        }.getOrNull()?.takeIf { it.isNotBlank() } ?: currentVersion
+
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
     private val _state = MutableStateFlow<UpdateUiState>(UpdateUiState.Idle)
@@ -132,7 +145,7 @@ class AndroidUpdateController(
             val file = File(pendingPath)
             // Already installed? Then the stored APK is dead weight and the sheet must not
             // reappear on every launch just because the file survived the install.
-            if (compareVersions(currentVersion, pendingVersion) >= 0) {
+            if (compareVersions(appVersion, pendingVersion) >= 0) {
                 runCatching { file.delete() }
                 clearPending()
             } else if (!file.exists()) {
@@ -158,7 +171,7 @@ class AndroidUpdateController(
             if (_state.value is UpdateUiState.Checking) _state.value = UpdateUiState.Idle
             return
         }
-        if (compareVersions(currentVersion, latest.versionName) >= 0) {
+        if (compareVersions(appVersion, latest.versionName) >= 0) {
             cleanOldApks(keep = null)
             if (_state.value is UpdateUiState.Checking) _state.value = UpdateUiState.Idle
             return
