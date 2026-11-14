@@ -797,14 +797,6 @@ fun HomeScreen(
                         state = scrollState,
                         verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
-                        item(key = "echo_playlists") {
-                            EchoPlaylistShelves(
-                                shelves = echoPlaylists,
-                                onPlaylistClick = { playlist ->
-                                    navController.navigate(PlaylistDestination(playlist.id))
-                                },
-                            )
-                        }
                         itemsIndexed(homeShelves, key = { _, item ->
                             item.hashCode().toString() + (mainHomeThumbnail ?: "nothumb")
                         }) { index, item ->
@@ -940,6 +932,14 @@ fun HomeScreen(
                                     }
                                 }
                             }
+                        }
+                        item(key = "echo_playlists") {
+                            EchoPlaylistShelves(
+                                shelves = echoPlaylists,
+                                onPlaylistClick = { playlist ->
+                                    navController.navigate(PlaylistDestination(playlist.id))
+                                },
+                            )
                         }
                         item {
                             AnimatedVisibility(
