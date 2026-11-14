@@ -120,6 +120,9 @@ class AndroidUpdateController(
     // ---------------------------------------------------------------------------------
 
     private suspend fun refresh() {
+        if (_state.value !is UpdateUiState.ReadyToInstall) {
+            _state.value = UpdateUiState.Checking
+        }
         // 1. A downloaded APK from an earlier session wins, unless the feed already moved on.
         val pendingVersion = prefs.getString(KEY_VERSION, null)
         val pendingPath = prefs.getString(KEY_PATH, null)
@@ -146,9 +149,13 @@ class AndroidUpdateController(
             }
         }
 
-        if (latest == null) return
+        if (latest == null) {
+            if (_state.value is UpdateUiState.Checking) _state.value = UpdateUiState.Idle
+            return
+        }
         if (compareVersions(currentVersion, latest.versionName) >= 0) {
             cleanOldApks(keep = null)
+            if (_state.value is UpdateUiState.Checking) _state.value = UpdateUiState.Idle
             return
         }
         cleanOldApks(keep = null)
@@ -237,6 +244,7 @@ class AndroidUpdateController(
         val assets = json.optJSONArray("assets")
         var url = ""
         var size = 0L
+        var abiLabel = ""
         if (assets != null) {
             // Only an ABI-specific build may be installed. The universal APK is deliberately
             // never a candidate — a phone that supports arm64-v8a gets the arm64-v8a APK, one
@@ -258,10 +266,14 @@ class AndroidUpdateController(
             if (chosen != null) {
                 url = chosen.optString("browser_download_url")
                 size = chosen.optLong("size")
+                abiLabel =
+                    listOf("arm64-v8a", "armeabi-v7a", "x86_64", "x86")
+                        .firstOrNull { chosen.optString("name").lowercase().contains(it) }
+                        .orEmpty()
             }
         }
         if (url.isBlank()) return null
-        return UpdateInfo(versionName = tag, notes = notes, apkUrl = url, sizeBytes = size)
+        return UpdateInfo(versionName = tag, notes = notes, apkUrl = url, sizeBytes = size, abiLabel = abiLabel)
     }
 
     private fun cleanOldApks(keep: File?) {

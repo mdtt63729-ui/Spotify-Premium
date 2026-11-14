@@ -1394,12 +1394,12 @@ fun LocalPlaylistScreen(
                     DraggableItem(
                         dragDropState,
                         index + 1,
-                        Modifier.animateItem(),
+                        Modifier,
                     ) {
                         content(Modifier)
                     }
                 } else {
-                    Column(modifier = Modifier.animateItem()) {
+                    Column(modifier = Modifier) {
                         content(Modifier)
                         if (index < trackPagingItems.itemCount - 1) {
                             HorizontalDivider(

@@ -13,11 +13,16 @@ data class UpdateInfo(
     val notes: List<String>,
     val apkUrl: String = "",
     val sizeBytes: Long = 0L,
+    /** The ABI this build was picked for, e.g. "arm64-v8a". Shown as "Recommended for you". */
+    val abiLabel: String = "",
 )
 
 /** What the update sheet is showing right now. */
 sealed interface UpdateUiState {
     data object Idle : UpdateUiState
+
+    /** Looking up the release and choosing the APK built for this device. */
+    data object Checking : UpdateUiState
 
     /** A newer release exists and nothing has been downloaded yet. */
     data class Available(val info: UpdateInfo) : UpdateUiState

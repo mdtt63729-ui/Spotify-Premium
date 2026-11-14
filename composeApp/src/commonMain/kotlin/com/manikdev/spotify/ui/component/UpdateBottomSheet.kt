@@ -95,13 +95,39 @@ private fun UpdateSheet(
     onDismiss: () -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    if (state is UpdateUiState.Checking) {
+        ModalBottomSheet(onDismissRequest = onDismiss, sheetState = sheetState) {
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(24.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                CircularProgressIndicator(modifier = Modifier.size(28.dp), strokeWidth = 3.dp)
+                Spacer(Modifier.width(16.dp))
+                Column {
+                    Text(
+                        text = "Finding the best build for your device",
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.SemiBold,
+                    )
+                    Text(
+                        text = "Matching the APK to this phone's ABI…",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+            Spacer(Modifier.height(12.dp))
+        }
+        return
+    }
+
     val info =
         when (state) {
             is UpdateUiState.Available -> state.info
             is UpdateUiState.Downloading -> state.info
             is UpdateUiState.ReadyToInstall -> state.info
             is UpdateUiState.Failed -> state.info
-            UpdateUiState.Idle -> null
+            UpdateUiState.Checking, UpdateUiState.Idle -> null
         } ?: return
 
     // Reading state: collapsed shows the first few lines, "Read more" opens the rest, and the
@@ -163,7 +189,12 @@ private fun UpdateSheet(
                     color = MaterialTheme.colorScheme.primaryContainer,
                 ) {
                     Text(
-                        text = "Latest update",
+                        text =
+                            if (info.abiLabel.isNotBlank()) {
+                                "Recommended for you · ${info.abiLabel}"
+                            } else {
+                                "Recommended for you"
+                            },
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
