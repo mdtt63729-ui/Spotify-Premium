@@ -287,7 +287,7 @@ fun HomeScreen(
     val accountInfo by viewModel.accountInfo.collectAsStateWithLifecycle()
     val homeData by viewModel.homeItemList.collectAsStateWithLifecycle()
     val echoCards by viewModel.echoCards.collectAsStateWithLifecycle()
-    val heroFirstThisSession = androidx.compose.runtime.rememberSaveable { kotlin.random.Random.nextBoolean() }
+    val heroFirstThisSession = androidx.compose.runtime.saveable.rememberSaveable { kotlin.random.Random.nextBoolean() }
     // Any shelf YouTube heads with the listener's own avatar over its title (Listen again is one of
     // several). Home's header already shows the avatar, so those shelves drop it and keep their name
     // and title. Matched on the name rather than on any shelf title, the way the old Welcome back row did.
