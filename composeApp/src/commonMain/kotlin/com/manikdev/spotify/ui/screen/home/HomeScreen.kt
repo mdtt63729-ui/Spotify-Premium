@@ -133,7 +133,6 @@ import com.manikdev.spotify.extension.mouseDragScroll
 import com.manikdev.spotify.extension.rgbFactor
 import com.manikdev.spotify.extension.ultraThinBarStyle
 import com.manikdev.spotify.getPlatform
-import com.manikdev.spotify.ui.component.EchoCategoryChips
 import com.manikdev.spotify.ui.component.EchoForYouSection
 import com.manikdev.spotify.ui.component.BlogPromoDialog
 import com.manikdev.spotify.ui.component.CenterLoadingBox
@@ -166,7 +165,6 @@ import com.manikdev.spotify.ui.icon.Notifications
 import com.manikdev.spotify.ui.icon.Person
 import com.manikdev.spotify.ui.icon.SpotifyIcons
 import com.manikdev.spotify.ui.navigation.destination.home.HomeDestination
-import com.manikdev.spotify.ui.navigation.destination.home.MoodDestination
 import com.manikdev.spotify.ui.navigation.destination.home.NotificationDestination
 import com.manikdev.spotify.ui.navigation.destination.home.SettingsDestination
 import com.manikdev.spotify.ui.navigation.destination.library.LibraryDynamicPlaylistDestination
@@ -796,13 +794,6 @@ fun HomeScreen(
                         state = scrollState,
                         verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
-                        // Echo's category chips, from the mood/genre browse this screen already loads.
-                        item(key = "echo_categories") {
-                            EchoCategoryChips(
-                                mood = moodMomentAndGenre,
-                                onCategoryClick = { params -> navController.navigate(MoodDestination(params)) },
-                            )
-                        }
                         item(key = "echo-for-you") {
                             EchoForYouSection(
                                 cards = echoCards,
