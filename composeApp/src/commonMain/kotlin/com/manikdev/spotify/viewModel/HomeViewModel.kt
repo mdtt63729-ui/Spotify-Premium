@@ -11,9 +11,12 @@ import com.manikdev.domain.data.model.mood.Mood
 import com.manikdev.domain.manager.DataStoreManager
 import com.manikdev.domain.manager.DataStoreManager.Values.TRUE
 import com.manikdev.domain.repository.HomeRepository
+import com.manikdev.domain.repository.SongRepository
 import com.manikdev.domain.utils.Resource
 import com.maxrave.logger.Logger
 import com.manikdev.kotlinytmusicscraper.YouTube
+import com.manikdev.kotlinytmusicscraper.models.Album
+import com.manikdev.kotlinytmusicscraper.models.Artist
 import com.manikdev.kotlinytmusicscraper.models.SongItem
 import com.manikdev.spotify.recommendation.EchoRecommendationEngine
 import com.manikdev.spotify.viewModel.base.BaseViewModel
@@ -21,6 +24,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -40,6 +44,7 @@ import spotify.composeapp.generated.resources.view_count
 class HomeViewModel(
     private val dataStoreManager: DataStoreManager,
     private val youTube: YouTube,
+    private val songRepository: SongRepository,
     private val homeRepository: HomeRepository,
 ) : BaseViewModel() {
     private val _homeItemList: MutableStateFlow<List<HomeItem>> =
@@ -205,7 +210,7 @@ class HomeViewModel(
         echoJob =
             viewModelScope.launch {
                 runCatching {
-                    EchoRecommendationEngine(youTube = youTube).build { cards ->
+                    EchoRecommendationEngine(youTube = youTube, library = librarySongs()).build { cards ->
                         if (cards.size >= EchoRecommendationEngine.MIN_CARDS) {
                             _echoCards.value = cards
                         }
@@ -407,4 +412,31 @@ class HomeViewModel(
         const val HOME_PARAMS_COMMUTE = "ggM8SgQIBxABSgQIBRABSgQICRABSgQIChABSgQIDRABSgQICBABSgQIBBABSgQIDhABSgQIAxADSgQIBhAB"
         const val HOME_PARAMS_FOCUS = "ggM8SgQIBxABSgQIBRABSgQICRABSgQIChABSgQIDRABSgQICBABSgQIBBABSgQIDhABSgQIAxABSgQIBhAD"
     }
+
+    /**
+     * The user's own songs, mapped to the scraper's SongItem so the carousel selector can put
+     * them in its middle priority band. This is what makes the shelves personal rather than a
+     * slice of the public pool: the selector interleaves these with the recommendations, so a
+     * library of 500 songs cannot fill the whole row.
+     */
+    private suspend fun librarySongs(): List<SongItem> =
+        runCatching {
+            songRepository
+                .getLikedSongs()
+                .first()
+                .map { song ->
+                    SongItem(
+                        id = song.videoId,
+                        title = song.title,
+                        artists = song.artistName.orEmpty().mapIndexed { index, name ->
+                            Artist(name = name, id = song.artistId?.getOrNull(index).orEmpty())
+                        },
+                        album = song.albumName?.let { Album(name = it, id = song.albumId.orEmpty()) },
+                        duration = song.durationSeconds,
+                        thumbnail = song.thumbnails.orEmpty(),
+                        explicit = song.isExplicit,
+                        musicVideoType = song.videoType,
+                    )
+                }
+        }.getOrDefault(emptyList())
 }

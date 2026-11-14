@@ -34,6 +34,10 @@ import kotlinx.coroutines.withTimeoutOrNull
  */
 class EchoRecommendationEngine(
     private val youTube: YouTube,
+    /** The user's own songs (liked / in library), as the selector's middle priority band. */
+    private val library: List<SongItem> = emptyList(),
+    /** Most recent plays, newest first, as the selector's top priority band. */
+    private val recentlyPlayed: List<SongItem> = emptyList(),
     private val hideExplicit: Boolean = false,
     private val hideVideoSongs: Boolean = false,
     private val hiddenSongIds: Set<String> = emptySet(),
@@ -170,8 +174,8 @@ class EchoRecommendationEngine(
     /** Cold start has no history by definition, so only the recommendation pool is populated. */
     private fun select(candidates: Collection<SongItem>): List<SongItem> =
         selectHeroCarouselSongs(
-            recentlyPlayed = emptyList(),
-            library = emptyList(),
+            recentlyPlayed = recentlyPlayed,
+            library = library,
             recommendations = candidates.toList(),
             account = emptyList(),
             excludedSongIds = hiddenSongIds,
