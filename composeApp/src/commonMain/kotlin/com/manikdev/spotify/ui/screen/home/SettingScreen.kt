@@ -734,6 +734,14 @@ fun SettingScreen(
                             layout(constraints.maxWidth, placeable.height) { placeable.place(-bleed, 0) }
                         },
                 )
+                // The search field sits directly under the title, in the row that used to be empty
+                // between the header and the first group.
+                SettingsSearchBar(
+                    query = SettingsSearchState.query,
+                    onQueryChange = { SettingsSearchState.query = it },
+                    compact = settingListState.firstVisibleItemIndex > 1,
+                    modifier = Modifier.padding(horizontal = listSidePadding),
+                )
                 // Above every section, and inside item 0 rather than an item of its own, for the
                 // glow reason above.
                 SettingGroup(
@@ -1015,14 +1023,6 @@ fun SettingScreen(
         // The search field sits below the Settings title (item 0 carries the toolbar) and then
         // pins itself: sticky from here on, so it stays on screen for the rest of the list and
         // only shrinks once the list has actually moved.
-        stickyHeader(key = "settings_search") {
-            SettingsSearchBar(
-                query = SettingsSearchState.query,
-                onQueryChange = { SettingsSearchState.query = it },
-                compact = settingListState.firstVisibleItemIndex > 1,
-                modifier = Modifier.padding(horizontal = listSidePadding),
-            )
-        }
         item(key = "content") {
             SettingGroup(title = stringResource(Res.string.content)) {
                 SettingItem(
