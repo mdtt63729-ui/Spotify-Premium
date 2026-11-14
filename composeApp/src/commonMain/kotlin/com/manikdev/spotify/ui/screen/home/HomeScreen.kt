@@ -287,7 +287,14 @@ fun HomeScreen(
     val accountInfo by viewModel.accountInfo.collectAsStateWithLifecycle()
     val homeData by viewModel.homeItemList.collectAsStateWithLifecycle()
     val echoCards by viewModel.echoCards.collectAsStateWithLifecycle()
-    val heroFirstThisSession = androidx.compose.runtime.saveable.rememberSaveable { kotlin.random.Random.nextBoolean() }
+    // Echo schedules its hero carousel by section weight rather than pinning it. Without that
+    // weight system, the closest stable behaviour is a placement that is decided per day, not per
+    // launch: it moves between the top and the bottom of the block, but it does not jump around
+    // every time you reopen Home on the same day.
+    val heroFirstThisSession =
+        androidx.compose.runtime.saveable.rememberSaveable {
+            (kotlinx.datetime.Clock.System.now().toEpochMilliseconds() / 86_400_000L) % 2L == 0L
+        }
     // Any shelf YouTube heads with the listener's own avatar over its title (Listen again is one of
     // several). Home's header already shows the avatar, so those shelves drop it and keep their name
     // and title. Matched on the name rather than on any shelf title, the way the old Welcome back row did.
