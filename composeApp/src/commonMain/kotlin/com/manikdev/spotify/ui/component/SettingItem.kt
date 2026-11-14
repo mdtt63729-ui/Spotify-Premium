@@ -29,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.manikdev.spotify.Platform
 import com.manikdev.spotify.extension.greyScale
@@ -154,6 +155,8 @@ fun SettingItem(
 fun SettingGroup(
     title: String,
     modifier: Modifier = Modifier,
+    /** Space above the group. The first group under the search field wants less than the rest. */
+    topPadding: Dp = 24.dp,
     footer: (@Composable () -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit,
 ) {
@@ -162,7 +165,7 @@ fun SettingGroup(
     val searchQuery = SettingsSearchState.query
     val showHeader = settingsMatches(title, searchQuery)
     val cardColor = settingGroupColor()
-    Column(modifier.fillMaxWidth().padding(top = 24.dp)) {
+    Column(modifier.fillMaxWidth().padding(top = topPadding)) {
         if (showHeader) {
             Text(
                 text = title.toUpperCase(Locale.current),

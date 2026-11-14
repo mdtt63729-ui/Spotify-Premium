@@ -73,7 +73,7 @@ fun SettingsSearchBar(
         modifier =
             modifier
                 .fillMaxWidth()
-                .padding(horizontal = 4.dp, vertical = if (compact) 4.dp else 8.dp)
+                .padding(horizontal = 4.dp, vertical = if (compact) 2.dp else 4.dp)
                 .height(height),
     ) {
         Row(

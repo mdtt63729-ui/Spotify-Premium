@@ -746,6 +746,7 @@ fun SettingScreen(
                 // glow reason above.
                 SettingGroup(
                     title = stringResource(Res.string.login_sync_section),
+                    topPadding = 8.dp,
                     modifier = Modifier.onSizeChanged { devicesGroupHeightPx = it.height },
                 ) {
                     val syncPeer = librarySyncState.peers.firstOrNull()
