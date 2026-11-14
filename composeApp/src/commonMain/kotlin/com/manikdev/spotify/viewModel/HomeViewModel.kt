@@ -210,7 +210,11 @@ class HomeViewModel(
         echoJob =
             viewModelScope.launch {
                 runCatching {
-                    EchoRecommendationEngine(youTube = youTube, library = librarySongs()).build { cards ->
+                    EchoRecommendationEngine(
+                        youTube = youTube,
+                        library = librarySongs(),
+                        recentlyPlayed = historySongs(),
+                    ).build { cards ->
                         if (cards.size >= EchoRecommendationEngine.MIN_CARDS) {
                             _echoCards.value = cards
                         }
@@ -424,6 +428,38 @@ class HomeViewModel(
             songRepository
                 .getLikedSongs()
                 .first()
+                .map { song ->
+                    SongItem(
+                        id = song.videoId,
+                        title = song.title,
+                        artists = song.artistName.orEmpty().mapIndexed { index, name ->
+                            Artist(name = name, id = song.artistId?.getOrNull(index).orEmpty())
+                        },
+                        album = song.albumName?.let { Album(name = it, id = song.albumId.orEmpty()) },
+                        duration = song.durationSeconds,
+                        thumbnail = song.thumbnails.orEmpty(),
+                        explicit = song.isExplicit,
+                        musicVideoType = song.videoType,
+                    )
+                }
+        }.getOrDefault(emptyList())
+
+    /**
+     * The songs this user actually plays, most-played first.
+     *
+     * No new table is needed for this: the app already stores `totalPlayTime` on every song, so
+     * ranking by it is the same signal Echo derives from its play-event table — just already
+     * accumulated. This is the selector's top priority band, which is what makes "Keep listening"
+     * and the carousel reflect listening rather than a slice of the public pool.
+     */
+    private suspend fun historySongs(): List<SongItem> =
+        runCatching {
+            songRepository
+                .getAllSongs(300)
+                .first()
+                .filter { it.totalPlayTime > 0 }
+                .sortedByDescending { it.totalPlayTime }
+                .take(50)
                 .map { song ->
                     SongItem(
                         id = song.videoId,
