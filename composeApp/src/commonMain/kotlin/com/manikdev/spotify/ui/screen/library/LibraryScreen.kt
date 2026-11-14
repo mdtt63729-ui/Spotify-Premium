@@ -238,9 +238,14 @@ fun LibraryScreen(
 
     // The floating chip row refracts the page scrolling under it, so the page is the glass source and
     // the row its sibling (nesting the row inside the source is the RuntimeShader feedback loop).
-    val chipBackdrop = rememberBackdrop(MaterialTheme.colorScheme.background)
+    //
+    // The page is only a haze source now. It used to be wrapped in layerBackdrop as well, which
+    // recorded the whole library page — every thumbnail, every row — into a GraphicsLayer on every
+    // frame. That is the most expensive thing a screen can do, and on this list it was enough to
+    // starve the frame budget so the bar and the mini player never got to animate. The chips still
+    // refract: they sample the same haze source the bar does.
     Crossfade(
-        modifier = Modifier.then(if (LocalLiquidGlassEnabled.current) Modifier.layerBackdrop(chipBackdrop) else Modifier).hazeSource(hazeState),
+        modifier = Modifier.hazeSource(hazeState),
         targetState = currentFilter,
     ) { filter ->
         when (filter) {
