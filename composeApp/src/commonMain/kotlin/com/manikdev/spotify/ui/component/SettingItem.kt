@@ -46,6 +46,10 @@ fun SettingItem(
     switch: Pair<Boolean, ((Boolean) -> Unit)>? = null,
     otherView: @Composable (() -> Unit)? = null,
 ) {
+    // Settings search: a row that does not match the query draws nothing at all, so the list
+    // closes up around the matches without any of the surrounding structure changing.
+    val searchQuery = SettingsSearchState.query
+    if (!settingsMatches("$title $subtitle", searchQuery)) return
     // isEnable only greys the row out; it deliberately writes nothing.
     //
     // There used to be an onDisable callback fired from a LaunchedEffect(isEnable) here, to clear a
@@ -153,14 +157,20 @@ fun SettingGroup(
     footer: (@Composable () -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit,
 ) {
+    // While searching, a group whose own title does not match keeps its rows (they filter
+    // themselves) but drops the header, so results read as one continuous list.
+    val searchQuery = SettingsSearchState.query
+    val showHeader = settingsMatches(title, searchQuery)
     val cardColor = settingGroupColor()
     Column(modifier.fillMaxWidth().padding(top = 24.dp)) {
-        Text(
-            text = title.toUpperCase(Locale.current),
-            // The headers' size from before the groups; only the weight drops, so they step back.
-            style = typo().labelMedium.copy(fontWeight = FontWeight.Normal),
-            modifier = Modifier.padding(start = SettingRowPaddingHorizontal, end = SettingRowPaddingHorizontal, bottom = 8.dp),
-        )
+        if (showHeader) {
+            Text(
+                text = title.toUpperCase(Locale.current),
+                // The headers' size from before the groups; only the weight drops, so they step back.
+                style = typo().labelMedium.copy(fontWeight = FontWeight.Normal),
+                modifier = Modifier.padding(start = SettingRowPaddingHorizontal, end = SettingRowPaddingHorizontal, bottom = 8.dp),
+            )
+        }
         Column(
             modifier =
                 Modifier

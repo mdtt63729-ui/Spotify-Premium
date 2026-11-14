@@ -31,6 +31,7 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -135,6 +136,8 @@ import com.manikdev.spotify.ui.component.EndOfPage
 import com.manikdev.spotify.ui.component.LoadingDialog
 import com.manikdev.spotify.ui.component.RippleIconButton
 import com.manikdev.spotify.ui.component.SettingGroup
+import com.manikdev.spotify.ui.component.SettingsSearchBar
+import com.manikdev.spotify.ui.component.SettingsSearchState
 import com.manikdev.spotify.ui.component.SettingItem
 import com.manikdev.spotify.ui.icon.ArrowBackIosNew
 import com.manikdev.spotify.ui.icon.Close
@@ -473,6 +476,7 @@ import java.time.format.DateTimeFormatter
 @OptIn(
     ExperimentalMaterial3Api::class,
     ExperimentalCoilApi::class,
+    ExperimentalFoundationApi::class,
     FormatStringsInDatetimeFormats::class,
 )
 @Composable
@@ -482,6 +486,11 @@ fun SettingScreen(
     viewModel: SettingsViewModel = koinViewModel(),
     sharedViewModel: SharedViewModel = koinInject(),
 ) {
+    // Leaving Settings clears the filter, so coming back never lands on a half-filtered screen.
+    androidx.compose.runtime.DisposableEffect(Unit) {
+        onDispose { SettingsSearchState.query = "" }
+    }
+
     val platformContext = LocalPlatformContext.current
     val localDensity = LocalDensity.current
     val uriHandler = LocalUriHandler.current
@@ -707,6 +716,17 @@ fun SettingScreen(
                 .padding(horizontal = listSidePadding)
                 .hazeSource(hazeState),
     ) {
+        // Pinned search: a sticky header, so it is present at every scroll offset and only
+        // shrinks once the list has moved. It filters this screen's own rows — nothing is sent
+        // anywhere, and no other screen is touched.
+        stickyHeader(key = "settings_search") {
+            SettingsSearchBar(
+                query = SettingsSearchState.query,
+                onQueryChange = { SettingsSearchState.query = it },
+                compact = settingListState.firstVisibleItemIndex > 1,
+                modifier = Modifier.padding(horizontal = listSidePadding),
+            )
+        }
         item(key = "user_interface") {
             Column {
                 // Was its own item. Folded in so item 0 is taller than the glow — the glow's
