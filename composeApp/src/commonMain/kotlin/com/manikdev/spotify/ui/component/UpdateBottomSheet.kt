@@ -44,6 +44,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.foundation.Image
@@ -62,6 +63,50 @@ import kotlin.math.sin
  * both versions visible at all times, and pins its actions to the bottom so "Update" and
  * "Maybe later" never scroll away while the changelog is being read.
  */
+/**
+ * Colours for the update sheet.
+ *
+ * In dark mode the sheet is deliberately a white card with blue accents — a brand surface that
+ * stands apart from the dark app behind it. In light mode it stays in the theme's own container
+ * colours, because a white card on a white app would have no edge at all; there the accent is
+ * the theme's primary, so the sheet matches whatever palette the user picked.
+ */
+private data class UpdatePalette(
+    val container: Color,
+    val onContainer: Color,
+    val secondaryText: Color,
+    val accent: Color,
+    val chipBackground: Color,
+    val chipText: Color,
+)
+
+@Composable
+private fun updatePalette(): UpdatePalette {
+    val scheme = MaterialTheme.colorScheme
+    // luminance, not isSystemInDarkTheme(): the app has its own theme mode, and this follows it.
+    val isDark = scheme.surface.luminance() < 0.5f
+    return if (isDark) {
+        val blue = Color(0xFF2563EB)
+        UpdatePalette(
+            container = Color.White,
+            onContainer = Color(0xFF0F172A),
+            secondaryText = Color(0xFF475569),
+            accent = blue,
+            chipBackground = blue.copy(alpha = 0.12f),
+            chipText = blue,
+        )
+    } else {
+        UpdatePalette(
+            container = scheme.surfaceContainerHigh,
+            onContainer = scheme.onSurface,
+            secondaryText = scheme.onSurfaceVariant,
+            accent = scheme.primary,
+            chipBackground = scheme.primaryContainer,
+            chipText = scheme.onPrimaryContainer,
+        )
+    }
+}
+
 @Composable
 fun UpdateHost(
     controller: UpdateHostController,
@@ -95,6 +140,7 @@ private fun UpdateSheet(
     onDismiss: () -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val palette = updatePalette()
     if (state is UpdateUiState.Checking) {
         ModalBottomSheet(onDismissRequest = onDismiss, sheetState = sheetState) {
             Row(
@@ -140,7 +186,7 @@ private fun UpdateSheet(
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
-        containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+        containerColor = palette.container,
     ) {
         Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -163,12 +209,17 @@ private fun UpdateSheet(
                 }
                 Spacer(Modifier.width(12.dp))
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(text = appName, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                    Text(
+                        text = appName,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = palette.onContainer,
+                    )
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
                             text = currentVersion,
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = palette.secondaryText,
                         )
                         Text(
                             text = "  →  ",
@@ -179,14 +230,14 @@ private fun UpdateSheet(
                             text = info.versionName,
                             style = MaterialTheme.typography.bodySmall,
                             fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.primary,
+                            color = palette.accent,
                         )
                     }
                 }
                 // Dynamic-colour chip that marks the version as the latest one.
                 Surface(
                     shape = MaterialTheme.shapes.small,
-                    color = MaterialTheme.colorScheme.primaryContainer,
+                    color = palette.chipBackground,
                 ) {
                     Text(
                         text =
@@ -197,7 +248,7 @@ private fun UpdateSheet(
                             },
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        color = palette.chipText,
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                     )
                 }
@@ -221,12 +272,7 @@ private fun UpdateSheet(
                             } else {
                                 MaterialTheme.typography.bodySmall
                             },
-                        color =
-                            if (isHeadline) {
-                                MaterialTheme.colorScheme.onSurface
-                            } else {
-                                MaterialTheme.colorScheme.onSurfaceVariant
-                            },
+                        color = if (isHeadline) palette.onContainer else palette.secondaryText,
                         modifier = Modifier.padding(vertical = 2.dp),
                     )
                 }
@@ -254,18 +300,25 @@ private fun UpdateSheet(
                         Column(modifier = Modifier.fillMaxWidth()) {
                             WavyProgress(
                                 progress = current.progress,
+                                waveColor = palette.accent,
+                                trackColor = palette.accent.copy(alpha = 0.18f),
                                 modifier = Modifier.fillMaxWidth().height(24.dp),
                             )
                             Text(
                                 text = "Downloading… ${(current.progress * 100).toInt()}%",
                                 style = MaterialTheme.typography.labelMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                color = palette.secondaryText,
                             )
                         }
                     }
 
                     is UpdateUiState.ReadyToInstall -> {
-                        Button(onClick = onInstall, shape = CircleShape, modifier = Modifier.fillMaxWidth()) {
+                        Button(
+                            onClick = onInstall,
+                            shape = CircleShape,
+                            colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = palette.accent),
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
                             Text("Install update")
                         }
                     }
@@ -278,14 +331,24 @@ private fun UpdateSheet(
                                 color = MaterialTheme.colorScheme.error,
                             )
                             Spacer(Modifier.height(8.dp))
-                            Button(onClick = onDownload, shape = CircleShape, modifier = Modifier.fillMaxWidth()) {
+                            Button(
+                                onClick = onDownload,
+                                shape = CircleShape,
+                                colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = palette.accent),
+                                modifier = Modifier.fillMaxWidth(),
+                            ) {
                                 Text("Try again")
                             }
                         }
                     }
 
                     else -> {
-                        Button(onClick = onDownload, shape = CircleShape, modifier = Modifier.fillMaxWidth()) {
+                        Button(
+                            onClick = onDownload,
+                            shape = CircleShape,
+                            colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = palette.accent),
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
                             Text("Update now")
                         }
                     }
@@ -310,9 +373,11 @@ private fun UpdateSheet(
 fun WavyProgress(
     progress: Float,
     modifier: Modifier = Modifier,
+    waveColor: Color = MaterialTheme.colorScheme.primary,
+    trackColor: Color = MaterialTheme.colorScheme.surfaceVariant,
 ) {
-    val track = MaterialTheme.colorScheme.surfaceVariant
-    val wave = MaterialTheme.colorScheme.primary
+    val track = trackColor
+    val wave = waveColor
     Canvas(modifier = modifier) {
         val amplitude = size.height / 3.2f
         val midY = size.height / 2f
