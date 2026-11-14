@@ -70,7 +70,7 @@ fun Modifier.drawBackdropCustomShape(
                     lerp(5f.dp.toPx(), 2f.dp.toPx(), -l)
                 },
             )
-            lens(14f.dp.toPx(), size.minDimension / 2f, true)
+            lens(10f.dp.toPx(), size.minDimension / 2f, true)
         },
         onDrawBackdrop = { drawBackdrop ->
             // Recording a GraphicsLayer is the expensive half of this effect and it used to run
@@ -78,7 +78,7 @@ fun Modifier.drawBackdropCustomShape(
             // and 3 frames of staleness is invisible at 120 Hz while costing a third of the GPU
             // time — this is what made the bottom bar and the mini player stutter while scrolling.
             drawBackdrop()
-            if (frameCounter++ % 3 == 0) {
+            if (frameCounter++ % 5 == 0) {
                 layer.record { drawBackdrop() }
             }
         },
