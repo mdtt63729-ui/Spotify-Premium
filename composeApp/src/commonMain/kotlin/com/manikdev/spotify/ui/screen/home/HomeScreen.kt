@@ -795,16 +795,6 @@ fun HomeScreen(
                         state = scrollState,
                         verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
-                        item(key = "echo-for-you") {
-                            EchoForYouSection(
-                                cards = echoCards,
-                                // Echo's hero carousel is not pinned to the top: it moves between
-                                // the top and the bottom of the recommendation block. Remembered
-                                // per screen instance, so it stays put while you scroll but can
-                                // land either way on the next open.
-                                heroFirst = heroFirstThisSession,
-                            )
-                        }
                         itemsIndexed(homeShelves, key = { _, item ->
                             item.hashCode().toString() + (mainHomeThumbnail ?: "nothumb")
                         }) { index, item ->
