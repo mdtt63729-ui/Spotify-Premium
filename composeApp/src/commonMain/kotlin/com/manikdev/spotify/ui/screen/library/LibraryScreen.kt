@@ -244,6 +244,7 @@ fun LibraryScreen(
     // frame. That is the most expensive thing a screen can do, and on this list it was enough to
     // starve the frame budget so the bar and the mini player never got to animate. The chips still
     // refract: they sample the same haze source the bar does.
+    val chipBackdrop = rememberBackdrop(MaterialTheme.colorScheme.background)
     Crossfade(
         modifier = Modifier.hazeSource(hazeState),
         targetState = currentFilter,
