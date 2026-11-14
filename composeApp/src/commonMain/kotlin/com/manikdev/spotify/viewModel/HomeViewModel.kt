@@ -414,6 +414,19 @@ class HomeViewModel(
     }
 
     companion object {
+        /**
+         * The playlist rows Home shows, in order. Each entry is one InnerTube playlist search;
+         * five rows, which is the range asked for.
+         */
+        private val PLAYLIST_SHELVES: List<Pair<String, String>> =
+            listOf(
+                "Made for you" to "hindi top hits playlist",
+                "Bollywood essentials" to "bollywood best songs playlist",
+                "Chill & lo-fi" to "hindi lofi chill playlist",
+                "Workout mix" to "hindi workout songs playlist",
+                "Romantic hours" to "hindi romantic songs playlist",
+            )
+
         // Home params
         const val HOME_PARAMS_RELAX = "ggM8SgQIBxADSgQIBRABSgQICRABSgQIChABSgQIDRABSgQICBABSgQIBBABSgQIDhABSgQIAxABSgQIBhAB"
         const val HOME_PARAMS_SLEEP = "ggM8SgQIBxABSgQIBRADSgQICRABSgQIChABSgQIDRABSgQICBABSgQIBBABSgQIDhABSgQIAxABSgQIBhAB"
@@ -517,20 +530,5 @@ class HomeViewModel(
                         .filter { it.items.isNotEmpty() }
                 if (shelves.isNotEmpty()) _echoPlaylists.value = shelves
             }
-    }
-
-    private companion object {
-        /**
-         * The playlist rows Home shows, in order. Each entry is one InnerTube playlist search;
-         * five rows, which is the range asked for.
-         */
-        val PLAYLIST_SHELVES: List<Pair<String, String>> =
-            listOf(
-                "Made for you" to "hindi top hits playlist",
-                "Bollywood essentials" to "bollywood best songs playlist",
-                "Chill & lo-fi" to "hindi lofi chill playlist",
-                "Workout mix" to "hindi workout songs playlist",
-                "Romantic hours" to "hindi romantic songs playlist",
-            )
     }
 }

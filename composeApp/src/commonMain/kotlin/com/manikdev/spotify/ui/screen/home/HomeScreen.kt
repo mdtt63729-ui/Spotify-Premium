@@ -173,7 +173,6 @@ import com.manikdev.spotify.ui.navigation.destination.home.SettingsDestination
 import com.manikdev.spotify.ui.navigation.destination.library.LibraryDynamicPlaylistDestination
 import com.manikdev.spotify.ui.navigation.destination.list.ArtistDestination
 import com.manikdev.spotify.ui.navigation.destination.list.PodcastDestination
-import com.manikdev.spotify.ui.navigation.destination.list.PlaylistDestination
 import com.manikdev.spotify.ui.navigation.destination.login.LoginDestination
 import com.manikdev.spotify.ui.screen.library.LibraryDynamicPlaylistType
 import com.manikdev.spotify.ui.theme.ArtworkShape
