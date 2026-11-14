@@ -84,7 +84,9 @@ internal class DataStoreManagerImpl(
 
     override val location: Flow<String> =
         settingsDataStore.data.map { preferences ->
-            preferences[LOCATION] ?: "VN"
+            // India is the default region: charts, moods and the home feed all follow it until
+            // the user picks another country in Settings.
+            preferences[LOCATION] ?: "IN"
         }
 
     override suspend fun setLocation(location: String) {
