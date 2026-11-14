@@ -130,7 +130,12 @@ class AndroidUpdateController(
 
         if (pendingVersion != null && pendingPath != null) {
             val file = File(pendingPath)
-            if (!file.exists()) {
+            // Already installed? Then the stored APK is dead weight and the sheet must not
+            // reappear on every launch just because the file survived the install.
+            if (compareVersions(currentVersion, pendingVersion) >= 0) {
+                runCatching { file.delete() }
+                clearPending()
+            } else if (!file.exists()) {
                 clearPending()
             } else if (latest == null || compareVersions(pendingVersion, latest.versionName) >= 0) {
                 // Still the newest thing we know about: offer Install, never Download.

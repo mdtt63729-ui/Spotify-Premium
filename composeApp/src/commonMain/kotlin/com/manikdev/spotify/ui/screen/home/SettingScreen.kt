@@ -716,17 +716,6 @@ fun SettingScreen(
                 .padding(horizontal = listSidePadding)
                 .hazeSource(hazeState),
     ) {
-        // Pinned search: a sticky header, so it is present at every scroll offset and only
-        // shrinks once the list has moved. It filters this screen's own rows — nothing is sent
-        // anywhere, and no other screen is touched.
-        stickyHeader(key = "settings_search") {
-            SettingsSearchBar(
-                query = SettingsSearchState.query,
-                onQueryChange = { SettingsSearchState.query = it },
-                compact = settingListState.firstVisibleItemIndex > 1,
-                modifier = Modifier.padding(horizontal = listSidePadding),
-            )
-        }
         item(key = "user_interface") {
             Column {
                 // Was its own item. Folded in so item 0 is taller than the glow — the glow's
@@ -1022,6 +1011,17 @@ fun SettingScreen(
                     )
                 }
             }
+        }
+        // The search field sits below the Settings title (item 0 carries the toolbar) and then
+        // pins itself: sticky from here on, so it stays on screen for the rest of the list and
+        // only shrinks once the list has actually moved.
+        stickyHeader(key = "settings_search") {
+            SettingsSearchBar(
+                query = SettingsSearchState.query,
+                onQueryChange = { SettingsSearchState.query = it },
+                compact = settingListState.firstVisibleItemIndex > 1,
+                modifier = Modifier.padding(horizontal = listSidePadding),
+            )
         }
         item(key = "content") {
             SettingGroup(title = stringResource(Res.string.content)) {
