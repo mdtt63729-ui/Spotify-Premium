@@ -135,6 +135,8 @@ import com.manikdev.spotify.extension.ultraThinBarStyle
 import com.manikdev.spotify.getPlatform
 import com.manikdev.spotify.ui.navigation.destination.home.MoodDestination
 import com.manikdev.spotify.ui.component.EchoForYouSection
+import com.manikdev.spotify.ui.component.EchoPlaylistShelves
+import com.manikdev.spotify.ui.navigation.destination.list.PlaylistDestination
 import com.manikdev.spotify.ui.component.BlogPromoDialog
 import com.manikdev.spotify.ui.component.CenterLoadingBox
 import com.manikdev.spotify.ui.component.Chip
@@ -286,6 +288,7 @@ fun HomeScreen(
     val accountInfo by viewModel.accountInfo.collectAsStateWithLifecycle()
     val homeData by viewModel.homeItemList.collectAsStateWithLifecycle()
     val echoCards by viewModel.echoCards.collectAsStateWithLifecycle()
+    val echoPlaylists by viewModel.echoPlaylists.collectAsStateWithLifecycle()
     // Echo schedules its hero carousel by section weight rather than pinning it. Without that
     // weight system, the closest stable behaviour is a placement derived from the feed itself:
     // it varies with what Home actually contains, but it does not flip on every single open the
@@ -795,6 +798,14 @@ fun HomeScreen(
                         state = scrollState,
                         verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
+                        item(key = "echo_playlists") {
+                            EchoPlaylistShelves(
+                                shelves = echoPlaylists,
+                                onPlaylistClick = { playlist ->
+                                    navController.navigate(PlaylistDestination(playlist.id))
+                                },
+                            )
+                        }
                         itemsIndexed(homeShelves, key = { _, item ->
                             item.hashCode().toString() + (mainHomeThumbnail ?: "nothumb")
                         }) { index, item ->

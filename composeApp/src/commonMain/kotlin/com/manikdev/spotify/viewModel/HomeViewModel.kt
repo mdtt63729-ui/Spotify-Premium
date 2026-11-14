@@ -15,12 +15,16 @@ import com.manikdev.domain.repository.SongRepository
 import com.manikdev.domain.utils.Resource
 import com.maxrave.logger.Logger
 import com.manikdev.kotlinytmusicscraper.YouTube
+import com.manikdev.kotlinytmusicscraper.models.PlaylistItem
+import com.manikdev.spotify.ui.component.PlaylistShelf
 import com.manikdev.kotlinytmusicscraper.models.Album
 import com.manikdev.kotlinytmusicscraper.models.Artist
 import com.manikdev.kotlinytmusicscraper.models.SongItem
 import com.manikdev.spotify.recommendation.EchoRecommendationEngine
 import com.manikdev.spotify.viewModel.base.BaseViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -72,6 +76,11 @@ class HomeViewModel(
     val newRelease: StateFlow<List<HomeItem>> = _newRelease
 
     // Cold-start "Made for you" carousel. Empty until the Echo engine has its first tier.
+    // Playlist rows for Home: five titled shelves fetched from InnerTube playlist search.
+    private val _echoPlaylists: MutableStateFlow<List<PlaylistShelf>> = MutableStateFlow(emptyList())
+    val echoPlaylists: StateFlow<List<PlaylistShelf>> = _echoPlaylists
+    private var echoPlaylistJob: Job? = null
+
     private val _echoCards: MutableStateFlow<List<SongItem>> = MutableStateFlow(emptyList())
     val echoCards: StateFlow<List<SongItem>> = _echoCards
     private var echoJob: Job? = null
@@ -225,6 +234,7 @@ class HomeViewModel(
 
     fun getHomeItemList(params: String? = null) {
         loadEchoRecommendations()
+        loadEchoPlaylists()
         loading.value = true
         _homeListState.value = ListState.LOADING
         language =
@@ -475,4 +485,52 @@ class HomeViewModel(
                     )
                 }
         }.getOrDefault(emptyList())
+
+    /**
+     * Fills Home with playlists rather than single tracks.
+     *
+     * Five independent InnerTube playlist searches, run in parallel and each contained, so one
+     * slow or failing query cannot empty the screen. Tapping a playlist opens it, and its songs
+     * play from there - which is why this needs no queue or entity conversion.
+     */
+    fun loadEchoPlaylists() {
+        if (_echoPlaylists.value.isNotEmpty()) return
+        echoPlaylistJob?.cancel()
+        echoPlaylistJob =
+            viewModelScope.launch {
+                val shelves =
+                    PLAYLIST_SHELVES
+                        .map { (title, query) ->
+                            async {
+                                runCatching {
+                                    youTube
+                                        .search(query, YouTube.SearchFilter.FILTER_FEATURED_PLAYLIST)
+                                        .getOrNull()
+                                        ?.items
+                                        ?.filterIsInstance<PlaylistItem>()
+                                        ?.take(10)
+                                        .orEmpty()
+                                }.getOrDefault(emptyList())
+                                    .let { PlaylistShelf(title = title, items = it) }
+                            }
+                        }.awaitAll()
+                        .filter { it.items.isNotEmpty() }
+                if (shelves.isNotEmpty()) _echoPlaylists.value = shelves
+            }
+    }
+
+    private companion object {
+        /**
+         * The playlist rows Home shows, in order. Each entry is one InnerTube playlist search;
+         * five rows, which is the range asked for.
+         */
+        val PLAYLIST_SHELVES: List<Pair<String, String>> =
+            listOf(
+                "Made for you" to "hindi top hits playlist",
+                "Bollywood essentials" to "bollywood best songs playlist",
+                "Chill & lo-fi" to "hindi lofi chill playlist",
+                "Workout mix" to "hindi workout songs playlist",
+                "Romantic hours" to "hindi romantic songs playlist",
+            )
+    }
 }
