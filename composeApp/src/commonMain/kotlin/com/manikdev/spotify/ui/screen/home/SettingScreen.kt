@@ -1027,6 +1027,16 @@ fun SettingScreen(
                         smallSubtitle = true,
                         switch = (highPerformanceMode to { viewModel.setHighPerformanceMode(it) }),
                     )
+                    // Same data the logcat line carries, on the screen instead.
+                    SettingItem(
+                        title = "Show performance overlay",
+                        subtitle = "Live fps, slow-frame percentage and worst frame, in the corner.",
+                        smallSubtitle = true,
+                        switch =
+                            (com.manikdev.spotify.expect.ui.FrameStats.enabled to {
+                                com.manikdev.spotify.expect.ui.FrameStats.enabled = it
+                            }),
+                    )
                 }
             }
         }

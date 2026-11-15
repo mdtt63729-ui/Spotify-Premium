@@ -296,7 +296,13 @@ class MainActivity : AppCompatActivity() {
 
         if (!BuildConfig.DEBUG) viewModel.checkOfficialBuild(packageName, signingCertSha256())
         setContent {
-            App(viewModel)
+            // The performance readout sits above the app, so it measures what you are looking at.
+            androidx.compose.foundation.layout.Box {
+                App(viewModel)
+                com.manikdev.spotify.ui.component.PerfOverlay(
+                    modifier = androidx.compose.ui.Modifier.align(androidx.compose.ui.Alignment.TopEnd),
+                )
+            }
             // The launcher icon is an adaptive XML icon on modern Android and painterResource
             // refuses to decode those ("Only VectorDrawables and rasterized asset types are
             // supported"). Ask the PackageManager for the icon and rasterise it instead.

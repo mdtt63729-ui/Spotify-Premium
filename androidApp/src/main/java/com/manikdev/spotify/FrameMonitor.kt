@@ -50,6 +50,12 @@ object FrameMonitor {
                         if (elapsed >= WINDOW_MS && frames > 0) {
                             val fps = frames * 1000L / elapsed
                             val pct = slow * 100L / frames
+                            com.manikdev.spotify.expect.ui.FrameStats.update(
+                                fps = fps.toInt(),
+                                slowPercent = pct.toInt(),
+                                worstFrameMs = worst.toInt(),
+                                sampleMs = elapsed.toInt(),
+                            )
                             Logger.w(
                                 "FrameMonitor",
                                 "fps=$fps slow=${pct}% worst=${worst}ms frames=$frames " +
