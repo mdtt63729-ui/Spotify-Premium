@@ -420,11 +420,14 @@ class HomeViewModel(
          */
         private val PLAYLIST_SHELVES: List<Pair<String, String>> =
             listOf(
-                "Made for you" to "hindi top hits playlist",
+                // Every row is an India-targeted query: the browse call already runs with the IN
+                // region, and the words here keep the results Indian even when a query is broad.
+                "Made for you" to "hindi top hits playlist india",
                 "Bollywood essentials" to "bollywood best songs playlist",
+                "Punjabi hits" to "punjabi top songs playlist",
+                "South Indian hits" to "tamil telugu hit songs playlist",
                 "Chill & lo-fi" to "hindi lofi chill playlist",
-                "Workout mix" to "hindi workout songs playlist",
-                "Romantic hours" to "hindi romantic songs playlist",
+                "Romantic hours" to "hindi romantic songs playlist india",
             )
 
         // Home params
@@ -507,7 +510,7 @@ class HomeViewModel(
      * play from there - which is why this needs no queue or entity conversion.
      */
     fun loadEchoPlaylists() {
-        if (_echoPlaylists.value.isNotEmpty()) return
+        // No early return: a refresh has to actually refetch, otherwise the rows never change.
         echoPlaylistJob?.cancel()
         echoPlaylistJob =
             viewModelScope.launch {

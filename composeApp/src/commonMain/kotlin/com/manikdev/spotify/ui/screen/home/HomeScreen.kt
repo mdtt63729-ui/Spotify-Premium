@@ -135,7 +135,6 @@ import com.manikdev.spotify.extension.ultraThinBarStyle
 import com.manikdev.spotify.getPlatform
 import com.manikdev.spotify.ui.navigation.destination.home.MoodDestination
 import com.manikdev.spotify.ui.component.EchoForYouSection
-import com.manikdev.spotify.ui.component.EchoBannerCarousel
 import com.manikdev.spotify.ui.component.EchoPlaylistShelves
 import com.manikdev.spotify.ui.navigation.destination.list.PlaylistDestination
 import com.manikdev.spotify.ui.component.BlogPromoDialog
@@ -288,10 +287,6 @@ fun HomeScreen(
     val homeData by viewModel.homeItemList.collectAsStateWithLifecycle()
     val echoCards by viewModel.echoCards.collectAsStateWithLifecycle()
     val echoPlaylists by viewModel.echoPlaylists.collectAsStateWithLifecycle()
-    // The tall banner carousel replaces the first shelf on some launches - sometimes, not every
-    // time - and stays put for the rest of that session once it has been decided.
-    val showBannerCarousel =
-        androidx.compose.runtime.saveable.rememberSaveable { kotlin.random.Random.nextBoolean() }
     // Echo schedules its hero carousel by section weight rather than pinning it. Without that
     // weight system, the closest stable behaviour is a placement derived from the feed itself:
     // it varies with what Home actually contains, but it does not flip on every single open the
@@ -793,21 +788,7 @@ fun HomeScreen(
                                 .hazeSource(hazeState),
                         verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
-                        if (showBannerCarousel) {
-                            item(key = "echo_banner_carousel") {
-                                EchoBannerCarousel(
-                                    items = echoPlaylists.firstOrNull()?.items.orEmpty(),
-                                    onItemClick = { playlist ->
-                                        navController.navigate(PlaylistDestination(playlist.id))
-                                    },
-                                )
-                            }
-                        }
-                        // On carousel launches the first upstream shelf is dropped, so the carousel
-                        // takes its place rather than stacking on top of it.
-                        itemsIndexed(
-                            if (showBannerCarousel) homeShelves.drop(1) else homeShelves,
-                            key = { _, item ->
+                        itemsIndexed(homeShelves, key = { _, item ->
                             item.hashCode().toString() + (mainHomeThumbnail ?: "nothumb")
                             },
                         ) { index, item ->
