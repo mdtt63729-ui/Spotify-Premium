@@ -49,6 +49,7 @@ import com.manikdev.spotify.update.AndroidUpdateController
 import com.manikdev.spotify.utils.VersionManager
 import com.manikdev.spotify.ui.component.UpdateHost
 import com.manikdev.spotify.viewModel.SharedViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.koin.android.ext.android.inject
@@ -135,10 +136,12 @@ class MainActivity : AppCompatActivity() {
         enableHighRefreshRate()
         // High performance mode: while it is on, the panel stays pinned to its highest refresh
         // mode for the whole session rather than only during the first few seconds of scrolling.
+        // Read once, not collected: a live collector here re-applied the stored value on every
+        // emission and could flip the switch back off right after the user turned it on. From then
+        // on the switch itself owns the state, and this only restores it at launch.
         lifecycleScope.launch {
-            dataStoreManager.highPerformanceMode.collect { value ->
-                applyHighPerformanceMode(value == DataStoreManager.TRUE)
-            }
+            val stored = dataStoreManager.highPerformanceMode.first()
+            applyHighPerformanceMode(stored == DataStoreManager.TRUE)
         }
         loadKoinModules(
             module {

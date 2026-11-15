@@ -676,9 +676,12 @@ class SettingsViewModel(
             dataStoreManager.enableLiquidGlass.collect { enableLiquidGlass ->
                 _enableLiquidGlass.value = enableLiquidGlass == DataStoreManager.TRUE
             }
-            dataStoreManager.highPerformanceMode.collect { highPerformanceMode ->
-                _highPerformanceMode.value = highPerformanceMode == DataStoreManager.TRUE
-            }
+            // Seeded once. Collecting continuously made the switch fight the user: the stored
+            // value arrived a beat later and put the switch back to off.
+            _highPerformanceMode.value =
+                dataStoreManager.highPerformanceMode.first() == DataStoreManager.TRUE
+            com.manikdev.spotify.expect.ui.PerformanceSettings.highPerformanceMode =
+                _highPerformanceMode.value
         }
     }
 
@@ -692,6 +695,8 @@ class SettingsViewModel(
     fun setHighPerformanceMode(value: Boolean) {
         viewModelScope.launch {
             dataStoreManager.setHighPerformanceMode(if (value) DataStoreManager.TRUE else DataStoreManager.FALSE)
+            // Set immediately so the renderer and the switch agree at once, then persist.
+            com.manikdev.spotify.expect.ui.PerformanceSettings.highPerformanceMode = value
             _highPerformanceMode.value = value
         }
     }
