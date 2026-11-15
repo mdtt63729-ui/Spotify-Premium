@@ -37,7 +37,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -64,7 +63,7 @@ import com.manikdev.spotify.expect.ui.VerticalScrollBar
 import com.manikdev.spotify.expect.ui.layerBackdrop
 import com.manikdev.spotify.expect.ui.rememberBackdrop
 import com.manikdev.spotify.extension.copy
-import com.manikdev.spotify.extension.isScrollingUp
+import com.manikdev.spotify.extension.observeScrollExpansion
 import com.manikdev.spotify.extension.ultraThinBarStyle
 import com.manikdev.spotify.getPlatform
 import com.manikdev.spotify.ui.component.AddToPlaylistModalBottomSheet
@@ -252,17 +251,7 @@ fun LibraryScreen(
         when (filter) {
             LibraryChipType.YOUR_LIBRARY -> {
                 val state = rememberLazyListState()
-                val isScrollingUp by state.isScrollingUp()
-                LaunchedEffect(state) {
-                    snapshotFlow { state.firstVisibleItemIndex }
-                        .collect {
-                            if (it <= 1) {
-                                onScrolling.invoke(true)
-                            } else {
-                                onScrolling.invoke(isScrollingUp)
-                            }
-                        }
-                }
+                state.observeScrollExpansion(onScrolling)
                 // Desktop windows run wide; this tab keeps to the floating capsule player's width
                 // so its cards line up with the capsule instead of stretching edge to edge. Done
                 // as content padding rather than by narrowing the list, so the side gutters stay

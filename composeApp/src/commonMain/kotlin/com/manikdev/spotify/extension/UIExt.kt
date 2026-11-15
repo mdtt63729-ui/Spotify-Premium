@@ -569,66 +569,63 @@ suspend fun LazyListState.animateScrollAndCentralizeItem(index: Int) {
 expect fun KeepScreenOn()
 
 @Composable
-fun LazyListState.isScrollingUp(): State<Boolean> {
-    var previousIndex by remember(this) { mutableIntStateOf(firstVisibleItemIndex) }
-    var previousScrollOffset by remember(this) { mutableIntStateOf(firstVisibleItemScrollOffset) }
+fun LazyListState.observeScrollExpansion(onExpandedChanged: (Boolean) -> Unit) {
+    LaunchedEffect(this) {
+        var previousIndex = firstVisibleItemIndex
+        var previousOffset = firstVisibleItemScrollOffset
+        var lastExpanded: Boolean? = null
 
-    LaunchedEffect(Unit) {
-        snapshotFlow { layoutInfo.totalItemsCount }.collect {
-            Logger.w("isScrollingUp", "firstVisibleItemIndex: $firstVisibleItemIndex")
-            previousIndex = firstVisibleItemIndex
-            previousScrollOffset = firstVisibleItemScrollOffset
-        }
-    }
+        snapshotFlow { firstVisibleItemIndex to firstVisibleItemScrollOffset }
+            .collect { (index, offset) ->
+                val scrollingUp =
+                    when {
+                        index == 0 -> true
+                        index != previousIndex -> index < previousIndex
+                        else -> offset <= previousOffset
+                    }
+                val expanded = index <= 1 || scrollingUp
 
-    return remember(this) {
-        derivedStateOf {
-            if (firstVisibleItemIndex > 0) {
-                if (previousIndex != firstVisibleItemIndex) {
-                    previousIndex > firstVisibleItemIndex
-                } else {
-                    previousScrollOffset >= firstVisibleItemScrollOffset
-                }.also {
-                    previousIndex = firstVisibleItemIndex
-                    previousScrollOffset = firstVisibleItemScrollOffset
+                // The bottom bar only needs a new value when its visual state changes.
+                // Do not write Compose state on every scroll frame.
+                if (lastExpanded != expanded) {
+                    lastExpanded = expanded
+                    onExpandedChanged(expanded)
                 }
-            } else {
-                true
+
+                previousIndex = index
+                previousOffset = offset
             }
-        }
     }
 }
 
 @Composable
-fun LazyGridState.isScrollingUp(): State<Boolean> {
-    var previousIndex by remember(this) { mutableIntStateOf(firstVisibleItemIndex) }
-    var previousScrollOffset by remember(this) { mutableIntStateOf(firstVisibleItemScrollOffset) }
+fun LazyGridState.observeScrollExpansion(onExpandedChanged: (Boolean) -> Unit) {
+    LaunchedEffect(this) {
+        var previousIndex = firstVisibleItemIndex
+        var previousOffset = firstVisibleItemScrollOffset
+        var lastExpanded: Boolean? = null
 
-    LaunchedEffect(Unit) {
-        snapshotFlow { layoutInfo.totalItemsCount }.collect {
-            Logger.w("isScrollingUp", "firstVisibleItemIndex: $firstVisibleItemIndex")
-            previousIndex = firstVisibleItemIndex
-            previousScrollOffset = firstVisibleItemScrollOffset
-        }
-    }
+        snapshotFlow { firstVisibleItemIndex to firstVisibleItemScrollOffset }
+            .collect { (index, offset) ->
+                val scrollingUp =
+                    when {
+                        index == 0 -> true
+                        index != previousIndex -> index < previousIndex
+                        else -> offset <= previousOffset
+                    }
+                val expanded = index <= 1 || scrollingUp
 
-    return remember(this) {
-        derivedStateOf {
-            if (firstVisibleItemIndex > 0) {
-                if (previousIndex != firstVisibleItemIndex) {
-                    previousIndex > firstVisibleItemIndex
-                } else {
-                    previousScrollOffset >= firstVisibleItemScrollOffset
-                }.also {
-                    previousIndex = firstVisibleItemIndex
-                    previousScrollOffset = firstVisibleItemScrollOffset
+                if (lastExpanded != expanded) {
+                    lastExpanded = expanded
+                    onExpandedChanged(expanded)
                 }
-            } else {
-                true
+
+                previousIndex = index
+                previousOffset = offset
             }
-        }
     }
 }
+
 
 fun Palette?.getColorFromPalette(): Color {
     val p = this ?: return Color.Black

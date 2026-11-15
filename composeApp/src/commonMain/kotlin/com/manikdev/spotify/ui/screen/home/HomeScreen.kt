@@ -72,7 +72,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -128,7 +127,7 @@ import com.manikdev.spotify.expect.ui.rememberBackdrop
 import com.manikdev.spotify.extension.angledGradientBackground
 import com.manikdev.spotify.extension.artworkScrimBrush
 import com.manikdev.spotify.extension.getScreenSizeInfo
-import com.manikdev.spotify.extension.isScrollingUp
+import com.manikdev.spotify.extension.observeScrollExpansion
 import com.manikdev.spotify.extension.mouseDragScroll
 import com.manikdev.spotify.extension.rgbFactor
 import com.manikdev.spotify.extension.ultraThinBarStyle
@@ -284,7 +283,6 @@ fun HomeScreen(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberLazyListState()
-    val isScrollingUp by scrollState.isScrollingUp()
     val accountInfo by viewModel.accountInfo.collectAsStateWithLifecycle()
     val homeData by viewModel.homeItemList.collectAsStateWithLifecycle()
     val echoCards by viewModel.echoCards.collectAsStateWithLifecycle()
@@ -432,16 +430,7 @@ fun HomeScreen(
     // the row its sibling (nesting the row inside the source is the RuntimeShader feedback loop).
     val chipBackdrop = rememberBackdrop(MaterialTheme.colorScheme.background)
 
-    LaunchedEffect(scrollState) {
-        snapshotFlow { scrollState.firstVisibleItemIndex }
-            .collect {
-                if (it <= 1) {
-                    onScrolling.invoke(true)
-                } else {
-                    onScrolling.invoke(isScrollingUp)
-                }
-            }
-    }
+    scrollState.observeScrollExpansion(onScrolling)
 
     val onRefresh: () -> Unit = {
         isRefreshing = true
@@ -757,10 +746,7 @@ fun HomeScreen(
 
     Box {
         PullToRefreshBox(
-            modifier =
-                Modifier
-                    .then(if (LocalLiquidGlassEnabled.current) Modifier.layerBackdrop(chipBackdrop) else Modifier)
-                    .hazeSource(hazeState),
+            modifier = Modifier,
             state = pullToRefreshState,
             onRefresh = onRefresh,
             isRefreshing = isRefreshing,
@@ -800,6 +786,10 @@ fun HomeScreen(
                     }
                     LazyColumn(
                         state = scrollState,
+                        modifier =
+                            Modifier
+                                .then(if (LocalLiquidGlassEnabled.current) Modifier.layerBackdrop(chipBackdrop) else Modifier)
+                                .hazeSource(hazeState),
                         verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         if (showBannerCarousel) {

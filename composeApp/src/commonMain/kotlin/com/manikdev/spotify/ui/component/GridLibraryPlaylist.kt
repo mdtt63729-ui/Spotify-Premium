@@ -31,9 +31,7 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -55,7 +53,7 @@ import com.maxrave.logger.Logger
 import com.manikdev.spotify.expect.ui.DesktopMiniPlayerClearance
 import com.manikdev.spotify.expect.ui.VerticalScrollBar
 import com.manikdev.spotify.extension.angledGradientBackground
-import com.manikdev.spotify.extension.isScrollingUp
+import com.manikdev.spotify.extension.observeScrollExpansion
 import com.manikdev.spotify.ui.icon.Add
 import com.manikdev.spotify.ui.icon.SpotifyIcons
 import com.manikdev.spotify.ui.navigation.destination.list.AlbumDestination
@@ -120,18 +118,7 @@ internal inline fun <reified T> GridLibraryPlaylist(
     noinline onReload: () -> Unit,
 ) {
     Logger.w("GridLibraryPlaylist", "Generic Type: ${T::class.simpleName}")
-    val isScrollingUp by state.isScrollingUp()
-
-    LaunchedEffect(state) {
-        snapshotFlow { state.firstVisibleItemIndex }
-            .collect {
-                if (it <= 1) {
-                    onScrolling.invoke(true)
-                } else {
-                    onScrolling.invoke(isScrollingUp)
-                }
-            }
-    }
+    state.observeScrollExpansion(onScrolling)
     val pullToRefreshState = rememberPullToRefreshState()
     PullToRefreshBox(
         modifier = Modifier.fillMaxSize(),

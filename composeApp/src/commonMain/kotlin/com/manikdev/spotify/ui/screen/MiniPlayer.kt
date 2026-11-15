@@ -143,6 +143,7 @@ import com.manikdev.spotify.viewModel.UIEvent
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.sample
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
@@ -170,7 +171,14 @@ fun MiniPlayer(
 ) {
     val isLiquidGlassEnabled by sharedViewModel.getEnableLiquidGlass().collectAsStateWithLifecycle(DataStoreManager.FALSE)
     val controllerState by sharedViewModel.controllerState.collectAsStateWithLifecycle()
-    val timelineState by sharedViewModel.timeline.collectAsStateWithLifecycle()
+    // Timeline.current can update many times per second. The mini player does not need to
+    // recompose its entire card for every player tick; the progress indicator interpolates
+    // between these samples, so 100ms keeps the motion smooth while removing the high-frequency
+    // recomposition from the scrolling surface.
+    val timelineState by
+        sharedViewModel.timeline
+            .sample(100L)
+            .collectAsStateWithLifecycle(initialValue = sharedViewModel.timeline.value)
     // The Desktop capsule's quality line between its timestamps — see toAudioQualityLabel.
     val formatState by sharedViewModel.format.collectAsStateWithLifecycle(initialValue = null)
 
@@ -208,10 +216,6 @@ fun MiniPlayer(
         remember {
             mutableStateOf(false)
         }
-    val (progress, setProgress) =
-        remember {
-            mutableFloatStateOf(0f)
-        }
     val (isCrossfading, setIsCrossfading) =
         remember {
             mutableStateOf(false)
@@ -220,17 +224,18 @@ fun MiniPlayer(
     val coroutineScope = rememberCoroutineScope()
 
     val animatedProgress by animateFloatAsState(
-        targetValue = progress,
+        targetValue =
+            if (timelineState.total > 0L && timelineState.current >= 0L) {
+                timelineState.current.toFloat() / timelineState.total.toFloat()
+            } else {
+                0f
+            },
         animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec,
-        label = "",
+        label = "MiniPlayerProgress",
     )
 
     val offsetX = remember { Animatable(initialValue = 0f) }
     val offsetY = remember { Animatable(0f) }
-
-    var loading by rememberSaveable {
-        mutableStateOf(true)
-    }
 
     LaunchedEffect(key1 = true) {
         val job1 =
@@ -249,22 +254,8 @@ fun MiniPlayer(
                     setIsCrossfading(state.isCrossfading)
                 }
             }
-        val job4 =
-            launch {
-                sharedViewModel.timeline.collect { timeline ->
-                    loading = timeline.loading
-                    val prog =
-                        if (timeline.total > 0L && timeline.current >= 0L) {
-                            timeline.current.toFloat() / timeline.total
-                        } else {
-                            0f
-                        }
-                    setProgress(prog)
-                }
-            }
         job1.join()
         job2.join()
-        job4.join()
     }
 
     if (getPlatform() == Platform.Android) {
@@ -540,7 +531,7 @@ fun MiniPlayer(
                                 .then(if (isFlat) Modifier.background(MaterialTheme.colorScheme.primary, CircleShape) else Modifier),
                         contentAlignment = Alignment.Center,
                     ) {
-                        Crossfade(targetState = loading, label = "") {
+                        Crossfade(targetState = timelineState.loading, label = "") {
                             if (it) {
                                 Box(modifier = Modifier.size(controlSize), contentAlignment = Alignment.Center) {
                                     CircularProgressIndicator(
@@ -943,7 +934,7 @@ fun MiniPlayer(
                     // inset itself to keep clear of them.
                     CapsuleProgress(
                         sliderValue = sliderValue,
-                        loading = loading,
+                        loading = timelineState.loading,
                         trackHeight = if (showScrubber) 4.dp else 2.dp,
                         thumbSize = 0.dp,
                         textColor = textColor,
