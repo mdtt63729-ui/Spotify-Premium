@@ -134,6 +134,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableHighRefreshRate()
+        // Frame timing, so the next lag report is measured rather than guessed.
+        FrameMonitor.start()
         // High performance mode: while it is on, the panel stays pinned to its highest refresh
         // mode for the whole session rather than only during the first few seconds of scrolling.
         // Read once, not collected: a live collector here re-applied the stored value on every
