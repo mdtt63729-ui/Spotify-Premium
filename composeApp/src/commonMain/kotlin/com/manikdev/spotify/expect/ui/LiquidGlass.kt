@@ -70,7 +70,12 @@ fun Modifier.drawBackdropCustomShape(
                     lerp(5f.dp.toPx(), 2f.dp.toPx(), -l)
                 },
             )
-            lens(10f.dp.toPx(), size.minDimension / 2f, true)
+            // The lens is a per-pixel refraction pass. In high performance mode it is the first
+            // thing to go: the blur and the tint still read as glass, and the frame budget stops
+            // paying for a magnification nobody notices while scrolling.
+            if (!PerformanceSettings.highPerformanceMode) {
+                lens(10f.dp.toPx(), size.minDimension / 2f, true)
+            }
         },
         onDrawBackdrop = { drawBackdrop ->
             // Recording a GraphicsLayer is the expensive half of this effect and it used to run
@@ -78,7 +83,11 @@ fun Modifier.drawBackdropCustomShape(
             // and 3 frames of staleness is invisible at 120 Hz while costing a third of the GPU
             // time — this is what made the bottom bar and the mini player stutter while scrolling.
             drawBackdrop()
-            if (frameCounter++ % 5 == 0) {
+            // High performance mode halves the recording rate again: a tenth of the frames is
+            // still a fresh enough sample behind a blurred surface, and it is the difference
+            // between holding 120 and missing it on a mid-range panel.
+            val every = if (PerformanceSettings.highPerformanceMode) 10 else 5
+            if (frameCounter++ % every == 0) {
                 layer.record { drawBackdrop() }
             }
         },

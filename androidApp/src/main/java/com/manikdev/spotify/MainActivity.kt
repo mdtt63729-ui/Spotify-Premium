@@ -392,6 +392,8 @@ class MainActivity : AppCompatActivity() {
      * to 0, which is Android's "no preference" and lets the system go back to adaptive.
      */
     private fun applyHighPerformanceMode(enabled: Boolean) {
+        // The renderer reads this to drop its most expensive passes.
+        com.manikdev.spotify.expect.ui.PerformanceSettings.setHighPerformanceMode(enabled)
         runCatching {
             @Suppress("DEPRECATION")
             val current = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) display else windowManager.defaultDisplay
