@@ -31,6 +31,10 @@ sealed interface UpdateUiState {
     data class Downloading(
         val info: UpdateInfo,
         val progress: Float,
+        val bytesDownloaded: Long = 0L,
+        val totalBytes: Long = 0L,
+        /** Smoothed, not the instantaneous rate - a raw per-chunk figure jitters far too much to read. */
+        val bytesPerSecond: Long = 0L,
     ) : UpdateUiState
 
     /**

@@ -182,7 +182,7 @@ class AndroidUpdateController(
 
     private suspend fun downloadInternal(info: UpdateInfo) {
         val target = File(context.cacheDir, "update-${info.versionName}.apk")
-        _state.value = UpdateUiState.Downloading(info, 0f)
+        _state.value = UpdateUiState.Downloading(info, 0f, 0L, info.sizeBytes, 0L)
         withContext(Dispatchers.IO) {
             runCatching {
                 val connection = (URL(info.apkUrl).openConnection() as HttpURLConnection).apply {
@@ -198,16 +198,31 @@ class AndroidUpdateController(
                         val buffer = ByteArray(64 * 1024)
                         var read: Int
                         var written = 0L
+                        val startedAt = System.currentTimeMillis()
+                        var lastBytes = 0L
+                        var lastSampleAt = startedAt
+                        var smoothedSpeed = 0L
                         while (input.read(buffer).also { read = it } > 0) {
                             output.write(buffer, 0, read)
                             written += read
-                            if (total > 0) {
-                                _state.value =
-                                    UpdateUiState.Downloading(
-                                        info = info,
-                                        progress = (written.toFloat() / total).coerceIn(0f, 1f),
-                                    )
+                            // Rate is measured over the whole transfer so far and then smoothed, so
+                            // the number on screen moves steadily instead of flickering per chunk.
+                            val now = System.currentTimeMillis()
+                            if (now - lastSampleAt >= 400L) {
+                                val instant = (written - lastBytes) * 1000L / (now - lastSampleAt).coerceAtLeast(1L)
+                                smoothedSpeed =
+                                    if (smoothedSpeed == 0L) instant else (smoothedSpeed * 2 + instant) / 3
+                                lastBytes = written
+                                lastSampleAt = now
                             }
+                            _state.value =
+                                UpdateUiState.Downloading(
+                                    info = info,
+                                    progress = if (total > 0) (written.toFloat() / total).coerceIn(0f, 1f) else 0f,
+                                    bytesDownloaded = written,
+                                    totalBytes = total,
+                                    bytesPerSecond = smoothedSpeed,
+                                )
                         }
                     }
                 }

@@ -29,6 +29,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -105,6 +106,20 @@ private fun updatePalette(): UpdatePalette {
             chipText = scheme.onPrimaryContainer,
         )
     }
+}
+
+/** 1.4 MB/s style, one decimal - enough to read at a glance, no false precision. */
+private fun formatSpeed(bytesPerSecond: Long): String {
+    val kb = bytesPerSecond / 1024.0
+    return when {
+        kb < 1024 -> "${kb.toInt()} KB/s"
+        else -> "${((kb / 1024.0) * 10).toInt() / 10.0} MB/s"
+    }
+}
+
+private fun formatBytes(bytes: Long): String {
+    val mb = bytes / (1024.0 * 1024.0)
+    return "${(mb * 10).toInt() / 10.0} MB"
 }
 
 @Composable
@@ -298,17 +313,43 @@ private fun UpdateSheet(
                 when (current) {
                     is UpdateUiState.Downloading -> {
                         Column(modifier = Modifier.fillMaxWidth()) {
-                            WavyProgress(
-                                progress = current.progress,
-                                waveColor = palette.accent,
+                            // A plain, straight bar. The wavy ribbon read as decoration and made
+                            // the progress hard to judge; a line and two numbers say everything.
+                            LinearProgressIndicator(
+                                progress = { current.progress.coerceIn(0f, 1f) },
+                                modifier = Modifier.fillMaxWidth().height(6.dp).clip(CircleShape),
+                                color = palette.accent,
                                 trackColor = palette.accent.copy(alpha = 0.18f),
-                                modifier = Modifier.fillMaxWidth().height(24.dp),
+                                gapSize = 0.dp,
+                                drawStopIndicator = {},
                             )
-                            Text(
-                                text = "Downloading… ${(current.progress * 100).toInt()}%",
-                                style = MaterialTheme.typography.labelMedium,
-                                color = palette.secondaryText,
-                            )
+                            Spacer(Modifier.height(8.dp))
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                            ) {
+                                Text(
+                                    text = "${(current.progress * 100).toInt()}%",
+                                    style = MaterialTheme.typography.labelLarge,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = palette.onContainer,
+                                )
+                                Text(
+                                    text = buildString {
+                                        if (current.bytesPerSecond > 0) {
+                                            append(formatSpeed(current.bytesPerSecond))
+                                            append(" · ")
+                                        }
+                                        if (current.totalBytes > 0) {
+                                            append(formatBytes(current.bytesDownloaded))
+                                            append(" / ")
+                                            append(formatBytes(current.totalBytes))
+                                        }
+                                    },
+                                    style = MaterialTheme.typography.labelMedium,
+                                    color = palette.secondaryText,
+                                )
+                            }
                         }
                     }
 
