@@ -393,7 +393,7 @@ class MainActivity : AppCompatActivity() {
      */
     private fun applyHighPerformanceMode(enabled: Boolean) {
         // The renderer reads this to drop its most expensive passes.
-        com.manikdev.spotify.expect.ui.PerformanceSettings.setHighPerformanceMode(enabled)
+        com.manikdev.spotify.expect.ui.PerformanceSettings.highPerformanceMode = enabled
         runCatching {
             @Suppress("DEPRECATION")
             val current = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) display else windowManager.defaultDisplay

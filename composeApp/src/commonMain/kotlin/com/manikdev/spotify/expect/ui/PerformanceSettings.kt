@@ -13,9 +13,4 @@ import androidx.compose.runtime.setValue
  */
 object PerformanceSettings {
     var highPerformanceMode by mutableStateOf(false)
-        private set
-
-    fun setHighPerformanceMode(enabled: Boolean) {
-        highPerformanceMode = enabled
-    }
 }
