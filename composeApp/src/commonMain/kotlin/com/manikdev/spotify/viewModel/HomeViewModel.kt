@@ -233,8 +233,16 @@ class HomeViewModel(
     }
 
     fun getHomeItemList(params: String? = null) {
-        loadEchoRecommendations()
-        loadEchoPlaylists()
+        // These two fire five InnerTube playlist searches plus the recommendation engine. Starting
+        // them at the same instant as the first frame is why Home opened slowly and the update
+        // sheet's animation stuttered on launch: the network and the CPU were already saturated
+        // before anything had been drawn. Deferring them lets the feed and the first frame land
+        // first, and the rows fill in a moment later.
+        viewModelScope.launch {
+            delay(700)
+            loadEchoRecommendations()
+            loadEchoPlaylists()
+        }
         loading.value = true
         _homeListState.value = ListState.LOADING
         language =
