@@ -199,6 +199,9 @@ class SettingsViewModel(
     private var _backupDownloaded: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val backupDownloaded: StateFlow<Boolean> = _backupDownloaded
 
+    private var _highPerformanceMode: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val highPerformanceMode: StateFlow<Boolean> = _highPerformanceMode
+
     private var _enableLiquidGlass: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val enableLiquidGlass: StateFlow<Boolean> = _enableLiquidGlass
 
@@ -673,6 +676,9 @@ class SettingsViewModel(
             dataStoreManager.enableLiquidGlass.collect { enableLiquidGlass ->
                 _enableLiquidGlass.value = enableLiquidGlass == DataStoreManager.TRUE
             }
+            dataStoreManager.highPerformanceMode.collect { highPerformanceMode ->
+                _highPerformanceMode.value = highPerformanceMode == DataStoreManager.TRUE
+            }
         }
     }
 
@@ -680,6 +686,13 @@ class SettingsViewModel(
         viewModelScope.launch {
             dataStoreManager.setEnableLiquidGlass(enableLiquidGlass)
             getEnableLiquidGlass()
+        }
+    }
+
+    fun setHighPerformanceMode(value: Boolean) {
+        viewModelScope.launch {
+            dataStoreManager.setHighPerformanceMode(if (value) DataStoreManager.TRUE else DataStoreManager.FALSE)
+            _highPerformanceMode.value = value
         }
     }
 

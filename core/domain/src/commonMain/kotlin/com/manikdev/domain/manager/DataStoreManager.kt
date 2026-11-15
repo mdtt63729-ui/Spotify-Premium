@@ -19,6 +19,11 @@ interface DataStoreManager {
 
     suspend fun doneOpenAppTime()
 
+    /** "High performance mode": pin the panel to its highest refresh rate while the app runs. */
+    val highPerformanceMode: Flow<String>
+
+    suspend fun setHighPerformanceMode(value: String)
+
     val location: Flow<String>
 
     suspend fun setLocation(location: String)

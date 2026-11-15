@@ -82,6 +82,19 @@ internal class DataStoreManagerImpl(
         }
     }
 
+    override val highPerformanceMode: Flow<String> =
+        settingsDataStore.data.map { preferences ->
+            preferences[HIGH_PERFORMANCE_MODE] ?: FALSE
+        }
+
+    override suspend fun setHighPerformanceMode(value: String) {
+        withContext(Dispatchers.IO) {
+            settingsDataStore.edit { settings ->
+                settings[HIGH_PERFORMANCE_MODE] = value
+            }
+        }
+    }
+
     override val location: Flow<String> =
         settingsDataStore.data.map { preferences ->
             // India is the default region: charts, moods and the home feed all follow it until
@@ -1890,6 +1903,7 @@ internal class DataStoreManagerImpl(
         val AUTH_USER = intPreferencesKey("auth_user")
         val LOGGED_IN = stringPreferencesKey("logged_in")
         val LOCATION = stringPreferencesKey("location")
+        val HIGH_PERFORMANCE_MODE = stringPreferencesKey("high_performance_mode")
         val MOOD_AND_GENRES_CACHE = stringPreferencesKey("mood_and_genres_cache")
         val MOOD_ARTWORK_CACHE = stringPreferencesKey("mood_artwork_cache")
         val TASTE_PROFILE = stringPreferencesKey("ai_taste_profile")

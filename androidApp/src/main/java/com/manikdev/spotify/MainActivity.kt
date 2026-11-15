@@ -133,6 +133,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableHighRefreshRate()
+        // High performance mode: while it is on, the panel stays pinned to its highest refresh
+        // mode for the whole session rather than only during the first few seconds of scrolling.
+        lifecycleScope.launch {
+            dataStoreManager.highPerformanceMode.collect { value ->
+                applyHighPerformanceMode(value == DataStoreManager.TRUE)
+            }
+        }
         loadKoinModules(
             module {
                 single<AppCompatActivity> { this@MainActivity }
@@ -377,6 +384,27 @@ class MainActivity : AppCompatActivity() {
      * makes every scroll and every ripple look like it stutters on a 120 Hz panel. Pinning
      * the fastest supported mode keeps the whole UI on the fast path.
      */
+    /**
+     * Pins the display to its fastest mode, or releases the pin.
+     *
+     * `preferredDisplayModeId` is the switch that actually holds a 120Hz panel at 120Hz; the
+     * refresh-rate float alone is only a hint on many vendors' builds. Releasing sets both back
+     * to 0, which is Android's "no preference" and lets the system go back to adaptive.
+     */
+    private fun applyHighPerformanceMode(enabled: Boolean) {
+        runCatching {
+            @Suppress("DEPRECATION")
+            val current = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) display else windowManager.defaultDisplay
+            val best = current?.supportedModes?.maxByOrNull { it.refreshRate } ?: return
+            window.attributes =
+                window.attributes.apply {
+                    preferredDisplayModeId = if (enabled) best.modeId else 0
+                    preferredRefreshRate = if (enabled) best.refreshRate else 0f
+                }
+            Logger.w("MainActivity", "high performance mode: $enabled (${best.refreshRate}Hz)")
+        }.onFailure { Logger.w("MainActivity", "high performance mode: ${it.message}") }
+    }
+
     private fun enableHighRefreshRate() {
         runCatching {
             @Suppress("DEPRECATION")

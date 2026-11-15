@@ -604,6 +604,7 @@ fun SettingScreen(
     val autoBackupLastTime by viewModel.autoBackupLastTime.collectAsStateWithLifecycle()
     val updateChannel by viewModel.updateChannel.collectAsStateWithLifecycle()
     val enableLiquidGlass by viewModel.enableLiquidGlass.collectAsStateWithLifecycle()
+    val highPerformanceMode by viewModel.highPerformanceMode.collectAsStateWithLifecycle()
     val themeMode by sharedViewModel.getThemeMode().collectAsStateWithLifecycle(DataStoreManager.THEME_MODE_DARK)
     val themeColorSource by sharedViewModel.getThemeColorSource().collectAsStateWithLifecycle(DataStoreManager.THEME_COLOR_DEFAULT)
     val customThemeColorHex by sharedViewModel.getCustomThemeColor().collectAsStateWithLifecycle(DataStoreManager.DEFAULT_THEME_COLOR_HEX)
@@ -1017,6 +1018,14 @@ fun SettingScreen(
                         subtitle = stringResource(Res.string.enable_liquid_glass_effect_description),
                         smallSubtitle = true,
                         switch = (enableLiquidGlass to { viewModel.setEnableLiquidGlass(it) }),
+                    )
+                    // Sits directly under the glass switch: it is the other half of the same
+                    // question - how much of the device this app is allowed to use.
+                    SettingItem(
+                        title = "High performance mode",
+                        subtitle = "Force the screen's highest refresh rate and keep the app there. Uses more battery.",
+                        smallSubtitle = true,
+                        switch = (highPerformanceMode to { viewModel.setHighPerformanceMode(it) }),
                     )
                 }
             }
