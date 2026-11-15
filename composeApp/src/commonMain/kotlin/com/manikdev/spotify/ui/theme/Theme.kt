@@ -176,7 +176,12 @@ fun AppTheme(
                 LocalAppColors provides if (isDark) DarkAppColors else LightAppColors,
                 LocalIsDarkTheme provides isDark,
                 LocalForcedDarkColorScheme provides forcedDarkScheme,
-                LocalLiquidGlassEnabled provides liquidGlassEnabled,
+                // High performance mode means it: the glass is switched off at the root, so every
+                // consumer of this flag - bars, chips, mini player - draws a flat surface instead of
+                // a blurred, refracting one. This is the difference the switch was missing: pinning
+                // the refresh rate alone changed nothing about how much work each frame cost.
+                LocalLiquidGlassEnabled provides
+                    (liquidGlassEnabled && !com.manikdev.spotify.expect.ui.PerformanceSettings.highPerformanceMode),
                 content = content,
             )
         },
