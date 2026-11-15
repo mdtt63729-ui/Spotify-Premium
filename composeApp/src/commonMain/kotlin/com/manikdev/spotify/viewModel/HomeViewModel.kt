@@ -245,15 +245,16 @@ class HomeViewModel(
         }
         loading.value = true
         _homeListState.value = ListState.LOADING
-        language =
-            runBlocking {
-                dataStoreManager.getString(SELECTED_LANGUAGE).first()
-                    ?: SUPPORTED_LANGUAGE.codes.first()
-            }
-        regionCode = runBlocking { dataStoreManager.location.first() }
         homeJob?.cancel()
         homeJob =
             viewModelScope.launch {
+                // Read the settings INSIDE the coroutine. These were runBlocking on the main
+                // thread, waiting on DataStore before the feed request could even start - which is
+                // exactly the 200-400ms single-frame stall the frame overlay caught on every page.
+                language =
+                    dataStoreManager.getString(SELECTED_LANGUAGE).first()
+                        ?: SUPPORTED_LANGUAGE.codes.first()
+                regionCode = dataStoreManager.location.first()
                 combine(
                     homeRepository.getHomeData(
                         params,
