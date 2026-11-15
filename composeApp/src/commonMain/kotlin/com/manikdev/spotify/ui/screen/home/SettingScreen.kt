@@ -1033,6 +1033,28 @@ fun SettingScreen(
         // The search field sits below the Settings title (item 0 carries the toolbar) and then
         // pins itself: sticky from here on, so it stays on screen for the rest of the list and
         // only shrinks once the list has actually moved.
+        // The field inside the header scrolls away with the title. This copy lifts in and pins
+        // itself the moment the header has passed, so the field is reachable at every scroll
+        // position - and it slides in rather than snapping, so it reads as the same field moving.
+        stickyHeader(key = "settings_search_pinned") {
+            val pinned by remember {
+                derivedStateOf { settingListState.firstVisibleItemIndex > 0 }
+            }
+            AnimatedVisibility(
+                visible = pinned,
+                enter =
+                    androidx.compose.animation.fadeIn() +
+                        androidx.compose.animation.slideInVertically { -it / 2 },
+                exit = androidx.compose.animation.fadeOut(),
+            ) {
+                SettingsSearchBar(
+                    query = SettingsSearchState.query,
+                    onQueryChange = { SettingsSearchState.query = it },
+                    compact = true,
+                    modifier = Modifier.padding(horizontal = listSidePadding),
+                )
+            }
+        }
         item(key = "content") {
             SettingGroup(title = stringResource(Res.string.content)) {
                 SettingItem(
