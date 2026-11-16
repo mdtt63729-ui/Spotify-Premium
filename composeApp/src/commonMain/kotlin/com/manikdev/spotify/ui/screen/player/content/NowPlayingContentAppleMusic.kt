@@ -954,7 +954,7 @@ private fun AppleMusicArtworkPage(
                     // and so on). On a full-screen cover that is the difference between a soft
                     // block and the actual artwork, so the size is rewritten to the largest one
                     // the CDN serves before the request is made.
-                    .data(artworkUrl.withMaxArtworkSize())
+                    .data(artworkUrl?.withMaxArtworkSize())
                     .diskCachePolicy(CachePolicy.ENABLED)
                     .diskCacheKey(artworkUrl + "BIGGER")
                     .crossfade(550)
