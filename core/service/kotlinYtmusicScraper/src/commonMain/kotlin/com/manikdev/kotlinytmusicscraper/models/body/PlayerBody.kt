@@ -16,8 +16,13 @@ data class PlayerBody(
 ) {
     @Serializable
     data class ServiceIntegrityDimensions(
-        val poToken: String =
-            "Mlt6vqPMnRAc93qGSJr4d9wyzWNClpcDwVQGZ7ooTJoc6IjxwPaMoyTMXRkU5OHQQvLdQqF4v9W_U6JRCUmCPatLIOlbBqjasxsmO3PnigwoLSQ81o0MpFeX8nJA",
+        /**
+         * A freshly minted BotGuard token. There used to be a hardcoded string here that had
+         * expired long ago, and it was sent with every player request - a stale token is worse
+         * than none, because the request is refused on its merits rather than being treated as
+         * unauthenticated. It is a required argument now, so that cannot happen again.
+         */
+        val poToken: String,
     )
 
     @Serializable

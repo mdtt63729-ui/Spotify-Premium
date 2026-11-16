@@ -472,6 +472,7 @@ class Ytmusic {
         playlistId: String?,
         cpn: String?,
         signatureTimestamp: Int? = null,
+        poToken: String? = null,
     ) = httpClient.post("player") {
         ytClient(client, setLogin = true)
         setBody(
@@ -499,14 +500,11 @@ class Ytmusic {
                                 signatureTimestamp = signatureTimestamp ?: 20073,
                             ),
                     ),
-//                serviceIntegrityDimensions =
-//                    if (poToken != null) {
-//                        PlayerBody.ServiceIntegrityDimensions(
-//                            poToken = poToken,
-//                        )
-//                    } else {
-//                        null
-//                    },
+                // Only sent when a provider actually minted one. Nothing is sent otherwise, which
+                // is the honest state: an absent token reads as unauthenticated, a stale one reads
+                // as invalid.
+                serviceIntegrityDimensions =
+                    poToken?.let { PlayerBody.ServiceIntegrityDimensions(poToken = it) },
             ),
         )
     }

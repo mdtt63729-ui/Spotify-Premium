@@ -1597,6 +1597,7 @@ class YouTube {
                                 playlistId,
                                 cpn,
                                 signatureTimestamp = signatureTimestamp,
+                                poToken = poToken,
                             ).body<PlayerResponse>()
                     }.getOrNull()
                 if (candidate?.streamingData != null) {
