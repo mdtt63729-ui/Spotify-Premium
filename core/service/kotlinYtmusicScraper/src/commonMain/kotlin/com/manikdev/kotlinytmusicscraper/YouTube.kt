@@ -1543,6 +1543,17 @@ class YouTube {
         )
 
     @OptIn(ExperimentalTime::class)
+    /**
+     * The BotGuard challenge for a poToken, exactly as Google hands it over.
+     *
+     * Exposed here because [ytMusic] is private: the platform minter needs a way in, and a whole
+     * parallel HTTP client in the provider would duplicate the headers this one already sets.
+     */
+    suspend fun poTokenChallenge(): String? =
+        runCatching { ytMusic.createPoTokenChallenge().bodyAsText() }
+            .onFailure { Logger.w("PoToken", "challenge request failed: ${it.message}") }
+            .getOrNull()
+
     suspend fun player(
         videoId: String,
         playlistId: String? = null,
