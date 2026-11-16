@@ -57,6 +57,12 @@ class SpotifyApplication :
     private lateinit var autoBackupScheduler: AutoBackupScheduler
 
     override fun onCreate() {
+        // The poToken seam. Installed here so that when the minter lands there is exactly one
+        // place it is switched on; today the provider returns null and nothing changes.
+        com.manikdev.kotlinytmusicscraper.potoken.PoTokenProviders.install(
+            com.manikdev.kotlinytmusicscraper.potoken.AndroidPoTokenProvider(),
+        )
+
         super.onCreate()
         // First, so the rest of startup reaches the App log too (Settings → Developer option).
         Logger.enableFileLogging(File(filesDir, "logs").path)
