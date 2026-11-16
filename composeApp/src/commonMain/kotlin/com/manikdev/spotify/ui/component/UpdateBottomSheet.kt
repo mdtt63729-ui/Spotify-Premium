@@ -325,7 +325,7 @@ private fun UpdateSheet(
                             if (shown < 0.10f) {
                                 LinearProgressIndicator(
                                     progress = { shown },
-                                    modifier = Modifier.fillMaxWidth().height(6.dp).clip(CircleShape),
+                                    modifier = Modifier.fillMaxWidth().height(8.dp).clip(CircleShape),
                                     color = palette.accent,
                                     trackColor = palette.accent.copy(alpha = 0.18f),
                                     gapSize = 0.dp,
@@ -334,7 +334,9 @@ private fun UpdateSheet(
                             } else {
                                 LinearWavyProgressIndicator(
                                     progress = { shown },
-                                    modifier = Modifier.fillMaxWidth().height(14.dp),
+                                    // Same height as the straight bar, so the swap at 10% cannot jump, and small
+                                    // enough that the default wave reads as fine ripples rather than big swells.
+                                    modifier = Modifier.fillMaxWidth().height(8.dp),
                                     color = palette.accent,
                                     trackColor = palette.accent.copy(alpha = 0.18f),
                                 )

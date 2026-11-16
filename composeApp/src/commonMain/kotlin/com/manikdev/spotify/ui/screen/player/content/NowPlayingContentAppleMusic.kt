@@ -969,7 +969,10 @@ private fun AppleMusicArtworkPage(
                         .align(Alignment.TopCenter)
                         .padding(top = topInset)
                         .fillMaxWidth()
-                        .height(artworkHeight),
+                        // Square, the way the Apple Music player and Echo both draw it: a square
+                        // image in a square box is never cropped, so the artwork is shown whole
+                        // instead of being zoomed into a wide frame and looking soft.
+                        .aspectRatio(1f),
             ) {
                 AsyncImage(
                     model = coverRequest,
