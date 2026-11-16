@@ -55,7 +55,9 @@ class AndroidPoTokenProvider(
      */
     private fun runBotGuard(vmScript: String, challenge: String): String? =
         runCatching {
-            QuickJs.create().use { js ->
+            // create() needs a dispatcher, and the engine is not Closeable - closed in finally.
+            val js = QuickJs.create(Dispatchers.Default)
+            try {
                 js.evaluate<Any?>(vmScript)
                 val call =
                     """
@@ -71,6 +73,8 @@ class AndroidPoTokenProvider(
                     })()
                     """.trimIndent()
                 js.evaluate<String>(call)
+            } finally {
+                runCatching { js.close() }
             }
         }
             .onFailure { Log.w(TAG, "quickjs failed: ${it.message}") }
