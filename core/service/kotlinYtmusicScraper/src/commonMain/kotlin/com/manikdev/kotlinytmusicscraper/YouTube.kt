@@ -1577,8 +1577,9 @@ class YouTube {
             // client there was nothing to fall back to. Each client is tried in turn and the first
             // one that actually returns streaming data wins.
             val tempRes =
-                listOf(WEB_REMIX, ANDROID_MUSIC, IOS, ANDROID)
-                    .firstNotNullOfOrNull { client ->
+                (
+                    listOf(WEB_REMIX, ANDROID_MUSIC, IOS, ANDROID)
+                    .firstNotNullOfOrNull<PlayerResponse> { client ->
                         runCatching {
                             ytMusic
                                 .player(
@@ -1590,7 +1591,7 @@ class YouTube {
                                 ).body<PlayerResponse>()
                         }.getOrNull()?.takeIf { it.streamingData != null }
                     } ?: error("no client returned streaming data for $videoId")
-                    .let {
+                ).let {
                         val fexp =
                             it.streamingData
                                 ?.serverAbrStreamingUrl
