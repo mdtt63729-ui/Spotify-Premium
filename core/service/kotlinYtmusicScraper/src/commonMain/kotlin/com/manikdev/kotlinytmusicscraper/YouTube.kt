@@ -1576,22 +1576,29 @@ class YouTube {
             // sit there and then fail with a timeout: when YouTube throttles or refuses that one
             // client there was nothing to fall back to. Each client is tried in turn and the first
             // one that actually returns streaming data wins.
+            // A plain loop, not firstNotNullOfOrNull: that helper's lambda is not suspend, so it
+            // cannot call the player request. This walks the clients in order and stops at the
+            // first response that actually carries streaming data.
+            var resolved: PlayerResponse? = null
+            for (client in listOf(WEB_REMIX, ANDROID_MUSIC, IOS, ANDROID)) {
+                val candidate =
+                    runCatching {
+                        ytMusic
+                            .player(
+                                client,
+                                videoId,
+                                playlistId,
+                                cpn,
+                                signatureTimestamp = signatureTimestamp,
+                            ).body<PlayerResponse>()
+                    }.getOrNull()
+                if (candidate?.streamingData != null) {
+                    resolved = candidate
+                    break
+                }
+            }
             val tempRes =
-                (
-                    listOf(WEB_REMIX, ANDROID_MUSIC, IOS, ANDROID)
-                    .firstNotNullOfOrNull<PlayerResponse> { client ->
-                        runCatching {
-                            ytMusic
-                                .player(
-                                    client,
-                                    videoId,
-                                    playlistId,
-                                    cpn,
-                                    signatureTimestamp = signatureTimestamp,
-                                ).body<PlayerResponse>()
-                        }.getOrNull()?.takeIf { it.streamingData != null }
-                    } ?: error("no client returned streaming data for $videoId")
-                ).let {
+                (resolved ?: error("no client returned streaming data for $videoId")).let {
                         val fexp =
                             it.streamingData
                                 ?.serverAbrStreamingUrl
