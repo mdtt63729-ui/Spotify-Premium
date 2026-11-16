@@ -2,6 +2,7 @@ package com.manikdev.spotify.expect.ui
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 
@@ -19,6 +20,9 @@ object FrameStats {
     var sampleMs by mutableIntStateOf(0)
     var enabled by mutableStateOf(false)
 
+    /** Ring buffer of the last ~30 samples (roughly 90 seconds), newest last. */
+    val history = mutableStateListOf<String>()
+
     fun update(
         fps: Int,
         slowPercent: Int,
@@ -29,5 +33,7 @@ object FrameStats {
         this.slowPercent = slowPercent
         this.worstFrameMs = worstFrameMs
         this.sampleMs = sampleMs
+        history.add("${fps}fps slow=${slowPercent}% worst=${worstFrameMs}ms")
+        while (history.size > 30) history.removeAt(0)
     }
 }
