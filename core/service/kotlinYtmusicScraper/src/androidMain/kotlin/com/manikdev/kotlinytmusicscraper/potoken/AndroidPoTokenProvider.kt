@@ -53,7 +53,7 @@ class AndroidPoTokenProvider(
      * Runs the VM script and hands it the challenge, the way Google's own page does: the script
      * defines a global interpreter, and calling it with the challenge returns the response string.
      */
-    private fun runBotGuard(vmScript: String, challenge: String): String? =
+    private suspend fun runBotGuard(vmScript: String, challenge: String): String? =
         runCatching {
             // create() needs a dispatcher, and the engine is not Closeable - closed in finally.
             val js = QuickJs.create(Dispatchers.Default)
