@@ -309,9 +309,23 @@ internal class StreamRepositoryImpl(
                         )
                     }
                 }.onFailure {
+                    // Step 1 of the fallback chain. InnerTube has already walked every player
+                    // client by this point; if it still produced nothing, ask the extractor path
+                    // (PipePipe / Brave NewPipe) for a plain stream URL before giving up. Emitting
+                    // null here is what the user saw as a bare timeout with no explanation.
                     it.printStackTrace()
-                    Logger.e("Stream", "Error: ${it.message}")
-                    emit(null)
+                    Logger.e("Stream", "InnerTube failed, trying extractor: ${it.message}")
+                    val fallback =
+                        runCatching { youTube.getExtractSource(videoId) }
+                            .onFailure { error -> Logger.e("Stream", "extractor threw: ${error.message}") }
+                            .getOrNull()
+                    if (!fallback.isNullOrEmpty()) {
+                        Logger.w("Stream", "extractor fallback supplied a stream url")
+                        emit(fallback)
+                    } else {
+                        Logger.e("Stream", "extractor fallback also produced nothing")
+                        emit(null)
+                    }
                 }
         }.flowOn(Dispatchers.IO)
 
