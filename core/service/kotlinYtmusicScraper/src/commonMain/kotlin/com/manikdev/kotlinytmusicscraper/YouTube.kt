@@ -31,6 +31,9 @@ import com.manikdev.kotlinytmusicscraper.models.WatchEndpoint
 import com.manikdev.kotlinytmusicscraper.models.YTItem
 import com.manikdev.kotlinytmusicscraper.models.YTItemType
 import com.manikdev.kotlinytmusicscraper.models.YouTubeClient
+import com.manikdev.kotlinytmusicscraper.models.YouTubeClient.Companion.ANDROID
+import com.manikdev.kotlinytmusicscraper.models.YouTubeClient.Companion.ANDROID_MUSIC
+import com.manikdev.kotlinytmusicscraper.models.YouTubeClient.Companion.IOS
 import com.manikdev.kotlinytmusicscraper.models.YouTubeClient.Companion.TVHTML5
 import com.manikdev.kotlinytmusicscraper.models.YouTubeClient.Companion.WEB
 import com.manikdev.kotlinytmusicscraper.models.YouTubeClient.Companion.WEB_REMIX
@@ -1559,24 +1562,34 @@ class YouTube {
                     }.joinToString("")
 
             var decodedSigResponse: PlayerResponse? = null
+            val signatureTimestamp =
+                run {
+                    val today = Clock.System.todayIn(TimeZone.UTC)
+                    val epoch =
+                        Instant
+                            .fromEpochSeconds(0)
+                            .toLocalDateTime(TimeZone.UTC)
+                            .date
+                    epoch.daysUntil(today)
+                }
+            // Client rotation, the way Echo does it. WEB_REMIX alone is the reason a track could
+            // sit there and then fail with a timeout: when YouTube throttles or refuses that one
+            // client there was nothing to fall back to. Each client is tried in turn and the first
+            // one that actually returns streaming data wins.
             val tempRes =
-                ytMusic
-                    .player(
-                        WEB_REMIX,
-                        videoId,
-                        playlistId,
-                        cpn,
-                        signatureTimestamp =
-                            run {
-                                val today = Clock.System.todayIn(TimeZone.UTC)
-                                val epoch =
-                                    Instant
-                                        .fromEpochSeconds(0)
-                                        .toLocalDateTime(TimeZone.UTC)
-                                        .date
-                                epoch.daysUntil(today)
-                            },
-                    ).body<PlayerResponse>()
+                listOf(WEB_REMIX, ANDROID_MUSIC, IOS, ANDROID)
+                    .firstNotNullOfOrNull { client ->
+                        runCatching {
+                            ytMusic
+                                .player(
+                                    client,
+                                    videoId,
+                                    playlistId,
+                                    cpn,
+                                    signatureTimestamp = signatureTimestamp,
+                                ).body<PlayerResponse>()
+                        }.getOrNull()?.takeIf { it.streamingData != null }
+                    } ?: error("no client returned streaming data for $videoId")
                     .let {
                         val fexp =
                             it.streamingData
