@@ -112,6 +112,24 @@ internal class StreamRepositoryImpl(
                 } else {
                     ITAG.MUXED_360P
                 }
+            // A URL InnerTube hands back can already be dead by the time the player opens it:
+            // extraction succeeds, playback then fails, and the user sees a timeout. Checking it
+            // here - the one place that already knows how to ask - means a refused URL never
+            // reaches the player, and the extractor is tried at that moment instead.
+            suspend fun playableOrFallback(url: String?): String? {
+                if (url == null) return null
+                val refused = runCatching { youTube.is403Url(url) }.getOrDefault(false)
+                if (!refused) return url
+                Logger.w("Stream", "innertube url refused (403); trying extractor")
+                val fromExtractor = runCatching { youTube.getExtractSource(videoId) }.getOrNull()
+                if (fromExtractor.isNullOrEmpty()) {
+                    Logger.e("Stream", "extractor had nothing either; handing over the refused url")
+                    return url
+                }
+                Logger.w("Stream", "extractor url supplied")
+                return fromExtractor
+            }
+
             youTube
                 .player(
                     videoId,
@@ -281,6 +299,7 @@ internal class StreamRepositoryImpl(
                     )
                     if (data.first != null) {
                         emit(
+                            playableOrFallback(
                             if (muxed) {
                                 response.streamingData?.hlsManifestUrl
                             } else {
@@ -292,6 +311,7 @@ internal class StreamRepositoryImpl(
                                     }
                                 }
                             },
+                            ),
                         )
                     } else {
                         emit(
