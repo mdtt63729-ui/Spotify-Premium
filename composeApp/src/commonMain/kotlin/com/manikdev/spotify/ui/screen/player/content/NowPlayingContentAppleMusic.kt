@@ -950,7 +950,11 @@ private fun AppleMusicArtworkPage(
             val coverRequest =
                 ImageRequest
                     .Builder(LocalPlatformContext.current)
-                    .data(artworkUrl)
+                    // YouTube hands out the size it thinks you need in the url itself (w120-h120
+                    // and so on). On a full-screen cover that is the difference between a soft
+                    // block and the actual artwork, so the size is rewritten to the largest one
+                    // the CDN serves before the request is made.
+                    .data(artworkUrl.withMaxArtworkSize())
                     .diskCachePolicy(CachePolicy.ENABLED)
                     .diskCacheKey(artworkUrl + "BIGGER")
                     .crossfade(550)
@@ -1479,3 +1483,14 @@ private const val PAGE_COLOR_FADE_START = 0.92f
 // does not leave the user staring at an empty page. Not a fixed budget for the request itself:
 // lyrics arriving at any point cancel the wait outright.
 private const val LYRICS_ABSENCE_GRACE_MS = 2_500L
+
+
+/**
+ * Rewrites YouTube's size parameters to the largest the CDN serves.
+ *
+ * The url carries `=w<width>-h<height>` (often with `-l90-rj` after it). A full-screen cover at
+ * 120px is visibly soft, and no decode setting can add pixels the server never sent, so the size
+ * has to be changed in the url itself.
+ */
+private fun String.withMaxArtworkSize(): String =
+    Regex("""=w\d+-h\d+""").replace(this, "=w1080-h1080")

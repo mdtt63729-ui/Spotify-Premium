@@ -29,7 +29,8 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.LinearWavyProgressIndicator
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -144,6 +145,7 @@ fun UpdateHost(
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun UpdateSheet(
     state: UpdateUiState,
@@ -315,13 +317,23 @@ private fun UpdateSheet(
                         Column(modifier = Modifier.fillMaxWidth()) {
                             // A plain, straight bar. The wavy ribbon read as decoration and made
                             // the progress hard to judge; a line and two numbers say everything.
-                            LinearProgressIndicator(
-                                progress = { current.progress.coerceIn(0f, 1f) },
-                                modifier = Modifier.fillMaxWidth().height(6.dp).clip(CircleShape),
+                            // Material 3's own wavy indicator, exactly as the design shows: a
+                            // straight line until a tenth of the way in, then the wave. The
+                            // amplitude is the only thing that changes at 10% - the indicator is
+                            // never re-created, which is what made the old bar jump on every
+                            // percentage step.
+                            val shown = current.progress.coerceIn(0f, 1f)
+                            val waveAmplitude = if (shown >= 0.10f) 6.dp else 0.dp
+                            LinearWavyProgressIndicator(
+                                progress = { shown },
+                                modifier = Modifier.fillMaxWidth().height(14.dp),
                                 color = palette.accent,
                                 trackColor = palette.accent.copy(alpha = 0.18f),
-                                gapSize = 0.dp,
-                                drawStopIndicator = {},
+                                amplitude = { waveAmplitude },
+                                wavelength = 24.dp,
+                                waveSpeed = 0.dp,
+                                gapSize = 4.dp,
+                                stopIndicator = {},
                             )
                             Spacer(Modifier.height(8.dp))
                             Row(
