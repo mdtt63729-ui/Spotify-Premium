@@ -20,9 +20,17 @@ interface PoTokenProvider {
     suspend fun poToken(videoId: String): String?
 }
 
+/**
+ * The provider this platform can offer out of the box, or null when it has none.
+ *
+ * Resolved through expect/actual so the scraper's own module can install it: the app module does
+ * not depend on the scraper, so wiring it from there does not compile.
+ */
+expect fun defaultPoTokenProvider(): PoTokenProvider?
+
 object PoTokenProviders {
     @Volatile
-    var current: PoTokenProvider? = null
+    var current: PoTokenProvider? = defaultPoTokenProvider()
         private set
 
     fun install(provider: PoTokenProvider) {
