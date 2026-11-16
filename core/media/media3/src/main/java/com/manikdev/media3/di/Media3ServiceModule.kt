@@ -560,7 +560,24 @@ private fun provideHttpDataSourceFactory(
                 .readTimeout(30.seconds)
                 .proxy(
                     proxy,
-                ).addInterceptor(
+                )
+                // The stream URL is minted for a YouTube client, and the CDN only serves it back
+                // to a request that looks like that client. Without a User-Agent here the request
+                // arrives anonymous and the connection is refused - which the player reports as
+                // ERROR_CODE_IO_NETWORK_CONNECTION_FAILED, i.e. a timeout on screen.
+                .addInterceptor { chain ->
+                    chain.proceed(
+                        chain
+                            .request()
+                            .newBuilder()
+                            .header(
+                                "User-Agent",
+                                "com.google.android.apps.youtube.music/8.39.42 " +
+                                    "(Linux; U; Android 15; en_US; Pixel 9 Pro; Build/AP4A.250205.002) gzip",
+                            ).build(),
+                    )
+                }
+                .addInterceptor(
                     HttpLoggingInterceptor()
                         .apply {
                             level = HttpLoggingInterceptor.Level.HEADERS
