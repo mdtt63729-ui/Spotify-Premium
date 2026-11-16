@@ -956,7 +956,7 @@ private fun AppleMusicArtworkPage(
                     // the CDN serves before the request is made.
                     .data(artworkUrl?.withMaxArtworkSize())
                     .diskCachePolicy(CachePolicy.ENABLED)
-                    .diskCacheKey(artworkUrl + "BIGGER")
+                    .diskCacheKey((artworkUrl?.withMaxArtworkSize() ?: artworkUrl) + "BIGGER")
                     .crossfade(550)
                     .build()
             val coverAlpha = if (pageShowsFullscreen) 0f else 1f - clipAlpha
@@ -1488,9 +1488,14 @@ private const val LYRICS_ABSENCE_GRACE_MS = 2_500L
 /**
  * Rewrites YouTube's size parameters to the largest the CDN serves.
  *
- * The url carries `=w<width>-h<height>` (often with `-l90-rj` after it). A full-screen cover at
- * 120px is visibly soft, and no decode setting can add pixels the server never sent, so the size
- * has to be changed in the url itself.
+ * The url carries a size such as `=w120-h120` (sometimes `-w120-h120`), and some variants carry
+ * none at all. A full-screen cover at 120px is visibly soft and no decode setting can add pixels
+ * the server never sent, so the size has to change in the url itself.
  */
-private fun String.withMaxArtworkSize(): String =
-    Regex("""=w\d+-h\d+""").replace(this, "=w1080-h1080")
+private fun String.withMaxArtworkSize(): String {
+    val sized = Regex("""[=-]w\d+-h\d+""").replace(this, "=w1080-h1080")
+    if (sized != this) return sized
+    // No size in the url: only googleusercontent serves an unsized original, so leave anything
+    // else exactly as it is rather than inventing a query parameter it will ignore.
+    return if (contains("googleusercontent") || contains("ytimg")) "$this=w1080-h1080" else this
+}
