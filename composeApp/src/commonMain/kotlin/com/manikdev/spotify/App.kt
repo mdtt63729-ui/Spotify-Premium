@@ -153,6 +153,20 @@ fun App(
 ) {
     val windowSize = currentWindowAdaptiveInfo().windowSizeClass
     val navController = rememberNavController()
+    // Every frame sample is attributed to the screen on top, so the overlay can report per screen
+    // instead of one blurred total for the whole app.
+    androidx.compose.runtime.DisposableEffect(navController) {
+        val listener =
+            androidx.navigation.NavController.OnDestinationChangedListener { _, destination, _ ->
+                com.manikdev.spotify.expect.ui.FrameStats.screen =
+                    destination.route
+                        ?.substringAfterLast('.')
+                        ?.substringBefore('?')
+                        .orEmpty()
+            }
+        navController.addOnDestinationChangedListener(listener)
+        onDispose { navController.removeOnDestinationChangedListener(listener) }
+    }
     val isDesktopShell = getPlatform() == Platform.Desktop
 
     val sleepTimerState by viewModel.sleepTimerState.collectAsStateWithLifecycle()

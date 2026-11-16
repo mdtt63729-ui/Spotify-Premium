@@ -100,8 +100,16 @@ fun PerfOverlay(modifier: Modifier = Modifier) {
     if (showLog) {
         val report =
             buildString {
-                appendLine("Spotify frame log (newest last)")
+                appendLine("Spotify frame report")
                 appendLine("glass=${!PerformanceSettings.highPerformanceMode} hpm=${PerformanceSettings.highPerformanceMode}")
+                appendLine()
+                appendLine("--- per screen (worst first) ---")
+                FrameStats.perScreen
+                    .entries
+                    .sortedByDescending { it.value.substringAfter("worst ").substringBefore("ms").toIntOrNull() ?: 0 }
+                    .forEach { (where, summary) -> appendLine("$where: $summary") }
+                appendLine()
+                appendLine("--- samples, newest last ---")
                 FrameStats.history.forEach { appendLine(it) }
             }
         AlertDialog(

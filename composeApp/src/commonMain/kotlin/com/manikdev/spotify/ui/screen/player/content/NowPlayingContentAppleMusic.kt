@@ -955,6 +955,9 @@ private fun AppleMusicArtworkPage(
                     // block and the actual artwork, so the size is rewritten to the largest one
                     // the CDN serves before the request is made.
                     .data(artworkUrl?.withMaxArtworkSize())
+                    // Belt and braces with the url rewrite: ask Coil for a large bitmap even if the
+                    // server ignores the size in the url.
+                    .size(1440)
                     .diskCachePolicy(CachePolicy.ENABLED)
                     .diskCacheKey((artworkUrl?.withMaxArtworkSize() ?: artworkUrl) + "BIGGER")
                     .crossfade(550)
