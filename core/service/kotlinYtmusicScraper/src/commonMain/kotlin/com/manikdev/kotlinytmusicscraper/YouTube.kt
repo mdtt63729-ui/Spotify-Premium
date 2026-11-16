@@ -1554,6 +1554,13 @@ class YouTube {
             .onFailure { Logger.w("PoToken", "challenge request failed: ${it.message}") }
             .getOrNull()
 
+    /** Exchanges a solved BotGuard challenge for the integrity token the player request carries. */
+    suspend fun poTokenFromChallenge(challenge: String): String? =
+        runCatching {
+            ytMusic.generatePoToken(challenge).bodyAsText().getPoToken()
+        }.onFailure { Logger.w("PoToken", "generate failed: ${it.message}") }
+            .getOrNull()
+
     suspend fun player(
         videoId: String,
         playlistId: String? = null,
