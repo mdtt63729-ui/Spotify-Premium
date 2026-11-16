@@ -1025,7 +1025,13 @@ fun SettingScreen(
                         title = "High performance mode",
                         subtitle = "Force the screen's highest refresh rate and keep the app there. Uses more battery.",
                         smallSubtitle = true,
-                        switch = (highPerformanceMode to { viewModel.setHighPerformanceMode(it) }),
+                        // Bound to the value the renderer actually uses, not to a view-model flow
+                        // that is seeded from storage: that flow re-read a stored FALSE a beat
+                        // after the write and put the switch back to off.
+                        switch =
+                            (com.manikdev.spotify.expect.ui.PerformanceSettings.highPerformanceMode to {
+                                viewModel.setHighPerformanceMode(it)
+                            }),
                     )
                     // Same data the logcat line carries, on the screen instead.
                     SettingItem(
