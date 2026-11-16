@@ -1572,6 +1572,13 @@ class YouTube {
                             .date
                     epoch.daysUntil(today)
                 }
+            // Step 1 of the poToken work: ask the seam. Nothing installs a provider yet, so this
+            // is null and the request goes out exactly as before; step 2 fills the provider and
+            // step 3 sends the value in serviceIntegrityDimensions.
+            val poToken = com.manikdev.kotlinytmusicscraper.potoken.PoTokenProviders.current?.poToken(videoId)
+            if (poToken != null) {
+                Logger.w("PoToken", "minted for $videoId (${poToken.length} chars)")
+            }
             // Client rotation, the way Echo does it. WEB_REMIX alone is the reason a track could
             // sit there and then fail with a timeout: when YouTube throttles or refuses that one
             // client there was nothing to fall back to. Each client is tried in turn and the first
