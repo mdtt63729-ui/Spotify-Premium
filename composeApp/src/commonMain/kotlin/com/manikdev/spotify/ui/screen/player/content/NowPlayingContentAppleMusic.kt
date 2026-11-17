@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -92,24 +93,24 @@ import com.manikdev.spotify.ui.component.rememberHolderPainter
 import com.manikdev.spotify.ui.icon.Forward5
 import com.manikdev.spotify.ui.icon.Fullscreen
 import com.manikdev.spotify.ui.icon.Replay5
-import com.manikdev.spotify.ui.icon.SimpIcons
+import com.manikdev.spotify.ui.icon.SpotifyIcons
 import com.manikdev.spotify.ui.icon.Subtitles
 import com.manikdev.spotify.ui.icon.SubtitlesOff
-import package com.manikdev.spotify.ui.screen.player.content.applemusic.AppleMusicBottomCluster
-import package com.manikdev.spotify.ui.screen.player.content.applemusic.AppleMusicHeaderActions
-import package com.manikdev.spotify.ui.screen.player.content.applemusic.AppleMusicLyricStrip
-import package com.manikdev.spotify.ui.screen.player.content.applemusic.AppleMusicLyricsView
-import package com.manikdev.spotify.ui.screen.player.content.applemusic.AppleMusicMeshBackdrop
-import package com.manikdev.spotify.ui.screen.player.content.applemusic.AppleMusicOutputSheet
-import package com.manikdev.spotify.ui.screen.player.content.applemusic.AppleMusicQueueView
-import package com.manikdev.spotify.ui.screen.player.content.applemusic.AppleMusicTypography
-import package com.manikdev.spotify.ui.screen.player.content.applemusic.AppleMusicView
-import package com.manikdev.spotify.ui.screen.player.content.applemusic.appleMusicFadeBetween
-import package com.manikdev.spotify.ui.screen.player.content.applemusic.appleMusicGradientColorAt
-import package com.manikdev.spotify.ui.screen.player.content.applemusic.appleMusicVerticalFadeEdges
-import package com.manikdev.spotify.ui.screen.player.content.applemusic.displayName
-import package com.manikdev.spotify.ui.screen.player.content.applemusic.rememberAppleMusicMesh
-import package com.manikdev.spotify.ui.screen.player.content.applemusic.rememberAppleMusicTypography
+import com.manikdev.spotify.ui.screen.player.content.applemusic.AppleMusicBottomCluster
+import com.manikdev.spotify.ui.screen.player.content.applemusic.AppleMusicHeaderActions
+import com.manikdev.spotify.ui.screen.player.content.applemusic.AppleMusicLyricStrip
+import com.manikdev.spotify.ui.screen.player.content.applemusic.AppleMusicLyricsView
+import com.manikdev.spotify.ui.screen.player.content.applemusic.AppleMusicMeshBackdrop
+import com.manikdev.spotify.ui.screen.player.content.applemusic.AppleMusicOutputSheet
+import com.manikdev.spotify.ui.screen.player.content.applemusic.AppleMusicQueueView
+import com.manikdev.spotify.ui.screen.player.content.applemusic.AppleMusicTypography
+import com.manikdev.spotify.ui.screen.player.content.applemusic.AppleMusicView
+import com.manikdev.spotify.ui.screen.player.content.applemusic.appleMusicFadeBetween
+import com.manikdev.spotify.ui.screen.player.content.applemusic.appleMusicGradientColorAt
+import com.manikdev.spotify.ui.screen.player.content.applemusic.appleMusicVerticalFadeEdges
+import com.manikdev.spotify.ui.screen.player.content.applemusic.displayName
+import com.manikdev.spotify.ui.screen.player.content.applemusic.rememberAppleMusicMesh
+import com.manikdev.spotify.ui.screen.player.content.applemusic.rememberAppleMusicTypography
 import com.manikdev.spotify.ui.theme.ArtworkShape
 import com.manikdev.spotify.ui.theme.seed
 import com.manikdev.spotify.ui.theme.typo
@@ -950,9 +951,16 @@ private fun AppleMusicArtworkPage(
             val coverRequest =
                 ImageRequest
                     .Builder(LocalPlatformContext.current)
-                    .data(artworkUrl)
+                    // YouTube hands out the size it thinks you need in the url itself (w120-h120
+                    // and so on). On a full-screen cover that is the difference between a soft
+                    // block and the actual artwork, so the size is rewritten to the largest one
+                    // the CDN serves before the request is made.
+                    .data(artworkUrl?.withMaxArtworkSize())
+                    // Belt and braces with the url rewrite: ask Coil for a large bitmap even if the
+                    // server ignores the size in the url.
+                    .size(1440)
                     .diskCachePolicy(CachePolicy.ENABLED)
-                    .diskCacheKey(artworkUrl + "BIGGER")
+                    .diskCacheKey((artworkUrl?.withMaxArtworkSize() ?: artworkUrl) + "BIGGER")
                     .crossfade(550)
                     .build()
             val coverAlpha = if (pageShowsFullscreen) 0f else 1f - clipAlpha
@@ -962,6 +970,10 @@ private fun AppleMusicArtworkPage(
                         .align(Alignment.TopCenter)
                         .padding(top = topInset)
                         .fillMaxWidth()
+                        // SimpMusic's own geometry, kept exactly: the cover box is as tall as the
+                        // artwork area and the image is drawn with ContentScale.Crop. The square
+                        // box I tried was a deviation from the reference player, and it is what
+                        // made the cover look wrong.
                         .height(artworkHeight),
             ) {
                 AsyncImage(
@@ -1088,7 +1100,7 @@ private fun AppleMusicArtworkPage(
                                             onClick = { actions.onEnterFullscreenVideo() },
                                             modifier = Modifier.align(Alignment.TopEnd),
                                         ) {
-                                            Icon(imageVector = SimpIcons.Fullscreen, contentDescription = "", tint = Color.White)
+                                            Icon(imageVector = SpotifyIcons.Fullscreen, contentDescription = "", tint = Color.White)
                                         }
                                         LeftToRight {
                                             Row(
@@ -1100,7 +1112,7 @@ private fun AppleMusicArtworkPage(
                                                     modifier = Modifier.size(48.dp).clip(CircleShape),
                                                 ) {
                                                     Icon(
-                                                        imageVector = SimpIcons.Replay5,
+                                                        imageVector = SpotifyIcons.Replay5,
                                                         contentDescription = "",
                                                         tint = Color.White,
                                                         modifier = Modifier.size(36.dp).alpha(0.8f),
@@ -1111,7 +1123,7 @@ private fun AppleMusicArtworkPage(
                                                     modifier = Modifier.size(48.dp).clip(CircleShape),
                                                 ) {
                                                     Icon(
-                                                        imageVector = SimpIcons.Forward5,
+                                                        imageVector = SpotifyIcons.Forward5,
                                                         contentDescription = "",
                                                         tint = Color.White,
                                                         modifier = Modifier.size(36.dp).alpha(0.8f),
@@ -1125,7 +1137,7 @@ private fun AppleMusicArtworkPage(
                                                 modifier = Modifier.align(Alignment.BottomEnd),
                                             ) {
                                                 Icon(
-                                                    imageVector = if (showSubtitle) SimpIcons.SubtitlesOff else SimpIcons.Subtitles,
+                                                    imageVector = if (showSubtitle) SpotifyIcons.SubtitlesOff else SpotifyIcons.Subtitles,
                                                     contentDescription = "",
                                                     tint = Color.White,
                                                 )
@@ -1479,3 +1491,19 @@ private const val PAGE_COLOR_FADE_START = 0.92f
 // does not leave the user staring at an empty page. Not a fixed budget for the request itself:
 // lyrics arriving at any point cancel the wait outright.
 private const val LYRICS_ABSENCE_GRACE_MS = 2_500L
+
+
+/**
+ * Rewrites YouTube's size parameters to the largest the CDN serves.
+ *
+ * The url carries a size such as `=w120-h120` (sometimes `-w120-h120`), and some variants carry
+ * none at all. A full-screen cover at 120px is visibly soft and no decode setting can add pixels
+ * the server never sent, so the size has to change in the url itself.
+ */
+private fun String.withMaxArtworkSize(): String {
+    val sized = Regex("""[=-]w\d+-h\d+""").replace(this, "=w1080-h1080")
+    if (sized != this) return sized
+    // No size in the url: only googleusercontent serves an unsized original, so leave anything
+    // else exactly as it is rather than inventing a query parameter it will ignore.
+    return if (contains("googleusercontent") || contains("ytimg")) "$this=w1080-h1080" else this
+}
