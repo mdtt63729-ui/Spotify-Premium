@@ -38,7 +38,7 @@ class SpotifyLyrics {
             httpClient = createClient()
         }
 
-    private val baseUrl = "https://api-lyrics.spotify.org/v1/"
+    private val baseUrl = "https://api-lyrics.simpmusic.org/v1/"
 
     private val amTokenManager = AMTokenManager()
 
@@ -73,7 +73,7 @@ class SpotifyLyrics {
                 deflate(0.8F)
             }
             defaultRequest {
-                url("https://api-lyrics.spotify.org/v1")
+                url("https://api-lyrics.simpmusic.org/v1")
             }
             if (proxy != null) {
                 engine {
