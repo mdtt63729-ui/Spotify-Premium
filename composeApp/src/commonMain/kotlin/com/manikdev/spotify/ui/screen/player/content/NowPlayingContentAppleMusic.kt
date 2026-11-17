@@ -950,9 +950,13 @@ private fun AppleMusicArtworkPage(
             val coverRequest =
                 ImageRequest
                     .Builder(LocalPlatformContext.current)
-                    .data(artworkUrl)
+                    // Max quality WITHOUT changing the picture: the url carries its own size
+                    // (=w544-h544, or =w1280-h720 for a 16:9 video thumb) and the two numbers
+                    // are scaled by the same factor, so the aspect is preserved and nothing is
+                    // cropped. Rewriting to a fixed square was what cropped the cover before.
+                    .data(artworkUrl?.withMaxArtworkSize())
                     .diskCachePolicy(CachePolicy.ENABLED)
-                    .diskCacheKey(artworkUrl + "BIGGER")
+                    .diskCacheKey((artworkUrl?.withMaxArtworkSize() ?: artworkUrl) + "BIGGER")
                     .crossfade(550)
                     .build()
             val coverAlpha = if (pageShowsFullscreen) 0f else 1f - clipAlpha
@@ -1479,3 +1483,21 @@ private const val PAGE_COLOR_FADE_START = 0.92f
 // does not leave the user staring at an empty page. Not a fixed budget for the request itself:
 // lyrics arriving at any point cancel the wait outright.
 private const val LYRICS_ABSENCE_GRACE_MS = 2_500L
+
+
+/**
+ * Scales the size YouTube put in the url up to 1280 on the long side, keeping the aspect ratio.
+ *
+ * A 16:9 thumbnail asked for as w1080-h1080 comes back square-cropped, which is why the cover
+ * looked zoomed in. Scaling both numbers by one factor can only add pixels.
+ */
+private fun String.withMaxArtworkSize(): String {
+    val match = Regex("""[=-]w(\d+)-h(\d+)""").find(this) ?: return this
+    val width = match.groupValues[1].toIntOrNull() ?: return this
+    val height = match.groupValues[2].toIntOrNull() ?: return this
+    val longest = maxOf(width, height)
+    if (longest <= 0 || longest >= 1280) return this
+    val factor = 1280.0 / longest
+    val scaled = "=w${(width * factor).toInt()}-h${(height * factor).toInt()}"
+    return replaceRange(match.range, scaled)
+}

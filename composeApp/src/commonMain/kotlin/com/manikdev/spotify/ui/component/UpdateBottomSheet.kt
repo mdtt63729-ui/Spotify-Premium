@@ -321,7 +321,15 @@ private fun UpdateSheet(
                             // bar until a tenth of the way in, the wavy one after. Only the
                             // composable changes at that point - neither is re-created per
                             // percentage step, which is what made the old bar jump.
-                            val shown = current.progress.coerceIn(0f, 1f)
+                            // Smoothed, so a new percentage moves the bar instead of snapping it.
+                            // Every raw value used to be handed straight to the indicator, and that
+                            // step-per-update is what read as a glitch.
+                            val raw = current.progress.coerceIn(0f, 1f)
+                            val shown by animateFloatAsState(
+                                targetValue = raw,
+                                animationSpec = tween(durationMillis = 320, easing = LinearEasing),
+                                label = "updateProgress",
+                            )
                             if (shown < 0.10f) {
                                 LinearProgressIndicator(
                                     progress = { shown },
