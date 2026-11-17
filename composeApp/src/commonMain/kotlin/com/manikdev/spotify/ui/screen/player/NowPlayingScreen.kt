@@ -54,6 +54,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupPositionProvider
@@ -164,15 +165,52 @@ fun NowPlayingScreen(
         contentWindowInsets = { WindowInsets(0, 0, 0, 0) },
         shape = RectangleShape,
     ) {
-        NowPlayingScreenContent(
-            sharedViewModel = sharedViewModel,
-            navController = navController,
-            isExpanded = sheetState.currentValue == SheetValue.Expanded,
-            dismissIcon = SpotifyIcons.KeyboardArrowDown,
-            onDismiss = {
-                hideSheet()
-            },
-        )
+        // BitChord's motion, applied to the part we own without tearing out M3's sheet: the
+        // content arrives on a critically damped spring (stiffness 195, no bounce) instead of a
+        // timed ease, so it leaves briskly and then settles rather than stopping dead. Scale,
+        // alpha and lift all ride the same value, which is what keeps it from looking like three
+        // separate animations.
+        val settle =
+            androidx.compose.runtime.remember { androidx.compose.animation.core.Animatable(0f) }
+        androidx.compose.runtime.LaunchedEffect(Unit) {
+            settle.animateTo(
+                targetValue = 1f,
+                animationSpec =
+                    androidx.compose.animation.core.spring(
+                        dampingRatio = androidx.compose.animation.core.Spring.DampingRatioNoBouncy,
+                        stiffness = 195f,
+                    ),
+            )
+        }
+        androidx.compose.foundation.layout.Box(
+            modifier =
+                Modifier
+                    .fillMaxSize()
+        ) {
+            androidx.compose.foundation.layout.Box(
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .graphicsLayer {
+                            val t = settle.value
+                            alpha = t
+                            val scale = 0.94f + 0.06f * t
+                            scaleX = scale
+                            scaleY = scale
+                            translationY = (1f - t) * 56.dp.toPx()
+                        },
+            ) {
+                NowPlayingScreenContent(
+                    sharedViewModel = sharedViewModel,
+                    navController = navController,
+                    isExpanded = sheetState.currentValue == SheetValue.Expanded,
+                    dismissIcon = SpotifyIcons.KeyboardArrowDown,
+                    onDismiss = {
+                        hideSheet()
+                    },
+                )
+            }
+        }
     }
 }
 
