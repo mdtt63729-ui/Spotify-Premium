@@ -56,7 +56,7 @@ import com.manikdev.spotify.ui.component.lyrics.toShareLyricsLines
 import com.manikdev.spotify.ui.icon.OpenInFull
 import com.manikdev.spotify.ui.icon.Share
 import com.manikdev.spotify.ui.icon.AvTimer
-import com.manikdev.spotify.ui.icon.SpotifyIcons
+import com.manikdev.spotify.ui.icon.SimpIcons
 import com.manikdev.spotify.ui.icon.ThumbsUpDown
 import com.manikdev.spotify.ui.screen.player.content.NowPlayingContentActions
 import com.manikdev.spotify.ui.screen.player.content.NowPlayingContentState
@@ -72,7 +72,7 @@ import spotify.composeapp.generated.resources.ai_translated
 import spotify.composeapp.generated.resources.line_synced
 import spotify.composeapp.generated.resources.lyrics_provider_betterlyrics
 import spotify.composeapp.generated.resources.lyrics_provider_lrc
-import spotify.composeapp.generated.resources.lyrics_provider_spotify
+import spotify.composeapp.generated.resources.lyrics_provider_simpmusic
 import spotify.composeapp.generated.resources.lyrics_provider_youtube
 import spotify.composeapp.generated.resources.offline_mode
 import spotify.composeapp.generated.resources.rich_synced
@@ -225,7 +225,7 @@ internal fun AppleMusicLyricsView(
                                 )
                             }
                             // One line per fact, not one line joined by a bullet. "Word by word"
-                            // and "Lyrics provided by Spotify Lyrics" are two different things,
+                            // and "Lyrics provided by SimpMusic Lyrics" are two different things,
                             // and glued together they make a single line long enough to run the
                             // width of the screen.
                             //
@@ -287,18 +287,18 @@ internal fun AppleMusicLyricsView(
                                 // Adjusting counts as touching the page, or the cluster hides mid-tap.
                                 onInteraction = { interactionTick++ },
                             ) { onClick ->
-                                AppleMusicFloatingCircleButton(icon = SpotifyIcons.AvTimer, onClick = onClick)
+                                AppleMusicFloatingCircleButton(icon = SimpIcons.AvTimer, onClick = onClick)
                             }
                         }
-                        // Only when the lyrics (or the translation) actually came from Spotify
+                        // Only when the lyrics (or the translation) actually came from SimpMusic
                         // Lyrics — the sole provider that accepts a vote. Classic and M3E have
                         // always gated theirs; this one did not, so it invited a rating on
                         // YouTube/LRCLIB/Spotify lyrics that had nowhere to go.
                         if (lyricsData.canVote()) {
-                            AppleMusicFloatingCircleButton(icon = SpotifyIcons.ThumbsUpDown, onClick = { actions.onShowVoteDialog() })
+                            AppleMusicFloatingCircleButton(icon = SimpIcons.ThumbsUpDown, onClick = { actions.onShowVoteDialog() })
                         }
-                        AppleMusicFloatingCircleButton(icon = SpotifyIcons.Share, onClick = { showShareSheet = true })
-                        AppleMusicFloatingCircleButton(icon = SpotifyIcons.OpenInFull, onClick = { actions.onShowFullscreenLyrics() })
+                        AppleMusicFloatingCircleButton(icon = SimpIcons.Share, onClick = { showShareSheet = true })
+                        AppleMusicFloatingCircleButton(icon = SimpIcons.OpenInFull, onClick = { actions.onShowFullscreenLyrics() })
                     }
                 }
             }
@@ -385,7 +385,7 @@ private fun appleMusicLyricsSyncText(lyricsData: NowPlayingScreenData.LyricsData
 @Composable
 private fun appleMusicLyricsProviderText(lyricsData: NowPlayingScreenData.LyricsData): String =
     when (lyricsData.lyricsProvider) {
-        LyricsProvider.APP -> stringResource(Res.string.lyrics_provider_spotify)
+        LyricsProvider.SIMPMUSIC -> stringResource(Res.string.lyrics_provider_simpmusic)
         LyricsProvider.LRCLIB -> stringResource(Res.string.lyrics_provider_lrc)
         LyricsProvider.YOUTUBE -> stringResource(Res.string.lyrics_provider_youtube)
         LyricsProvider.SPOTIFY -> stringResource(Res.string.spotify_lyrics_provider)

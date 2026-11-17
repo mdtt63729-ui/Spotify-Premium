@@ -66,7 +66,7 @@ import com.manikdev.spotify.ui.icon.PlaylistAdd
 import com.manikdev.spotify.ui.icon.Repeat
 import com.manikdev.spotify.ui.icon.RepeatOne
 import com.manikdev.spotify.ui.icon.Shuffle
-import com.manikdev.spotify.ui.icon.SpotifyIcons
+import com.manikdev.spotify.ui.icon.SimpIcons
 import com.manikdev.spotify.ui.screen.player.content.NowPlayingContentActions
 import com.manikdev.spotify.ui.screen.player.content.NowPlayingContentState
 import com.manikdev.spotify.viewModel.UIEvent
@@ -311,7 +311,7 @@ internal fun AppleMusicQueueView(
     }
 }
 
-/** [SpotifyIcons.Info] [SpotifyIcons.PlaylistAdd] [SpotifyIcons.Shuffle] [SpotifyIcons.Repeat] — exactly, per the corrected spec. */
+/** [SimpIcons.Info] [SimpIcons.PlaylistAdd] [SimpIcons.Shuffle] [SimpIcons.Repeat] — exactly, per the corrected spec. */
 @Composable
 private fun AppleMusicQueuePillsRow(
     state: NowPlayingContentState,
@@ -326,7 +326,7 @@ private fun AppleMusicQueuePillsRow(
         horizontalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         AppleMusicQueuePill(
-            icon = SpotifyIcons.Info,
+            icon = SimpIcons.Info,
             active = false,
             activeContainer = activePillContainer,
             activeContent = activePillContent,
@@ -334,7 +334,7 @@ private fun AppleMusicQueuePillsRow(
             modifier = Modifier.weight(1f),
         )
         AppleMusicQueuePill(
-            icon = SpotifyIcons.PlaylistAdd,
+            icon = SimpIcons.PlaylistAdd,
             active = false,
             activeContainer = activePillContainer,
             activeContent = activePillContent,
@@ -342,7 +342,7 @@ private fun AppleMusicQueuePillsRow(
             modifier = Modifier.weight(1f),
         )
         AppleMusicQueuePill(
-            icon = SpotifyIcons.Shuffle,
+            icon = SimpIcons.Shuffle,
             active = state.controllerState.isShuffle,
             activeContainer = activePillContainer,
             activeContent = activePillContent,
@@ -350,7 +350,7 @@ private fun AppleMusicQueuePillsRow(
             modifier = Modifier.weight(1f),
         )
         AppleMusicQueuePill(
-            icon = if (repeatState is RepeatState.One) SpotifyIcons.RepeatOne else SpotifyIcons.Repeat,
+            icon = if (repeatState is RepeatState.One) SimpIcons.RepeatOne else SimpIcons.Repeat,
             active = repeatState !is RepeatState.None,
             activeContainer = activePillContainer,
             activeContent = activePillContent,

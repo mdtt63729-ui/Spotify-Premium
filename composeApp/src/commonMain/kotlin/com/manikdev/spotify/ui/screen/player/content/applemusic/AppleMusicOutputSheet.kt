@@ -55,7 +55,7 @@ import com.manikdev.spotify.ui.component.rememberSurfaceDarkColors
 import com.manikdev.spotify.ui.icon.Check
 import com.manikdev.spotify.ui.icon.Headphones
 import com.manikdev.spotify.ui.icon.MusicCast
-import com.manikdev.spotify.ui.icon.SpotifyIcons
+import com.manikdev.spotify.ui.icon.SimpIcons
 import com.manikdev.spotify.ui.icon.Smartphone
 import com.manikdev.spotify.ui.icon.Speaker
 import com.manikdev.spotify.ui.theme.typo
@@ -186,7 +186,7 @@ internal fun AppleMusicOutputSheet(
                     )
                     cast.receivers.forEach { receiver ->
                         OutputRow(
-                            icon = SpotifyIcons.MusicCast,
+                            icon = SimpIcons.MusicCast,
                             name = receiver.name,
                             status = if (receiver.isConnected) stringResource(Res.string.audio_output_playing_here) else null,
                             selected = receiver.isConnected,
@@ -244,7 +244,7 @@ private fun OutputRow(
             }
         }
         AnimatedVisibility(visible = selected, enter = fadeIn() + scaleIn(), exit = fadeOut() + scaleOut()) {
-            Icon(imageVector = SpotifyIcons.Check, contentDescription = null, tint = colors.content, modifier = Modifier.size(24.dp))
+            Icon(imageVector = SimpIcons.Check, contentDescription = null, tint = colors.content, modifier = Modifier.size(24.dp))
         }
     }
 }
@@ -280,7 +280,7 @@ private fun AudioOutput.kindLabel(): String? =
 private fun AudioOutput.icon(): ImageVector =
     when (kind) {
         // The phone's own speaker on Android; the system default on desktop, which is a computer.
-        AudioOutputKind.DEVICE_SPEAKER -> if (getPlatform() == Platform.Android) SpotifyIcons.Smartphone else SpotifyIcons.Speaker
-        AudioOutputKind.WIRED, AudioOutputKind.BLUETOOTH, AudioOutputKind.USB -> SpotifyIcons.Headphones
-        AudioOutputKind.HDMI, AudioOutputKind.OTHER -> SpotifyIcons.Speaker
+        AudioOutputKind.DEVICE_SPEAKER -> if (getPlatform() == Platform.Android) SimpIcons.Smartphone else SimpIcons.Speaker
+        AudioOutputKind.WIRED, AudioOutputKind.BLUETOOTH, AudioOutputKind.USB -> SimpIcons.Headphones
+        AudioOutputKind.HDMI, AudioOutputKind.OTHER -> SimpIcons.Speaker
     }

@@ -103,7 +103,7 @@ import com.manikdev.spotify.ui.icon.QueueMusic
 import com.manikdev.spotify.ui.icon.Repeat
 import com.manikdev.spotify.ui.icon.RepeatOne
 import com.manikdev.spotify.ui.icon.Shuffle
-import com.manikdev.spotify.ui.icon.SpotifyIcons
+import com.manikdev.spotify.ui.icon.SimpIcons
 import com.manikdev.spotify.ui.icon.Star
 import com.manikdev.spotify.ui.icon.StarBorder
 import com.manikdev.spotify.ui.icon.VolumeDown
@@ -365,7 +365,7 @@ internal fun AppleMusicHeaderActions(
             ) {
                 Crossfade(targetState = state.likeStatus, label = "appleMusicYtLiked") { liked ->
                     Icon(
-                        imageVector = if (liked) SpotifyIcons.CheckCircle else SpotifyIcons.AddCircleOutline,
+                        imageVector = if (liked) SimpIcons.CheckCircle else SimpIcons.AddCircleOutline,
                         contentDescription = "",
                         tint = Color.White,
                     )
@@ -389,14 +389,14 @@ internal fun AppleMusicHeaderActions(
             Crossfade(targetState = state.controllerState.isLiked, label = "appleMusicFavorite") { liked ->
                 // 24dp like ⊕ and ⋮ beside it; the 32dp box stays, since the burst's reach scales with it.
                 Icon(
-                    imageVector = if (liked) SpotifyIcons.Star else SpotifyIcons.StarBorder,
+                    imageVector = if (liked) SimpIcons.Star else SimpIcons.StarBorder,
                     contentDescription = "",
                     tint = Color.White,
                     modifier = Modifier.size(24.dp),
                 )
             }
         }
-        AppleMusicGlyphButton(icon = SpotifyIcons.MoreVert, onClick = { actions.onShowMoreSheet() })
+        AppleMusicGlyphButton(icon = SimpIcons.MoreVert, onClick = { actions.onShowMoreSheet() })
     }
 }
 
@@ -420,7 +420,7 @@ internal fun AppleMusicCompactHeader(
     ) {
         if (onBack != null) {
             // On the circle the page's floating buttons sit on.
-            AppleMusicFloatingCircleButton(icon = SpotifyIcons.ArrowBackIosNew, onClick = onBack)
+            AppleMusicFloatingCircleButton(icon = SimpIcons.ArrowBackIosNew, onClick = onBack)
             Spacer(modifier = Modifier.width(12.dp))
         }
         AsyncImage(
@@ -465,7 +465,7 @@ internal fun AppleMusicCompactHeader(
         Spacer(modifier = Modifier.width(12.dp))
         if (onBack != null) {
             // The SoundCloud style keeps like and add-to-liked on its card, so only more stays here.
-            AppleMusicGlyphButton(icon = SpotifyIcons.MoreVert, onClick = { actions.onShowMoreSheet() })
+            AppleMusicGlyphButton(icon = SimpIcons.MoreVert, onClick = { actions.onShowMoreSheet() })
         } else {
             AppleMusicHeaderActions(state = state, actions = actions)
         }
@@ -655,7 +655,7 @@ internal fun AppleMusicTimesRow(
             ) { label ->
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
-                        imageVector = SpotifyIcons.Headphones,
+                        imageVector = SimpIcons.Headphones,
                         contentDescription = null,
                         tint = AppleMusicQualityLabel,
                         modifier = Modifier.size(13.dp),
@@ -703,7 +703,7 @@ internal fun AppleMusicTransportRow(
     ) {
         if (showShuffleAndRepeat) {
             AppleMusicGlyphButton(
-                icon = SpotifyIcons.Shuffle,
+                icon = SimpIcons.Shuffle,
                 onClick = { onUIEvent(UIEvent.Shuffle) },
                 size = 40.dp,
                 tint = Color.White.copy(alpha = if (controllerState.isShuffle) 1f else 0.4f),
@@ -714,7 +714,7 @@ internal fun AppleMusicTransportRow(
             modifier = Modifier.appleMusicPressInflate().size(56.dp).clip(CircleShape),
         ) {
             Icon(
-                imageVector = SpotifyIcons.FastRewind,
+                imageVector = SimpIcons.FastRewind,
                 contentDescription = "",
                 tint = Color.White.copy(alpha = if (controllerState.isPreviousAvailable) 1f else 0.4f),
                 modifier = Modifier.size(46.dp),
@@ -734,7 +734,7 @@ internal fun AppleMusicTransportRow(
         ) {
             Crossfade(targetState = controllerState.isPlaying, label = "appleMusicPlayPauseIcon") { isPlaying ->
                 Icon(
-                    imageVector = if (isPlaying) SpotifyIcons.Pause else SpotifyIcons.PlayArrow,
+                    imageVector = if (isPlaying) SimpIcons.Pause else SimpIcons.PlayArrow,
                     contentDescription = "",
                     tint = Color.White,
                     modifier = Modifier.size(66.dp),
@@ -746,7 +746,7 @@ internal fun AppleMusicTransportRow(
             modifier = Modifier.appleMusicPressInflate().size(56.dp).clip(CircleShape),
         ) {
             Icon(
-                imageVector = SpotifyIcons.FastForward,
+                imageVector = SimpIcons.FastForward,
                 contentDescription = "",
                 tint = Color.White.copy(alpha = if (controllerState.isNextAvailable) 1f else 0.4f),
                 modifier = Modifier.size(46.dp),
@@ -755,7 +755,7 @@ internal fun AppleMusicTransportRow(
         if (showShuffleAndRepeat) {
             val repeatState = controllerState.repeatState
             AppleMusicGlyphButton(
-                icon = if (repeatState is RepeatState.One) SpotifyIcons.RepeatOne else SpotifyIcons.Repeat,
+                icon = if (repeatState is RepeatState.One) SimpIcons.RepeatOne else SimpIcons.Repeat,
                 onClick = { onUIEvent(UIEvent.Repeat) },
                 size = 40.dp,
                 tint = Color.White.copy(alpha = if (repeatState !is RepeatState.None) 1f else 0.4f),
@@ -771,7 +771,7 @@ internal fun AppleMusicVolumeRow(
 ) = LeftToRight {
     Row(modifier = modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Icon(
-            imageVector = SpotifyIcons.VolumeDown,
+            imageVector = SimpIcons.VolumeDown,
             contentDescription = "",
             tint = AppleMusicTextSecondary,
             modifier = Modifier.size(18.dp),
@@ -787,7 +787,7 @@ internal fun AppleMusicVolumeRow(
         }
         Spacer(modifier = Modifier.width(12.dp))
         Icon(
-            imageVector = SpotifyIcons.VolumeUp,
+            imageVector = SimpIcons.VolumeUp,
             contentDescription = "",
             tint = AppleMusicTextSecondary,
             modifier = Modifier.size(18.dp),
@@ -869,7 +869,7 @@ internal fun AppleMusicActionRow(
         ) {
             // Re-tapping the active tab returns to MAIN — the dock is a toggle, not one-way nav.
             AppleMusicDockButton(
-                icon = SpotifyIcons.Lyrics,
+                icon = SimpIcons.Lyrics,
                 active = viewState == AppleMusicView.LYRICS,
                 activeColor = activeColor,
                 activeContentColor = activeContentColor,
@@ -887,7 +887,7 @@ internal fun AppleMusicActionRow(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 AppleMusicCapsuleSegment(
-                    icon = SpotifyIcons.Headphones,
+                    icon = SimpIcons.Headphones,
                     width = segmentWidth,
                     highlighted = false,
                     onClick = onOpenOutput,
@@ -900,7 +900,7 @@ internal fun AppleMusicActionRow(
                             .background(Color.White.copy(alpha = 0.20f)),
                 )
                 AppleMusicCapsuleSegment(
-                    icon = SpotifyIcons.Groups,
+                    icon = SimpIcons.Groups,
                     width = segmentWidth,
                     highlighted = room.inRoom,
                     onClick = onOpenListenTogether,
@@ -913,14 +913,14 @@ internal fun AppleMusicActionRow(
                             .background(Color.White.copy(alpha = 0.20f)),
                 )
                 AppleMusicCapsuleSegment(
-                    icon = SpotifyIcons.CommentOutline,
+                    icon = SimpIcons.CommentOutline,
                     width = segmentWidth,
                     highlighted = false,
                     onClick = onOpenComments,
                 )
             }
             AppleMusicDockButton(
-                icon = SpotifyIcons.QueueMusic,
+                icon = SimpIcons.QueueMusic,
                 active = viewState == AppleMusicView.QUEUE,
                 activeColor = activeColor,
                 activeContentColor = activeContentColor,
@@ -1024,7 +1024,7 @@ internal fun ColumnScope.AppleMusicPlaybackControls(
  * action row renders (no slider/transport/volume), matching the `Platform.Android` gate the other
  * two styles use.
  *
- * [outputName] names the device the sound leaves by ("manikdev's Phone", a Bluetooth headset, a
+ * [outputName] names the device the sound leaves by ("maxrave's Phone", a Bluetooth headset, a
  * Cast receiver); the slot keeps its height while it is unknown, so nothing above it moves.
  */
 @Composable
