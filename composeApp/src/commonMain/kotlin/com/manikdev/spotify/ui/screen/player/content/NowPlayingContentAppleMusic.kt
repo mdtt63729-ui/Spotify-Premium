@@ -970,10 +970,11 @@ private fun AppleMusicArtworkPage(
                         .align(Alignment.TopCenter)
                         .padding(top = topInset)
                         .fillMaxWidth()
-                        // Square, the way the Apple Music player and Echo both draw it: a square
-                        // image in a square box is never cropped, so the artwork is shown whole
-                        // instead of being zoomed into a wide frame and looking soft.
-                        .aspectRatio(1f),
+                        // SimpMusic's own geometry, kept exactly: the cover box is as tall as the
+                        // artwork area and the image is drawn with ContentScale.Crop. The square
+                        // box I tried was a deviation from the reference player, and it is what
+                        // made the cover look wrong.
+                        .height(artworkHeight),
             ) {
                 AsyncImage(
                     model = coverRequest,
