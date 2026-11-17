@@ -947,6 +947,11 @@ private fun AppleMusicArtworkPage(
     Box(modifier = Modifier.fillMaxSize()) {
         if (isCurrentPage) {
             var artworkUrl by remember(state.screenData.thumbnailURL) { mutableStateOf(state.screenData.thumbnailURL) }
+            // One line per track, so the artwork question stops being guesswork: this prints the
+            // url the app was handed and, below, the pixel size Coil actually decoded.
+            androidx.compose.runtime.LaunchedEffect(artworkUrl) {
+                com.maxrave.logger.Logger.w("Artwork", "url=${artworkUrl.orEmpty().takeLast(60)}")
+            }
             val coverRequest =
                 ImageRequest
                     .Builder(LocalPlatformContext.current)
@@ -972,6 +977,10 @@ private fun AppleMusicArtworkPage(
                     model = coverRequest,
                     contentDescription = "",
                     onSuccess = {
+                        com.maxrave.logger.Logger.w(
+                            "Artwork",
+                            "decoded=${it.result.image.width}x${it.result.image.height}",
+                        )
                         val bitmap = it.result.image.toImageBitmap()
                         actions.onArtworkBitmap(bitmap)
                         onCoverBitmap(bitmap)
