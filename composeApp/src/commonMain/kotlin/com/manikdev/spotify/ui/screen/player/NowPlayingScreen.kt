@@ -151,6 +151,17 @@ fun NowPlayingScreen(
     // motion played in opposite directions - BitChord's PlayerSheetMotion does the same thing by
     // holding its sheet open and moving the content itself.
     val settle = remember { Animatable(0f) }
+    // Finger-following, the way BitChord's sheet does it: the sheet's own offset is read while it
+    // is being dragged, and the content's scale and fade ride that same number. So pulling down
+    // shrinks the player towards the mini bar under your finger instead of the content sitting
+    // still while the sheet slides out from under it.
+    val dragProgress by remember(sheetState) {
+        androidx.compose.runtime.derivedStateOf {
+            runCatching {
+                (sheetState.requireOffset() / 420f).coerceIn(0f, 1f)
+            }.getOrDefault(0f)
+        }
+    }
 
     val hideSheet: () -> Unit = {
         coroutineScope.launch {
@@ -209,7 +220,7 @@ fun NowPlayingScreen(
                     Modifier
                         .fillMaxSize()
                         .graphicsLayer {
-                            val t = settle.value
+                            val t = settle.value * (1f - dragProgress)
                             alpha = t
                             // Rises from where the mini player sits, rather than fading in
                             // place: the sheet starts smaller and further down, so the eye
