@@ -222,13 +222,12 @@ fun NowPlayingScreen(
                         .graphicsLayer {
                             val t = settle.value * (1f - dragProgress)
                             alpha = t
-                            // Rises from where the mini player sits, rather than fading in
-                            // place: the sheet starts smaller and further down, so the eye
-                            // reads it as the same player growing out of the bar.
-                            val scale = 0.72f + 0.28f * t
-                            scaleX = scale
-                            scaleY = scale
-                            translationY = (1f - t) * 180.dp.toPx()
+                            // No scale here, on purpose. A graphicsLayer that scales the whole
+                            // player makes Compose rasterise the layer and then stretch it, and
+                            // the artwork comes out soft - which is exactly the quality loss this
+                            // caused. Translation and alpha cost no pixels, so the cover stays
+                            // sharp at every frame of the motion.
+                            translationY = (1f - t) * 120.dp.toPx()
                         },
             ) {
                 NowPlayingScreenContent(
