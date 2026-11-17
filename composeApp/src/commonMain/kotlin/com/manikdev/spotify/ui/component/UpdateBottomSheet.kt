@@ -333,6 +333,13 @@ private fun UpdateSheet(
                                 animationSpec = tween(durationMillis = 320, easing = LinearEasing),
                                 label = "updateProgress",
                             )
+                            // A fixed-height box around both bars: switching composables at 10%
+                            // used to re-measure the row and shift everything below it, which is
+                            // the jump that read as a glitch. Same height in, same height out.
+                            androidx.compose.foundation.layout.Box(
+                                modifier = Modifier.fillMaxWidth().height(14.dp),
+                                contentAlignment = androidx.compose.ui.Alignment.CenterStart,
+                            ) {
                             if (shown < 0.10f) {
                                 LinearProgressIndicator(
                                     progress = { shown },
@@ -351,6 +358,7 @@ private fun UpdateSheet(
                                     color = palette.accent,
                                     trackColor = palette.accent.copy(alpha = 0.18f),
                                 )
+                            }
                             }
                             Spacer(Modifier.height(8.dp))
                             Row(
