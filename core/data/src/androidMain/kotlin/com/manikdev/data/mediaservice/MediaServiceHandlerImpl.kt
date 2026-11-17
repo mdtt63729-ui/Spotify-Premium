@@ -3142,20 +3142,12 @@ private fun isAppInForeground(): Boolean {
 
 
 /**
- * The largest size YouTube will serve for a thumbnail, with the aspect kept.
+ * Leaves the url exactly as YouTube Music sent it.
  *
- * Sized for a list row, not for the player.
- *
- * I raised this to 1600 for the whole app and it made the app slow to open: every row on Home
- * was downloading and decoding a 1600px image for a thumbnail the size of a fingertip. The
- * player asks for its own large variant separately, so the list keeps the modest size it needs.
+ * Every version of this function rewrote the size - 544, then 1600, then 544 again - and each
+ * was wrong in a different way: 544 capped the whole app at a soft image, 1600 made startup
+ * slow. The url the API hands over is already the largest variant it offers, so the honest fix
+ * is to stop rewriting it. Coil decodes each view at the size that view needs, so a list row
+ * still costs little while a full-screen cover gets everything the source has.
  */
-private fun String.maxThumbSize(): String {
-    val match = Regex("""[=-]w(\d+)-h(\d+)""").find(this) ?: return this
-    val width = match.groupValues[1].toIntOrNull() ?: return this
-    val height = match.groupValues[2].toIntOrNull() ?: return this
-    val longest = maxOf(width, height)
-    if (longest <= 0 || longest >= 544) return this
-    val factor = 544.0 / longest
-    return replaceRange(match.range, "=w${(width * factor).toInt()}-h${(height * factor).toInt()}")
-}
+private fun String.maxThumbSize(): String = this
