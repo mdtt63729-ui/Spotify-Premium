@@ -25,7 +25,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -951,16 +950,9 @@ private fun AppleMusicArtworkPage(
             val coverRequest =
                 ImageRequest
                     .Builder(LocalPlatformContext.current)
-                    // YouTube hands out the size it thinks you need in the url itself (w120-h120
-                    // and so on). On a full-screen cover that is the difference between a soft
-                    // block and the actual artwork, so the size is rewritten to the largest one
-                    // the CDN serves before the request is made.
-                    .data(artworkUrl?.withMaxArtworkSize())
-                    // Belt and braces with the url rewrite: ask Coil for a large bitmap even if the
-                    // server ignores the size in the url.
-                    .size(1440)
+                    .data(artworkUrl)
                     .diskCachePolicy(CachePolicy.ENABLED)
-                    .diskCacheKey((artworkUrl?.withMaxArtworkSize() ?: artworkUrl) + "BIGGER")
+                    .diskCacheKey(artworkUrl + "BIGGER")
                     .crossfade(550)
                     .build()
             val coverAlpha = if (pageShowsFullscreen) 0f else 1f - clipAlpha
@@ -970,10 +962,6 @@ private fun AppleMusicArtworkPage(
                         .align(Alignment.TopCenter)
                         .padding(top = topInset)
                         .fillMaxWidth()
-                        // SimpMusic's own geometry, kept exactly: the cover box is as tall as the
-                        // artwork area and the image is drawn with ContentScale.Crop. The square
-                        // box I tried was a deviation from the reference player, and it is what
-                        // made the cover look wrong.
                         .height(artworkHeight),
             ) {
                 AsyncImage(
@@ -1491,19 +1479,3 @@ private const val PAGE_COLOR_FADE_START = 0.92f
 // does not leave the user staring at an empty page. Not a fixed budget for the request itself:
 // lyrics arriving at any point cancel the wait outright.
 private const val LYRICS_ABSENCE_GRACE_MS = 2_500L
-
-
-/**
- * Rewrites YouTube's size parameters to the largest the CDN serves.
- *
- * The url carries a size such as `=w120-h120` (sometimes `-w120-h120`), and some variants carry
- * none at all. A full-screen cover at 120px is visibly soft and no decode setting can add pixels
- * the server never sent, so the size has to change in the url itself.
- */
-private fun String.withMaxArtworkSize(): String {
-    val sized = Regex("""[=-]w\d+-h\d+""").replace(this, "=w1080-h1080")
-    if (sized != this) return sized
-    // No size in the url: only googleusercontent serves an unsized original, so leave anything
-    // else exactly as it is rather than inventing a query parameter it will ignore.
-    return if (contains("googleusercontent") || contains("ytimg")) "$this=w1080-h1080" else this
-}
