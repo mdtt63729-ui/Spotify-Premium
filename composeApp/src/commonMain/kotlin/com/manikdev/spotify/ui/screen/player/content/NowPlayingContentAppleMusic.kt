@@ -960,6 +960,11 @@ private fun AppleMusicArtworkPage(
                     // are scaled by the same factor, so the aspect is preserved and nothing is
                     // cropped. Rewriting to a fixed square was what cropped the cover before.
                     .data(artworkUrl?.withMaxArtworkSize())
+                    // Decode the cover at a large size rather than at whatever the layout asks
+                    // for: on a full-screen page the layout size changes with the sheet's motion,
+                    // and a decode tied to it comes out soft. A fixed large request keeps the
+                    // artwork sharp at every frame.
+                    .size(1600)
                     .diskCachePolicy(CachePolicy.ENABLED)
                     .diskCacheKey((artworkUrl?.withMaxArtworkSize() ?: artworkUrl) + "BIGGER")
                     .crossfade(550)
@@ -1505,8 +1510,8 @@ private fun String.withMaxArtworkSize(): String {
     val width = match.groupValues[1].toIntOrNull() ?: return this
     val height = match.groupValues[2].toIntOrNull() ?: return this
     val longest = maxOf(width, height)
-    if (longest <= 0 || longest >= 1280) return this
-    val factor = 1280.0 / longest
+    if (longest <= 0 || longest >= 1600) return this
+    val factor = 1600.0 / longest
     val scaled = "=w${(width * factor).toInt()}-h${(height * factor).toInt()}"
     return replaceRange(match.range, scaled)
 }

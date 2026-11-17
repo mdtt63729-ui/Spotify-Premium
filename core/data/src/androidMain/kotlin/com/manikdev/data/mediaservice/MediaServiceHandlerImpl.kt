@@ -3153,7 +3153,7 @@ private fun String.maxThumbSize(): String {
     val width = match.groupValues[1].toIntOrNull() ?: return this
     val height = match.groupValues[2].toIntOrNull() ?: return this
     val longest = maxOf(width, height)
-    if (longest <= 0 || longest >= 1280) return this
-    val factor = 1280.0 / longest
+    if (longest <= 0 || longest >= 1600) return this
+    val factor = 1600.0 / longest
     return replaceRange(match.range, "=w${(width * factor).toInt()}-h${(height * factor).toInt()}")
 }
