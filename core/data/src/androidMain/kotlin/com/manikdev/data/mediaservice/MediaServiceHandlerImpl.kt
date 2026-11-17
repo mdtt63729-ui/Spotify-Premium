@@ -3144,16 +3144,18 @@ private fun isAppInForeground(): Boolean {
 /**
  * The largest size YouTube will serve for a thumbnail, with the aspect kept.
  *
- * Every call site used to hard-code `=w544-h544`, which capped artwork across the whole app -
- * that is why covers looked soft everywhere and not only in the player. The two numbers in the
- * url are scaled by one factor so the long side reaches 1280: more pixels, same shape, no crop.
+ * Sized for a list row, not for the player.
+ *
+ * I raised this to 1600 for the whole app and it made the app slow to open: every row on Home
+ * was downloading and decoding a 1600px image for a thumbnail the size of a fingertip. The
+ * player asks for its own large variant separately, so the list keeps the modest size it needs.
  */
 private fun String.maxThumbSize(): String {
     val match = Regex("""[=-]w(\d+)-h(\d+)""").find(this) ?: return this
     val width = match.groupValues[1].toIntOrNull() ?: return this
     val height = match.groupValues[2].toIntOrNull() ?: return this
     val longest = maxOf(width, height)
-    if (longest <= 0 || longest >= 1600) return this
-    val factor = 1600.0 / longest
+    if (longest <= 0 || longest >= 544) return this
+    val factor = 544.0 / longest
     return replaceRange(match.range, "=w${(width * factor).toInt()}-h${(height * factor).toInt()}")
 }
