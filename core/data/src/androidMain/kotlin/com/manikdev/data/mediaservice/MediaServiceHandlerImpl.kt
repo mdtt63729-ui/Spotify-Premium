@@ -666,7 +666,11 @@ internal class MediaServiceHandlerImpl(
                                 ?: songEntity.thumbnails
                                 ?: "http://i.ytimg.com/vi/${songEntity.videoId}/maxresdefault.jpg"
                         Logger.d(TAG, "getDataOfNowPlayingState before: $thumbUrl")
-                        thumbUrl = Regex("=w\\d+-h\\d+").replace(thumbUrl, "=w544-h544")
+                        // Was a hard 544 cap on every thumbnail in the app - that is the reason
+                        // covers looked soft everywhere, not just in the player. The size is
+                        // scaled up to 1280 on the long side with the aspect kept, so nothing is
+                        // cropped and nothing is left at 544.
+                        thumbUrl = thumbUrl.maxThumbSize()
                         Logger.d(TAG, "getDataOfNowPlayingState: $thumbUrl")
                         if (songEntity.thumbnails != thumbUrl) {
                             songRepository.updateThumbnailsSongEntity(thumbUrl, songEntity.videoId).singleOrNull()?.let {
@@ -706,7 +710,7 @@ internal class MediaServiceHandlerImpl(
                             track?.thumbnails?.lastOrNull()?.url
                                 ?: "http://i.ytimg.com/vi/${track?.videoId}/maxresdefault.jpg"
                         Logger.d(TAG, "getDataOfNowPlayingState before: $thumbUrl")
-                        thumbUrl = Regex("=w\\d+-h\\d+").replace(thumbUrl, "=w544-h544")
+                        thumbUrl = thumbUrl.maxThumbSize()
                         val songEntity =
                             (track?.toSongEntity() ?: mediaItem.toSongEntity()).copy(
                                 thumbnails = thumbUrl,
@@ -1847,7 +1851,7 @@ internal class MediaServiceHandlerImpl(
             var thumbUrl =
                 track.thumbnails?.lastOrNull()?.url
                     ?: "http://i.ytimg.com/vi/${track.videoId}/maxresdefault.jpg"
-            thumbUrl = Regex("=w\\d+-h\\d+").replace(thumbUrl, "=w544-h544")
+            thumbUrl = thumbUrl.maxThumbSize()
             val artistName: String = track.artists.toListName().connectArtists()
             val isSong =
                 (
@@ -1991,7 +1995,7 @@ internal class MediaServiceHandlerImpl(
                 var thumbUrl =
                     track.thumbnails?.lastOrNull()?.url
                         ?: "http://i.ytimg.com/vi/${track.videoId}/maxresdefault.jpg"
-                thumbUrl = Regex("=w\\d+-h\\d+").replace(thumbUrl, "=w544-h544")
+                thumbUrl = thumbUrl.maxThumbSize()
                 val isSong =
                     (
                         track.thumbnails?.lastOrNull()?.height != 0 &&
@@ -2216,7 +2220,7 @@ internal class MediaServiceHandlerImpl(
         var thumbUrl =
             track.thumbnails?.lastOrNull()?.url
                 ?: "http://i.ytimg.com/vi/${track.videoId}/maxresdefault.jpg"
-        thumbUrl = Regex("=w\\d+-h\\d+").replace(thumbUrl, "=w544-h544")
+        thumbUrl = thumbUrl.maxThumbSize()
         val artistName: String = track.artists.toListName().connectArtists()
         val isSong =
             (
@@ -3134,4 +3138,22 @@ private fun isAppInForeground(): Boolean {
     val appProcessInfo = RunningAppProcessInfo()
     ActivityManager.getMyMemoryState(appProcessInfo)
     return appProcessInfo.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND
+}
+
+
+/**
+ * The largest size YouTube will serve for a thumbnail, with the aspect kept.
+ *
+ * Every call site used to hard-code `=w544-h544`, which capped artwork across the whole app -
+ * that is why covers looked soft everywhere and not only in the player. The two numbers in the
+ * url are scaled by one factor so the long side reaches 1280: more pixels, same shape, no crop.
+ */
+private fun String.maxThumbSize(): String {
+    val match = Regex("""[=-]w(\d+)-h(\d+)""").find(this) ?: return this
+    val width = match.groupValues[1].toIntOrNull() ?: return this
+    val height = match.groupValues[2].toIntOrNull() ?: return this
+    val longest = maxOf(width, height)
+    if (longest <= 0 || longest >= 1280) return this
+    val factor = 1280.0 / longest
+    return replaceRange(match.range, "=w${(width * factor).toInt()}-h${(height * factor).toInt()}")
 }
