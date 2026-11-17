@@ -5,6 +5,9 @@ package com.manikdev.spotify.ui.screen.player
 import androidx.compose.animation.Animatable
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.MutableTransitionState
@@ -144,9 +147,24 @@ fun NowPlayingScreen(
         rememberModalBottomSheetState(
             skipPartiallyExpanded = true,
         )
+    // One value drives the player's arrival and its departure, so open and close are the same
+    // motion played in opposite directions - BitChord's PlayerSheetMotion does the same thing by
+    // holding its sheet open and moving the content itself.
+    val settle = remember { Animatable(0f) }
 
     val hideSheet: () -> Unit = {
         coroutineScope.launch {
+            // Out on a stiffer spring than in: closing should feel like leaving, not like the
+            // same journey backwards. Only after it has settled does M3 take the sheet away, so
+            // the two animations never overlap and there is nothing to glitch.
+            settle.animateTo(
+                targetValue = 0f,
+                animationSpec =
+                    spring(
+                        dampingRatio = Spring.DampingRatioNoBouncy,
+                        stiffness = 320f,
+                    ),
+            )
             sheetState.hide()
             onDismiss()
         }
@@ -171,14 +189,12 @@ fun NowPlayingScreen(
         // timed ease, so it leaves briskly and then settles rather than stopping dead. Scale,
         // alpha and lift all ride the same value, which is what keeps it from looking like three
         // separate animations.
-        val settle =
-            androidx.compose.runtime.remember { androidx.compose.animation.core.Animatable(0f) }
-        androidx.compose.runtime.LaunchedEffect(Unit) {
+        LaunchedEffect(Unit) {
             settle.animateTo(
                 targetValue = 1f,
                 animationSpec =
-                    androidx.compose.animation.core.spring(
-                        dampingRatio = androidx.compose.animation.core.Spring.DampingRatioNoBouncy,
+                    spring(
+                        dampingRatio = Spring.DampingRatioNoBouncy,
                         stiffness = 195f,
                     ),
             )
