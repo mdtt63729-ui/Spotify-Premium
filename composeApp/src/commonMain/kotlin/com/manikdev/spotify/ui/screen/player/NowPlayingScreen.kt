@@ -211,10 +211,13 @@ fun NowPlayingScreen(
                         .graphicsLayer {
                             val t = settle.value
                             alpha = t
-                            val scale = 0.94f + 0.06f * t
+                            // Rises from where the mini player sits, rather than fading in
+                            // place: the sheet starts smaller and further down, so the eye
+                            // reads it as the same player growing out of the bar.
+                            val scale = 0.72f + 0.28f * t
                             scaleX = scale
                             scaleY = scale
-                            translationY = (1f - t) * 56.dp.toPx()
+                            translationY = (1f - t) * 180.dp.toPx()
                         },
             ) {
                 NowPlayingScreenContent(
