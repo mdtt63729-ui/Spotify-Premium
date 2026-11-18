@@ -959,14 +959,14 @@ private fun AppleMusicArtworkPage(
                     // (=w544-h544, or =w1280-h720 for a 16:9 video thumb) and the two numbers
                     // are scaled by the same factor, so the aspect is preserved and nothing is
                     // cropped. Rewriting to a fixed square was what cropped the cover before.
-                    .data(artworkUrl?.withMaxArtworkSize())
+                    .data(artworkUrl?.artworkAt(COVER_ART_PX))
                     // Decode the cover at a large size rather than at whatever the layout asks
                     // for: on a full-screen page the layout size changes with the sheet's motion,
                     // and a decode tied to it comes out soft. A fixed large request keeps the
                     // artwork sharp at every frame.
-                    .size(1600)
+                    .size(COVER_ART_PX)
                     .diskCachePolicy(CachePolicy.ENABLED)
-                    .diskCacheKey((artworkUrl?.withMaxArtworkSize() ?: artworkUrl) + "BIGGER")
+                    .diskCacheKey((artworkUrl?.artworkAt(COVER_ART_PX) ?: artworkUrl) + "BIGGER")
                     .crossfade(550)
                     .build()
             val coverAlpha = if (pageShowsFullscreen) 0f else 1f - clipAlpha
@@ -1500,18 +1500,23 @@ private const val LYRICS_ABSENCE_GRACE_MS = 2_500L
 
 
 /**
- * Scales the size YouTube put in the url up to 1280 on the long side, keeping the aspect ratio.
+ * BitChord's approach, taken as-is from their Models.kt: rewrite the size hint the url already
+ * carries, and handle both forms YouTube uses.
  *
- * A 16:9 thumbnail asked for as w1080-h1080 comes back square-cropped, which is why the cover
- * looked zoomed in. Scaling both numbers by one factor can only add pixels.
+ *   - `w120-h120` style, used by i.ytimg.com and googleusercontent
+ *   - `=s512` style, used by the newer googleusercontent art
+ *
+ * Their player asks for 720 on a header and 160 on a row; ours asks for 1024 on the full-screen
+ * cover because it is drawn edge to edge. The point is the same: one size per surface, chosen by
+ * the surface, instead of one number for the whole app.
  */
-private fun String.withMaxArtworkSize(): String {
-    val match = Regex("""[=-]w(\d+)-h(\d+)""").find(this) ?: return this
-    val width = match.groupValues[1].toIntOrNull() ?: return this
-    val height = match.groupValues[2].toIntOrNull() ?: return this
-    val longest = maxOf(width, height)
-    if (longest <= 0 || longest >= 1600) return this
-    val factor = 1600.0 / longest
-    val scaled = "=w${(width * factor).toInt()}-h${(height * factor).toInt()}"
-    return replaceRange(match.range, scaled)
+private fun String.artworkAt(px: Int): String {
+    val sized = replace(Regex("""w\d+-h\d+"""), "w$px-h$px")
+    val host = substringAfter("://", "").substringBefore('/').substringBefore(':').lowercase()
+    val isGoogle = host == "ggpht.com" || host.endsWith(".ggpht.com") ||
+        host == "googleusercontent.com" || host.endsWith(".googleusercontent.com")
+    return if (isGoogle) sized.replace(Regex("""=s\d+"""), "=s$px") else sized
 }
+
+/** The full-screen cover is drawn edge to edge, so it asks for more than any list row. */
+private const val COVER_ART_PX = 1024
