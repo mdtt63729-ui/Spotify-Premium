@@ -1511,11 +1511,25 @@ private const val LYRICS_ABSENCE_GRACE_MS = 2_500L
  * the surface, instead of one number for the whole app.
  */
 private fun String.artworkAt(px: Int): String {
-    val sized = replace(Regex("""w\d+-h\d+"""), "w$px-h$px")
     val host = substringAfter("://", "").substringBefore('/').substringBefore(':').lowercase()
     val isGoogle = host == "ggpht.com" || host.endsWith(".ggpht.com") ||
         host == "googleusercontent.com" || host.endsWith(".googleusercontent.com")
-    return if (isGoogle) sized.replace(Regex("""=s\d+"""), "=s$px") else sized
+
+    // i.ytimg.com names its sizes in the path instead of the query, and the small ones are the
+    // default. Asking for maxresdefault is the only way to get the large frame.
+    if (host.endsWith("ytimg.com")) {
+        return replace("hqdefault", "maxresdefault")
+            .replace("sddefault", "maxresdefault")
+            .replace("mqdefault", "maxresdefault")
+    }
+
+    val sized = replace(Regex("""w\d+-h\d+"""), "w$px-h$px")
+    val withS = sized.replace(Regex("""=s\d+"""), "=s$px")
+    // No size hint at all: this is the case that stayed soft no matter what number I passed in,
+    // because there was nothing to rewrite. Google's image host accepts a size appended to the
+    // path, so ask for one explicitly.
+    if (isGoogle && withS == this) return "$this=w$px-h$px"
+    return if (isGoogle) withS else sized
 }
 
 /** The full-screen cover is drawn edge to edge, so it asks for more than any list row. */
