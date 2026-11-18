@@ -817,7 +817,17 @@ fun HomeScreen(
                                                     layout(constraints.maxWidth, constraints.maxHeight) { placeable.place(0, 0) }
                                                 }.angledGradientBackground(listOf(animatedColor, pageBackground), 25f),
                                     ) {
-                                        if (headerImage != null && !headerImageFailed) {
+                                        // Deferred by one frame. The hero artwork and its tint were
+                                        // decoding inside the very first composition of Home, which
+                                        // is the 515 ms first frame in the report - the gradient and
+                                        // the shelves now paint first and the artwork lands next
+                                        // frame, so the screen is up before the image work starts.
+                                        var heroReady by remember { mutableStateOf(false) }
+                                        LaunchedEffect(Unit) {
+                                            androidx.compose.runtime.withFrameNanos { }
+                                            heroReady = true
+                                        }
+                                        if (headerImage != null && !headerImageFailed && heroReady) {
                                             AsyncImage(
                                                 model =
                                                     ImageRequest
