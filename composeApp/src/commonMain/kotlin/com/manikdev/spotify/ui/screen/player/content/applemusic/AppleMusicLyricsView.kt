@@ -298,7 +298,9 @@ internal fun AppleMusicLyricsView(
                             AppleMusicFloatingCircleButton(icon = SpotifyIcons.ThumbsUpDown, onClick = { actions.onShowVoteDialog() })
                         }
                         AppleMusicFloatingCircleButton(icon = SpotifyIcons.Share, onClick = { showShareSheet = true })
-                        AppleMusicFloatingCircleButton(icon = SpotifyIcons.OpenInFull, onClick = { actions.onShowFullscreenLyrics() })
+                        // No full-screen button in the Apple Music style: the lyrics page here
+                        // already IS full screen inside the player, so the button only ever
+                        // opened a second copy of what was on screen.
                     }
                 }
             }
