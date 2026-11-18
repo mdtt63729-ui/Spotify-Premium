@@ -350,7 +350,10 @@ private fun UpdateSheet(
                             if (shown < 0.10f) {
                                 LinearProgressIndicator(
                                     progress = { shown },
-                                    modifier = Modifier.fillMaxWidth().height(8.dp).clip(CircleShape),
+                                    // 4dp, matching the stroke the wavy indicator draws. It was 8dp, so the bar
+                                    // looked thick for the first 10% and thinned at the swap - the
+                                    // change in thickness you saw, not a change in progress.
+                                    modifier = Modifier.fillMaxWidth().height(4.dp).clip(CircleShape),
                                     color = palette.accent,
                                     trackColor = palette.accent.copy(alpha = 0.18f),
                                     gapSize = 0.dp,
