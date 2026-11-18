@@ -310,6 +310,13 @@ private fun UpdateSheet(
             // never leaves the bottom of the sheet.
             AnimatedContent(
                 targetState = state,
+                // THE actual cause of the glitch: every progress update produces a new
+                // UpdateUiState.Downloading with a different progress, so AnimatedContent saw a
+                // new target on every tick and re-ran the fade+slide - the whole actions row
+                // crossfaded and slid on each percentage step. The key pins the transition to the
+                // kind of state, so progress changes update in place and only a real state change
+                // (checking -> downloading -> done) animates.
+                contentKey = { it::class },
                 transitionSpec = {
                     (fadeIn() + slideInVertically { it / 3 }) togetherWith (fadeOut() + slideOutVertically { -it / 3 })
                 },
