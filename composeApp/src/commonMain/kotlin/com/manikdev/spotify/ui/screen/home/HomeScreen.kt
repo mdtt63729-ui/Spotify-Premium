@@ -788,10 +788,12 @@ fun HomeScreen(
                                 .hazeSource(hazeState),
                         verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
-                        itemsIndexed(homeShelves, key = { _, item ->
-                            item.hashCode().toString() + (mainHomeThumbnail ?: "nothumb")
-                            },
-                        ) { index, item ->
+                        // Stable keys only. This used to append mainHomeThumbnail, which changes
+                        // the moment the hero image finishes loading - so every key in the list
+                        // changed at once, LazyColumn threw away every item and rebuilt it, and
+                        // the scroll stalled exactly where you saw it. A key must not depend on
+                        // anything that changes while the list is on screen.
+                        itemsIndexed(homeShelves, key = { _, item -> item.hashCode().toString() }) { index, item ->
                             Box {
                                 if (index == 0) {
                                     Box(
