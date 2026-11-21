@@ -266,7 +266,7 @@ awk '/^[0-9a-f]/{split($1,a,"-"); if ($6=="") print a[1]}' /proc/$pid/maps |
 **macOS**
 
 ```bash
-pid=$(pgrep -f SimpMusic | head -1)
+pid=$(pgrep -f Sur | head -1)
 ps -o rss= -p $pid | awk '{print "RSS: "int($1/1024)" MB"}'
 vmmap -summary $pid | head -25
 jcmd $pid GC.heap_info
@@ -275,7 +275,7 @@ jcmd $pid GC.heap_info
 **Windows (PowerShell)**
 
 ```powershell
-Get-Process SimpMusic | Select-Object Name,Id,@{n="WorkingSet_MB";e={[int]($_.WorkingSet64/1MB)}}
+Get-Process Sur | Select-Object Name,Id,@{n="WorkingSet_MB";e={[int]($_.WorkingSet64/1MB)}}
 jcmd <pid> GC.heap_info
 ```
 

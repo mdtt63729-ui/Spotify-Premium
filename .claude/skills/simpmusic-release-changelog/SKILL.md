@@ -1,9 +1,9 @@
 ---
 name: simpmusic-release-changelog
-description: Use when preparing a SimpMusic release, writing release notes or changelogs (changelogs/<version>, fastlane changelogs, GitHub release text), or checking which shipped fixes and features are missing from the GitHub Project board before a release.
+description: Use when preparing a Sur release, writing release notes or changelogs (changelogs/<version>, fastlane changelogs, GitHub release text), or checking which shipped fixes and features are missing from the GitHub Project board before a release.
 ---
 
-# SimpMusic Release Changelog
+# Sur Release Changelog
 
 A release changelog lists only work that has shipped, and every line links the issue or PR that
 tracks it. Reconcile the board first: the changelog's links point at what the board holds.
@@ -22,7 +22,7 @@ tracks it. Reconcile the board first: the changelog's links point at what the bo
 2. Inventory everything since the last release tag:
    - app: `git log <lastTag>..origin/dev --no-merges`
    - core: `git -C core log $(git ls-tree <lastTag> core | awk '{print $3}')..HEAD`
-   - merged PRs in `maxrave-dev/SimpMusic` and `maxrave-dev/core`
+   - merged PRs in `mdtt63729-ui/Sur` and `maxrave-dev/core`
    - board: `gh project item-list 2 --owner maxrave-dev --limit 500 --format json`
 3. Report only **done** work the board is missing:
    - issues fixed by a shipped commit but still open
@@ -47,31 +47,31 @@ Project IDs:
 - Status field: `PVTSSF_lAHOBsekuM4AoHIUzgfvIvs`
 - Done option: `98236657`
 
-Always pass `--repo maxrave-dev/SimpMusic`, because `origin` may point at a fork.
+Always pass `--repo mdtt63729-ui/Sur`, because `origin` may point at a fork.
 
 ## Step 2: write `changelogs/<version>/`
 
 Each file has this shape:
 
 ```markdown
-# SimpMusic <version>
+# Sur <version>
 
 ## New
-- **<Feature>**: <what the user can do now>. ([#N](https://github.com/maxrave-dev/SimpMusic/issues/N))
+- **<Feature>**: <what the user can do now>. ([#N](https://github.com/mdtt63729-ui/Sur/issues/N))
 
 ## Improved
-- **<Area>**: <what got better>. ([#N](https://github.com/maxrave-dev/SimpMusic/issues/N))
+- **<Area>**: <what got better>. ([#N](https://github.com/mdtt63729-ui/Sur/issues/N))
 
 ## Fixed
-- <The symptom the user saw>. ([#N](https://github.com/maxrave-dev/SimpMusic/issues/N))
+- <The symptom the user saw>. ([#N](https://github.com/mdtt63729-ui/Sur/issues/N))
 ```
 
 In `vi-VN.md` the headings are `## Mới`, `## Cải thiện` and `## Sửa lỗi`.
 
 - **Every line ends with at least one link.**
-  - issue: `https://github.com/maxrave-dev/SimpMusic/issues/N`
-  - PR: `https://github.com/maxrave-dev/SimpMusic/pull/N`
-  - core PR: `[core#N](https://github.com/maxrave-dev/core/pull/N)`
+  - issue: `https://github.com/mdtt63729-ui/Sur/issues/N`
+  - PR: `https://github.com/mdtt63729-ui/Sur/pull/N`
+  - core PR: `[core#N](https://github.com/mdtt63729-ui/core/pull/N)`
   - a change with no issue of its own: the release's Polish task
   - a new app language: `[Crowdin](https://crowdin.com/project/simpmusic)`
 
