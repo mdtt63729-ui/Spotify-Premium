@@ -790,6 +790,7 @@
               id="download-primary"
               class="sur-btn sur-btn--primary"
               href="https://github.com/mdtt63729-ui/Spotify-Premium/releases/latest"
+              rel="noopener"
               data-magnetic
             >
               Get Sur
@@ -873,5 +874,42 @@
       </div>
       <button id="privacy-close" class="sur-btn sur-btn--primary sur-dialog-close" type="button">Close</button>
     </dialog>
+
+    <script>
+      // "Get Sur" downloads the newest universal APK straight away.
+      //
+      // The link behind this button used to open the releases page, so a visitor had to pick a
+      // file by hand. It now asks GitHub for the latest release, takes its universal APK, and
+      // sends the browser there - GitHub answers with a download, so the tap downloads and never
+      // leaves the page. The release page stays as the fallback if the API cannot be reached.
+      (function () {
+        var btn = document.getElementById('download-primary');
+        if (!btn) return;
+        var api = 'https://api.github.com/repos/mdtt63729-ui/Spotify-Premium/releases/latest';
+        var page = 'https://github.com/mdtt63729-ui/Spotify-Premium/releases/latest';
+
+        btn.addEventListener('click', function (event) {
+          event.preventDefault();
+          if (btn.dataset.busy === '1') return;
+          btn.dataset.busy = '1';
+
+          fetch(api, { headers: { Accept: 'application/vnd.github+json' } })
+            .then(function (response) { return response.json(); })
+            .then(function (release) {
+              var assets = release.assets || [];
+              var apk =
+                assets.filter(function (asset) {
+                  return /\.apk$/i.test(asset.name) && /universal/i.test(asset.name);
+                })[0] ||
+                assets.filter(function (asset) {
+                  return /\.apk$/i.test(asset.name);
+                })[0];
+              window.location.href = apk ? apk.browser_download_url : release.html_url || page;
+            })
+            .catch(function () { window.location.href = page; })
+            .finally(function () { delete btn.dataset.busy; });
+        });
+      })();
+    </script>
   </body>
 </html>
