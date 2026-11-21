@@ -1,0 +1,877 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Sur — Music, felt differently.</title>
+    <meta name="description" content="Experience Sur — a modern music experience designed around the way you listen." />
+    <meta name="theme-color" content="#090807" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Sur — Music, felt differently." />
+    <meta property="og:description" content="A modern music experience designed around the way you listen." />
+    <meta property="og:image" content="assets/images/og-sur.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" as="font" href="assets/fonts/manrope-latin-var.woff2" type="font/woff2" crossorigin />
+    <link rel="preload" as="image" href="assets/images/sur-home.webp" fetchpriority="high" />
+    <script>
+      (function (d) {
+        d.className = d.className.replace(/\bno-js\b/, 'js');
+      })(document.documentElement);
+    </script>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/typography.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+    <link rel="stylesheet" href="css/accessibility.css" />
+    <script defer src="js/config.js"></script>
+    <script defer src="js/utils.js"></script>
+    <script defer src="js/scroll.js"></script>
+    <script defer src="js/animations.js"></script>
+    <script defer src="js/navigation.js"></script>
+    <script defer src="js/interactions.js"></script>
+    <script defer src="js/main.js"></script>
+  </head>
+  <body>
+    <a class="sur-skip" href="#main">Skip to content</a>
+
+    <!-- 01 Intro Loader -->
+    <div id="intro-loader" class="sur-loader" aria-hidden="true">
+      <span class="sur-loader-mark">SUR</span>
+    </div>
+
+    <!-- 02 Floating Pill Navigation -->
+    <header id="sur-nav-wrap" class="sur-nav-wrap">
+      <nav class="sur-nav" aria-label="Primary">
+        <a class="sur-nav-brand" href="#hero">SUR</a>
+        <div class="sur-nav-links">
+          <a class="sur-nav-link" href="#experience">Experience</a>
+          <a class="sur-nav-link" href="#player">Player</a>
+          <a class="sur-nav-link" href="#features">Features</a>
+          <a class="sur-nav-link" href="#download">Download</a>
+        </div>
+        <button
+          id="sur-menu-btn"
+          class="sur-menu-btn"
+          type="button"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+        >
+          Menu
+        </button>
+      </nav>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="sur-mobile-menu" role="dialog" aria-modal="true" aria-label="Site navigation" hidden>
+      <div class="sur-mobile-top">
+        <span class="sur-nav-brand">SUR</span>
+        <button id="sur-mobile-close" class="sur-mobile-close" type="button" aria-label="Close navigation menu">
+          Close
+        </button>
+      </div>
+      <nav class="sur-mobile-links" aria-label="Mobile">
+        <a class="sur-mobile-link" style="--i: 0" href="#experience">Experience</a>
+        <a class="sur-mobile-link" style="--i: 1" href="#player">Player</a>
+        <a class="sur-mobile-link" style="--i: 2" href="#features">Features</a>
+        <a class="sur-mobile-link" style="--i: 3" href="#download">Download</a>
+      </nav>
+      <div class="sur-mobile-foot" aria-hidden="true">SUR / NAVIGATION</div>
+    </div>
+
+    <main id="main">
+      <!-- 03 Hero -->
+      <section
+        id="hero"
+        class="sur-scene sur-hero"
+        aria-labelledby="hero-heading"
+        data-scene="pin"
+        data-ranges="0-.35, .35-1, 0-.15"
+      >
+        <div class="sur-track sur-hero-track">
+          <div class="sur-stage">
+            <div class="sur-hero-tone" aria-hidden="true"></div>
+            <div class="sur-ambient sur-hero-glow sur-anim-target" aria-hidden="true"></div>
+            <div class="sur-container sur-hero-grid">
+              <div class="sur-hero-copy sur-anim-target">
+                <span class="sur-label" aria-hidden="true">SUR / 01</span>
+                <span class="sur-wordmark sur-hero-wordmark sur-hero-anim" aria-hidden="true">SUR</span>
+                <h1 id="hero-heading" class="sur-hero-title">
+                  <span class="sur-hero-anim sur-hero-line-1" style="display: inline-block">Music,</span><br />
+                  <span class="sur-hero-anim sur-hero-line-2" style="display: inline-block">
+                    felt<br class="br-phone" /> differently.
+                  </span>
+                </h1>
+                <p class="sur-lead sur-hero-support sur-hero-anim">
+                  A modern music experience<br />
+                  designed around the way you listen.
+                </p>
+                <div class="sur-hero-actions sur-hero-anim">
+                  <a class="sur-btn sur-btn--primary" href="#experience" data-magnetic>Explore Sur</a>
+                </div>
+              </div>
+
+              <div class="sur-hero-media">
+                <div class="sur-hero-media-in">
+                  <div class="sur-hero-float">
+                    <div class="sur-shot sur-hero-shot sur-anim-target">
+                      <div class="sur-shot-placeholder" aria-hidden="true">
+                        <span class="sur-shot-placeholder-mark">SUR</span>
+                        <span class="sur-shot-placeholder-label">App Screenshot</span>
+                      </div>
+                      <img
+                        src="assets/images/sur-home.webp"
+                        width="1080"
+                        height="2400"
+                        alt="Sur home screen showing a personalised music feed"
+                        fetchpriority="high"
+                        decoding="sync"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="sur-scroll-cue" aria-hidden="true"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 04 Brand Statement -->
+      <section
+        id="statement"
+        class="sur-scene sur-statement"
+        aria-labelledby="statement-heading"
+        data-scene="pin"
+        data-ranges="0-.18, .42-.65, .60-.85"
+      >
+        <div class="sur-track sur-statement-track">
+          <div class="sur-stage sur-statement-stage">
+            <div class="sur-container sur-statement-inner">
+              <span class="sur-label" aria-hidden="true">SUR / IDENTITY</span>
+              <h2 id="statement-heading" class="sur-display sur-statement-layer sur-statement-a sur-anim-target">
+                Not just<br />a player.
+              </h2>
+              <p class="sur-display sur-statement-layer sur-statement-b sur-anim-target">
+                An <span class="sur-accent-soft">experience.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 05 Interface Experience -->
+      <section
+        id="experience"
+        class="sur-scene sur-experience"
+        aria-labelledby="experience-heading"
+        data-scene="pin"
+        data-ranges="0-.08, .15-.22, .18-.28, .42-.50, .45-.55, .70-.78, .73-.83, .20-.30, .47-.57, .75-.85"
+      >
+        <div class="sur-track sur-experience-track">
+          <div class="sur-stage sur-experience-stage">
+            <div class="sur-exp-intro sur-anim-target">
+              <span class="sur-label" aria-hidden="true">SUR / EXPERIENCE</span>
+              <h2 id="experience-heading" class="sur-display">
+                Designed<br />around music.
+              </h2>
+            </div>
+
+            <!-- Beat 1 -->
+            <div class="sur-exp-beat sur-exp-beat--1">
+              <div class="sur-exp-copy sur-anim-target">
+                <span class="sur-label" aria-hidden="true">SUR / HOME</span>
+                <p class="sur-title">Everything<br />starts here.</p>
+              </div>
+              <div class="sur-shot sur-exp-shot sur-anim-target">
+                <div class="sur-shot-placeholder" aria-hidden="true">
+                  <span class="sur-shot-placeholder-mark">SUR</span>
+                  <span class="sur-shot-placeholder-label">App Screenshot</span>
+                </div>
+                <img
+                  src="assets/images/sur-home.webp"
+                  width="1080"
+                  height="2400"
+                  alt="Sur home view with curated mixes and quick picks"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            </div>
+
+            <!-- Beat 2 -->
+            <div class="sur-exp-beat sur-exp-beat--2">
+              <div class="sur-exp-copy sur-anim-target">
+                <span class="sur-label" aria-hidden="true">SUR / TOGETHER</span>
+                <p class="sur-title">Listen together,<br />in real time.</p>
+              </div>
+              <div class="sur-shot sur-exp-shot sur-anim-target">
+                <div class="sur-shot-placeholder" aria-hidden="true">
+                  <span class="sur-shot-placeholder-mark">SUR</span>
+                  <span class="sur-shot-placeholder-label">App Screenshot</span>
+                </div>
+                <img
+                  src="assets/images/sur-together.webp"
+                  width="1080"
+                  height="2400"
+                  alt="Sur Listen Together room screen to create or join synced listening rooms"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            </div>
+
+            <!-- Beat 3 -->
+            <div class="sur-exp-beat sur-exp-beat--3">
+              <div class="sur-exp-copy sur-anim-target">
+                <span class="sur-label" aria-hidden="true">SUR / LIBRARY</span>
+                <p class="sur-title">Your library,<br />always close.</p>
+              </div>
+              <div class="sur-shot sur-exp-shot sur-anim-target">
+                <div class="sur-shot-placeholder" aria-hidden="true">
+                  <span class="sur-shot-placeholder-mark">SUR</span>
+                  <span class="sur-shot-placeholder-label">App Screenshot</span>
+                </div>
+                <img
+                  src="assets/images/sur-library.webp"
+                  width="1080"
+                  height="2400"
+                  alt="Sur library view showing playlists and pinned tracks"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 06 Discover -->
+      <section
+        id="discover"
+        class="sur-scene sur-discover"
+        aria-labelledby="discover-heading"
+        data-scene="pass"
+        data-ranges="0-.5, .5-1"
+      >
+        <div class="sur-ambient sur-discover-glow sur-anim-target" aria-hidden="true"></div>
+        <div class="sur-container sur-discover-grid">
+          <div class="sur-discover-copy">
+            <span class="sur-label" aria-hidden="true" data-reveal>SUR / DISCOVER</span>
+            <h2 id="discover-heading" class="sur-display" data-reveal style="--i: 1">
+              Discover<br />something new.
+            </h2>
+          </div>
+          <div class="sur-discover-media sur-anim-target">
+            <div class="sur-shot">
+              <div class="sur-shot-placeholder" aria-hidden="true">
+                <span class="sur-shot-placeholder-mark">SUR</span>
+                <span class="sur-shot-placeholder-label">App Screenshot</span>
+              </div>
+              <img
+                src="assets/images/sur-discover.webp"
+                width="1080"
+                height="2400"
+                alt="Sur discover feed highlighting featured releases and curated waves"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 07 Listen -->
+      <section
+        id="listen"
+        class="sur-scene sur-listen"
+        aria-labelledby="listen-heading"
+        data-scene="pass"
+        data-ranges="0-.6, .4-1"
+      >
+        <div class="sur-ambient sur-listen-light" aria-hidden="true"></div>
+        <div class="sur-container sur-listen-grid">
+          <div class="sur-listen-copy">
+            <span class="sur-label" aria-hidden="true" data-reveal>SUR / LISTEN</span>
+            <h2 id="listen-heading" class="sur-display" data-reveal style="--i: 1">
+              Just<br />listen.
+            </h2>
+          </div>
+          <div class="sur-listen-crop-wrap sur-anim-target">
+            <div class="sur-crop sur-crop--rim" style="--crop-aspect: 9 / 10.5; --crop-pos: 96%">
+              <div class="sur-shot-placeholder" aria-hidden="true">
+                <span class="sur-shot-placeholder-mark">SUR</span>
+                <span class="sur-shot-placeholder-label">App Screenshot</span>
+              </div>
+              <img
+                src="assets/images/sur-player.webp"
+                width="1080"
+                height="2400"
+                alt="Close-up of the Sur player controls, bitrate telemetry, and track scrubber"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 08 Rhythm Words -->
+      <section
+        id="rhythm"
+        class="sur-scene sur-rhythm"
+        aria-labelledby="rhythm-heading"
+        data-scene="pin"
+        data-ranges="0-.0875, .1875-.25, .25-.3375, .4375-.50, .50-.5875, .6875-.75, .75-.8375, .9375-1"
+      >
+        <div class="sur-track sur-rhythm-track">
+          <div class="sur-stage sur-rhythm-stage">
+            <h2 id="rhythm-heading" class="sur-skip">The rhythm of Sur</h2>
+            <div class="sur-rhythm-words">
+              <span class="sur-giant sur-rhythm-word sur-rhythm-word--1 sur-anim-target">DISCOVER</span>
+              <span class="sur-giant sur-rhythm-word sur-rhythm-word--2 sur-anim-target">LISTEN</span>
+              <span class="sur-giant sur-rhythm-word sur-rhythm-word--3 sur-anim-target">FEEL</span>
+              <span class="sur-giant sur-rhythm-word sur-rhythm-word--4 sur-anim-target">REPEAT</span>
+            </div>
+            <div class="sur-rhythm-hud">
+              <span id="rhythm-counter" class="sur-label">01 / 04</span>
+              <div class="sur-rhythm-trackline" aria-hidden="true">
+                <div class="sur-rhythm-progress"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 09 Full Player -->
+      <section
+        id="player"
+        class="sur-scene sur-player"
+        aria-labelledby="player-heading"
+        data-scene="pin"
+        data-ranges="0-.2, .15-.35, .15-.85, .35-.9"
+      >
+        <div class="sur-track sur-player-track">
+          <div class="sur-stage sur-player-stage">
+            <div class="sur-player-dim" aria-hidden="true"></div>
+            <div class="sur-ambient sur-player-glow" aria-hidden="true"></div>
+            <div class="sur-player-copy sur-anim-target">
+              <span class="sur-label" aria-hidden="true">SUR / PLAYER</span>
+              <h2 id="player-heading" class="sur-display">
+                The music<br />takes over.
+              </h2>
+            </div>
+            <div class="sur-player-media">
+              <div class="sur-shot sur-player-shot sur-anim-target">
+                <div class="sur-shot-placeholder" aria-hidden="true">
+                  <span class="sur-shot-placeholder-mark">SUR</span>
+                  <span class="sur-shot-placeholder-label">App Screenshot</span>
+                </div>
+                <img
+                  src="assets/images/sur-player.webp"
+                  width="1080"
+                  height="2400"
+                  alt="Sur full-screen music player displaying album art and playback controls"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10 Player Details -->
+      <section
+        id="details"
+        class="sur-scene sur-details"
+        aria-labelledby="details-heading"
+        data-scene="pin"
+        data-ranges="0-.06, .16-.20, .20-.26, .36-.40, .40-.46, .56-.60, .60-.66, .76-.80, .80-.86, .96-1"
+      >
+        <div class="sur-track sur-details-track">
+          <div class="sur-stage sur-details-stage">
+            <div class="sur-container sur-details-layout">
+              <div>
+                <div class="sur-details-head">
+                  <span class="sur-label" aria-hidden="true">SUR / DETAILS</span>
+                  <h2 id="details-heading" class="sur-title">Every layer,<br />refined.</h2>
+                </div>
+                <div class="sur-details-rail" role="group" aria-label="Player detail chapters">
+                  <button class="sur-detail-tab is-active" type="button" aria-pressed="true">Playback</button>
+                  <button class="sur-detail-tab" type="button" aria-pressed="false">Lyrics</button>
+                  <button class="sur-detail-tab" type="button" aria-pressed="false">Queue</button>
+                  <button class="sur-detail-tab" type="button" aria-pressed="false">Artwork</button>
+                  <button class="sur-detail-tab" type="button" aria-pressed="false">Controls</button>
+                </div>
+              </div>
+
+              <div class="sur-details-panels">
+                <article class="sur-detail-panel sur-detail-panel--1 sur-anim-target" data-reveal>
+                  <div class="sur-crop sur-detail-crop" style="--crop-aspect: 9 / 8; --crop-pos: 74%">
+                    <div class="sur-shot-placeholder" aria-hidden="true">
+                      <span class="sur-shot-placeholder-mark">SUR</span>
+                      <span class="sur-shot-placeholder-label">App Screenshot</span>
+                    </div>
+                    <img
+                      src="assets/images/sur-player.webp"
+                      width="1080"
+                      height="2400"
+                      alt="Sur playback progress scrubber and audio bitrate readout"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                  <div class="sur-detail-caption">
+                    <span class="sur-label" aria-hidden="true">01 / PLAYBACK</span>
+                    <p class="sur-body">Track progress and live audio fidelity shaped for effortless scrubbing.</p>
+                  </div>
+                </article>
+
+                <article class="sur-detail-panel sur-detail-panel--2 sur-anim-target" data-reveal>
+                  <div class="sur-crop sur-detail-crop" style="--crop-aspect: 9 / 8.5; --crop-pos: 32%">
+                    <div class="sur-shot-placeholder" aria-hidden="true">
+                      <span class="sur-shot-placeholder-mark">SUR</span>
+                      <span class="sur-shot-placeholder-label">App Screenshot</span>
+                    </div>
+                    <img
+                      src="assets/images/sur-lyrics.webp"
+                      width="1080"
+                      height="2400"
+                      alt="Sur time-synced lyrics view with focused active verse"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                  <div class="sur-detail-caption">
+                    <span class="sur-label" aria-hidden="true">02 / LYRICS</span>
+                    <p class="sur-body">Time-synced verses centered in high-contrast typography.</p>
+                  </div>
+                </article>
+
+                <article class="sur-detail-panel sur-detail-panel--3 sur-anim-target" data-reveal>
+                  <div class="sur-crop sur-detail-crop" style="--crop-aspect: 9 / 8.5; --crop-pos: 42%">
+                    <div class="sur-shot-placeholder" aria-hidden="true">
+                      <span class="sur-shot-placeholder-mark">SUR</span>
+                      <span class="sur-shot-placeholder-label">App Screenshot</span>
+                    </div>
+                    <img
+                      src="assets/images/sur-queue.webp"
+                      width="1080"
+                      height="2400"
+                      alt="Sur endless queue and up-next playlist view"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                  <div class="sur-detail-caption">
+                    <span class="sur-label" aria-hidden="true">03 / QUEUE</span>
+                    <p class="sur-body">Endless queue and upcoming tracks organized without leaving the player.</p>
+                  </div>
+                </article>
+
+                <article class="sur-detail-panel sur-detail-panel--4 sur-anim-target" data-reveal>
+                  <div class="sur-crop sur-detail-crop" style="--crop-aspect: 9 / 9.2; --crop-pos: 20%">
+                    <div class="sur-shot-placeholder" aria-hidden="true">
+                      <span class="sur-shot-placeholder-mark">SUR</span>
+                      <span class="sur-shot-placeholder-label">App Screenshot</span>
+                    </div>
+                    <img
+                      src="assets/images/sur-player.webp"
+                      width="1080"
+                      height="2400"
+                      alt="Sur full-bleed album artwork framing"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                  <div class="sur-detail-caption">
+                    <span class="sur-label" aria-hidden="true">04 / ARTWORK</span>
+                    <p class="sur-body">Cover art given room to breathe with atmospheric ambient blur.</p>
+                  </div>
+                </article>
+
+                <article class="sur-detail-panel sur-detail-panel--5 sur-anim-target" data-reveal>
+                  <div class="sur-crop sur-detail-crop" style="--crop-aspect: 9 / 7.2; --crop-pos: 96%">
+                    <div class="sur-shot-placeholder" aria-hidden="true">
+                      <span class="sur-shot-placeholder-mark">SUR</span>
+                      <span class="sur-shot-placeholder-label">App Screenshot</span>
+                    </div>
+                    <img
+                      src="assets/images/sur-player.webp"
+                      width="1080"
+                      height="2400"
+                      alt="Sur tactile playback control cluster and volume dock"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                  <div class="sur-detail-caption">
+                    <span class="sur-label" aria-hidden="true">05 / CONTROLS</span>
+                    <p class="sur-body">Essential playback, volume, and room actions sized for natural reach.</p>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 11 Immersion -->
+      <section
+        id="immersion"
+        class="sur-scene sur-immersion"
+        aria-labelledby="immersion-heading"
+        data-scene="pass"
+        data-ranges="0-.6, .2-.9"
+      >
+        <div class="sur-ambient sur-immersion-glow" aria-hidden="true"></div>
+        <div class="sur-container sur-immersion-inner">
+          <div class="sur-immersion-copy">
+            <span class="sur-label" aria-hidden="true" data-reveal>SUR / IMMERSION</span>
+            <h2 id="immersion-heading" class="sur-display" data-reveal style="--i: 1">
+              Stay<br />in the moment.
+            </h2>
+          </div>
+          <div class="sur-shot sur-immersion-shot sur-anim-target">
+            <div class="sur-shot-placeholder" aria-hidden="true">
+              <span class="sur-shot-placeholder-mark">SUR</span>
+              <span class="sur-shot-placeholder-label">App Screenshot</span>
+            </div>
+            <img
+              src="assets/images/sur-lyrics.webp"
+              width="1080"
+              height="2400"
+              alt="Sur lyrics screen glowing warmly against a deep dark backdrop"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+        </div>
+      </section>
+
+      <!-- 12 Feature Story (Horizontal on Desktop, Vertical Stack < 1024px) -->
+      <section
+        id="features"
+        class="sur-scene sur-features"
+        aria-labelledby="features-heading"
+        data-scene="pin"
+        data-ranges="0-.14, .06-.22, .20-.36, .28-.44, .46-.62, .54-.70, .72-.88, .80-.96"
+      >
+        <h2 id="features-heading" class="sur-skip">Feature story</h2>
+        <div class="sur-track sur-features-track">
+          <div class="sur-stage sur-features-stage">
+            <div class="sur-features-rail sur-anim-target">
+              <!-- Chapter 01 -->
+              <article class="sur-chapter sur-chapter--1">
+                <div class="sur-chapter-inner">
+                  <div class="sur-chapter-copy">
+                    <span class="sur-label sur-ch-num" data-reveal style="--i: 0">01 / DISCOVER</span>
+                    <h3 class="sur-title sur-ch-title" data-reveal style="--i: 1">
+                      Find the music<br />that fits the moment.
+                    </h3>
+                    <p class="sur-lead sur-ch-desc" data-reveal style="--i: 2">
+                      Thoughtful curation without noisy recommendations getting in the way.
+                    </p>
+                  </div>
+                  <div class="sur-shot sur-chapter-media sur-ch-shot" data-reveal style="--i: 3">
+                    <div class="sur-shot-placeholder" aria-hidden="true">
+                      <span class="sur-shot-placeholder-mark">SUR</span>
+                      <span class="sur-shot-placeholder-label">App Screenshot</span>
+                    </div>
+                    <img
+                      src="assets/images/sur-discover.webp"
+                      width="1080"
+                      height="2400"
+                      alt="Sur discover screen featuring new releases"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                </div>
+              </article>
+
+              <!-- Chapter 02 -->
+              <article class="sur-chapter sur-chapter--2">
+                <div class="sur-chapter-inner">
+                  <div class="sur-chapter-copy">
+                    <span class="sur-label sur-ch-num" data-reveal style="--i: 0">02 / CUSTOMIZE</span>
+                    <h3 class="sur-title sur-ch-title" data-reveal style="--i: 1">
+                      Every detail,<br />shaped by you.
+                    </h3>
+                    <p class="sur-lead sur-ch-desc" data-reveal style="--i: 2">
+                      Switch themes, Now Playing layouts, lyrics styles, and liquid glass effects.
+                    </p>
+                  </div>
+                  <div class="sur-crop sur-chapter-crop sur-ch-shot" style="--crop-aspect: 9 / 11; --crop-pos: 88%" data-reveal>
+                    <div class="sur-shot-placeholder" aria-hidden="true">
+                      <span class="sur-shot-placeholder-mark">SUR</span>
+                      <span class="sur-shot-placeholder-label">App Screenshot</span>
+                    </div>
+                    <img
+                      src="assets/images/sur-settings.webp"
+                      width="1080"
+                      height="2400"
+                      alt="Sur interface settings for theme, Now Playing style, lyrics style, and liquid glass"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                </div>
+              </article>
+
+              <!-- Chapter 03 -->
+              <article class="sur-chapter sur-chapter--3">
+                <div class="sur-chapter-inner">
+                  <div class="sur-chapter-copy">
+                    <span class="sur-label sur-ch-num" data-reveal style="--i: 0">03 / PLAY</span>
+                    <h3 class="sur-title sur-ch-title" data-reveal style="--i: 1">
+                      Controls that<br />stay out of the way.
+                    </h3>
+                    <p class="sur-lead sur-ch-desc" data-reveal style="--i: 2">
+                      Balanced hierarchy puts the track front and center from start to finish.
+                    </p>
+                  </div>
+                  <div class="sur-shot sur-chapter-media sur-ch-shot" data-reveal style="--i: 3">
+                    <div class="sur-shot-placeholder" aria-hidden="true">
+                      <span class="sur-shot-placeholder-mark">SUR</span>
+                      <span class="sur-shot-placeholder-label">App Screenshot</span>
+                    </div>
+                    <img
+                      src="assets/images/sur-player.webp"
+                      width="1080"
+                      height="2400"
+                      alt="Sur full player screen"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                </div>
+              </article>
+
+              <!-- Chapter 04 -->
+              <article class="sur-chapter sur-chapter--4">
+                <div class="sur-chapter-inner">
+                  <div class="sur-chapter-copy">
+                    <span class="sur-label sur-ch-num" data-reveal style="--i: 0">04 / IMMERSION</span>
+                    <h3 class="sur-title sur-ch-title" data-reveal style="--i: 1">
+                      Lyrics and artwork,<br />always with you.
+                    </h3>
+                    <p class="sur-lead sur-ch-desc" data-reveal style="--i: 2">
+                      Follow every line and upcoming track in a warm, low-glare space.
+                    </p>
+                  </div>
+                  <div class="sur-shot sur-chapter-media sur-ch-shot" data-reveal style="--i: 3">
+                    <div class="sur-shot-placeholder" aria-hidden="true">
+                      <span class="sur-shot-placeholder-mark">SUR</span>
+                      <span class="sur-shot-placeholder-label">App Screenshot</span>
+                    </div>
+                    <img
+                      src="assets/images/sur-lyrics.webp"
+                      width="1080"
+                      height="2400"
+                      alt="Sur lyrics and queue screen"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                </div>
+              </article>
+            </div>
+
+            <div class="sur-features-ticks" aria-hidden="true">
+              <span class="sur-feature-tick is-active"></span>
+              <span class="sur-feature-tick"></span>
+              <span class="sur-feature-tick"></span>
+              <span class="sur-feature-tick"></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 13 Gallery -->
+      <section
+        id="gallery"
+        class="sur-scene sur-gallery"
+        aria-labelledby="gallery-heading"
+        data-scene="pass"
+      >
+        <div class="sur-container">
+          <div class="sur-gallery-head">
+            <span class="sur-label" aria-hidden="true" data-reveal>SUR / GALLERY</span>
+            <h2 id="gallery-heading" class="sur-title" data-reveal style="--i: 1">
+              Every screen, considered.
+            </h2>
+          </div>
+
+          <div class="sur-gallery-composition">
+            <div class="sur-shot sur-gallery-item sur-gallery-item--1 sur-anim-target" data-reveal>
+              <div class="sur-shot-placeholder" aria-hidden="true">
+                <span class="sur-shot-placeholder-mark">SUR</span>
+                <span class="sur-shot-placeholder-label">App Screenshot</span>
+              </div>
+              <img
+                src="assets/images/sur-home.webp"
+                width="1080"
+                height="2400"
+                alt="Sur home screen layered in the showcase gallery"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+
+            <div class="sur-shot sur-gallery-item sur-gallery-item--2 sur-anim-target" data-reveal style="--i: 1">
+              <div class="sur-shot-placeholder" aria-hidden="true">
+                <span class="sur-shot-placeholder-mark">SUR</span>
+                <span class="sur-shot-placeholder-label">App Screenshot</span>
+              </div>
+              <img
+                src="assets/images/sur-together-server.webp"
+                width="1080"
+                height="2400"
+                alt="Sur Listen Together server and host settings screen"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+
+            <div class="sur-shot sur-gallery-item sur-gallery-item--3 sur-anim-target" data-reveal style="--i: 2">
+              <div class="sur-shot-placeholder" aria-hidden="true">
+                <span class="sur-shot-placeholder-mark">SUR</span>
+                <span class="sur-shot-placeholder-label">App Screenshot</span>
+              </div>
+              <img
+                src="assets/images/sur-account.webp"
+                width="1080"
+                height="2400"
+                alt="Sur account menu and song mixes view"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 14 Experience Statement -->
+      <section
+        id="experience-statement"
+        class="sur-scene sur-exp-statement"
+        aria-labelledby="exp-statement-heading"
+        data-scene="pass"
+      >
+        <div class="sur-ambient sur-exp-statement-glow" aria-hidden="true"></div>
+        <div class="sur-container" style="position: relative; z-index: 2">
+          <h2 id="exp-statement-heading" class="sur-display" data-reveal>
+            Not explained.<br /><span class="sur-accent-soft">Felt.</span>
+          </h2>
+        </div>
+      </section>
+
+      <!-- 15 Download -->
+      <section
+        id="download"
+        class="sur-scene sur-download"
+        aria-labelledby="download-heading"
+      >
+        <div class="sur-container sur-download-inner">
+          <span class="sur-label" aria-hidden="true" data-reveal style="--i: 0">SUR / DOWNLOAD</span>
+          <h2 id="download-heading" class="sur-display" data-reveal style="--i: 1">
+            Ready<br />to listen?
+          </h2>
+          <p class="sur-lead" data-reveal style="--i: 2">Experience Sur. Totally open source.</p>
+          <div class="sur-download-actions" data-reveal style="--i: 3">
+            <a
+              id="download-primary"
+              class="sur-btn sur-btn--primary"
+              href="https://github.com/mdtt63729-ui/Spotify-Premium/releases/latest"
+              data-magnetic
+            >
+              Get Sur
+            </a>
+            <a
+              id="download-github"
+              class="sur-btn sur-btn--ghost"
+              href="https://github.com/mdtt63729-ui/Spotify-Premium"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-magnetic
+            >
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.522 2 12 2Z"
+                />
+              </svg>
+              <span>View on GitHub</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- 16 Final Brand -->
+      <section
+        id="final"
+        class="sur-scene sur-final"
+        aria-labelledby="final-heading"
+        data-scene="pass"
+      >
+        <div class="sur-final-tone sur-anim-target" aria-hidden="true"></div>
+        <div class="sur-ambient sur-final-glow" aria-hidden="true"></div>
+        <div class="sur-container sur-final-inner">
+          <span class="sur-wordmark sur-wordmark--final" aria-hidden="true" data-reveal>SUR</span>
+          <h2 id="final-heading" class="sur-title" data-reveal style="--i: 1">
+            Music,<br />felt differently.
+          </h2>
+        </div>
+      </section>
+    </main>
+
+    <!-- 17 Footer -->
+    <footer class="sur-footer">
+      <div class="sur-container sur-footer-inner">
+        <span class="sur-footer-brand">SUR</span>
+        <nav class="sur-footer-links" aria-label="Footer">
+          <a class="sur-footer-link" href="#experience">Experience</a>
+          <a class="sur-footer-link" href="#download">Download</a>
+          <a
+            id="footer-github"
+            class="sur-footer-link"
+            href="https://github.com/mdtt63729-ui/Spotify-Premium"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.522 2 12 2Z"
+              />
+            </svg>
+            <span>GitHub</span>
+          </a>
+          <button id="privacy-open" class="sur-footer-link" type="button">Privacy</button>
+        </nav>
+        <p class="sur-footer-copy">&copy; <span id="footer-year">2026</span> Sur</p>
+      </div>
+    </footer>
+
+    <dialog id="privacy-dialog" class="sur-dialog" aria-labelledby="privacy-title">
+      <div class="sur-dialog-head">
+        <h2 id="privacy-title" class="sur-dialog-title">Privacy</h2>
+      </div>
+      <div class="sur-dialog-body">
+        <p>Sur&rsquo;s website uses no cookies, no analytics, and collects no personal data.</p>
+        <p>Fonts and visual assets are served locally with zero third-party tracking requests.</p>
+        <p>External download or repository links open only when configured by the site owner.</p>
+      </div>
+      <button id="privacy-close" class="sur-btn sur-btn--primary sur-dialog-close" type="button">Close</button>
+    </dialog>
+  </body>
+</html>

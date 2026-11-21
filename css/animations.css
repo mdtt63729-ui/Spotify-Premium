@@ -1,0 +1,382 @@
+/* Purpose: Pure-function-of-scroll motion timelines (--p, --p1..--p10), hero load sequence, and bidirectional reveals. */
+
+/* Discrete directional reveals */
+html.js [data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, var(--enter-y, 32px), 0);
+  transition:
+    opacity var(--dur-reveal) var(--sur-ease),
+    transform var(--dur-reveal) var(--sur-ease);
+  transition-delay: calc(var(--i, 0) * 100ms);
+}
+
+html.js [data-reveal].is-in {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Active scene GPU hint only while in/near viewport */
+[data-scene].is-scene-active .sur-anim-target {
+  will-change: transform, opacity;
+}
+
+/* 03 Hero Load Sequence + Scroll Timeline */
+html.js .sur-hero-anim {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+}
+
+html.js .sur-hero-media-in {
+  opacity: 0;
+  transform: translate3d(0, 6vh, 0) scale(0.94);
+}
+
+html.js.is-loaded .sur-hero-wordmark {
+  animation: surHeroFadeUp 700ms var(--sur-ease) 150ms forwards;
+}
+
+html.js.is-loaded .sur-hero-line-1 {
+  animation: surHeroFadeUp 800ms var(--sur-ease) 350ms forwards;
+}
+
+html.js.is-loaded .sur-hero-line-2 {
+  animation: surHeroFadeUp 800ms var(--sur-ease) 440ms forwards;
+}
+
+html.js.is-loaded .sur-hero-support {
+  animation: surHeroFadeUp 700ms var(--sur-ease) 700ms forwards;
+}
+
+html.js.is-loaded .sur-hero-actions {
+  animation: surHeroFadeUp 700ms var(--sur-ease) 850ms forwards;
+}
+
+html.js.is-loaded .sur-hero-media-in {
+  animation: surHeroShotIn 1100ms var(--sur-ease) 950ms forwards;
+}
+
+.sur-hero-float {
+  animation: surHeroFloat 7s var(--sur-ease-inout) 2.1s infinite;
+  animation-play-state: paused;
+}
+
+.sur-hero.is-scene-active .sur-hero-float {
+  animation-play-state: running;
+}
+
+@keyframes surHeroFadeUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes surHeroShotIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 6vh, 0) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes surHeroFloat {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -6px, 0);
+  }
+}
+
+/* Hero Scroll Timeline (pure function of --ps1, --ps2, --p3) */
+html.js .sur-hero-copy {
+  opacity: calc(1 - var(--ps1, var(--p1, 0)) * 1.15);
+  transform: translate3d(0, calc(var(--ps1, var(--p1, 0)) * -8vh), 0);
+}
+
+/* Base scale 0.892 grows smoothly to 1.0 (= 1.12x relative) without scaling raster > 1 */
+html.js .sur-hero-shot {
+  transform: translate3d(0, calc(var(--ps2, var(--p2, 0)) * -4vh), 0) scale(calc(0.892 + var(--ps2, var(--p2, 0)) * 0.108));
+}
+
+.sur-hero-glow {
+  background: radial-gradient(50% 50% at 72% 52%, rgba(255, 138, 91, 1) 0%, rgba(255, 177, 141, 0.35) 36%, transparent 72%);
+  opacity: calc(0.22 - var(--ps2, var(--p2, 0)) * 0.14);
+  transform: translate3d(0, calc(var(--ps2, var(--p2, 0)) * -10vh), 0);
+}
+
+html.js .sur-scroll-cue {
+  opacity: calc(1 - var(--p3, 0));
+}
+
+/* 04 Brand Statement (#statement) */
+html.js .sur-statement-a {
+  opacity: clamp(0, calc(var(--p1, 0) - var(--p2, 0)), 1);
+  transform: translate3d(0, calc((1 - var(--p1, 0)) * 5vh + var(--p2, 0) * -6vh), 0);
+}
+
+@media (min-width: 768px) {
+  html.js .sur-statement-a {
+    filter: blur(calc(var(--p2, 0) * 8px));
+  }
+}
+
+html.js .sur-statement-b {
+  opacity: var(--p3, 0);
+  transform: translate3d(0, calc((1 - var(--p3, 0)) * 6vh), 0);
+}
+
+/* 05 Interface Experience (#experience) */
+html.js .sur-exp-intro {
+  opacity: clamp(0, calc(var(--ps1, var(--p1, 0)) - var(--ps2, var(--p2, 0))), 1);
+  transform: translate3d(0, calc((1 - var(--ps1, var(--p1, 0))) * 5vh + var(--ps2, var(--p2, 0)) * -6vh), 0);
+}
+
+html.js .sur-exp-beat--1 .sur-exp-shot {
+  opacity: clamp(0, calc(var(--ps3, var(--p3, 0)) - var(--ps4, var(--p4, 0))), 1);
+  transform: translate3d(0, calc((1 - var(--ps3, var(--p3, 0))) * 8vh + var(--ps4, var(--p4, 0)) * -6vh), 0)
+    scale(calc(0.94 + var(--ps3, var(--p3, 0)) * 0.06 - var(--ps4, var(--p4, 0)) * 0.08));
+}
+
+html.js .sur-exp-beat--1 .sur-exp-copy {
+  opacity: clamp(0, calc(var(--ps8, var(--p8, 0)) - var(--ps4, var(--p4, 0))), 1);
+  transform: translate3d(0, calc((1 - var(--ps8, var(--p8, 0))) * 5vh + var(--ps4, var(--p4, 0)) * -4vh), 0);
+}
+
+html.js .sur-exp-beat--2 .sur-exp-shot {
+  opacity: clamp(0, calc(var(--ps5, var(--p5, 0)) - var(--ps6, var(--p6, 0))), 1);
+  transform: translate3d(0, calc((1 - var(--ps5, var(--p5, 0))) * 8vh + var(--ps6, var(--p6, 0)) * -6vh), 0)
+    scale(calc(0.94 + var(--ps5, var(--p5, 0)) * 0.06 - var(--ps6, var(--p6, 0)) * 0.08));
+}
+
+html.js .sur-exp-beat--2 .sur-exp-copy {
+  opacity: clamp(0, calc(var(--ps9, var(--p9, 0)) - var(--ps6, var(--p6, 0))), 1);
+  transform: translate3d(0, calc((1 - var(--ps9, var(--p9, 0))) * 5vh + var(--ps6, var(--p6, 0)) * -4vh), 0);
+}
+
+html.js .sur-exp-beat--3 .sur-exp-shot {
+  opacity: var(--ps7, var(--p7, 0));
+  transform: translate3d(0, calc((1 - var(--ps7, var(--p7, 0))) * 8vh), 0)
+    scale(calc(0.94 + var(--ps7, var(--p7, 0)) * 0.06));
+}
+
+html.js .sur-exp-beat--3 .sur-exp-copy {
+  opacity: var(--ps10, var(--p10, 0));
+  transform: translate3d(0, calc((1 - var(--ps10, var(--p10, 0))) * 5vh), 0);
+}
+
+/* 06 Discover (#discover) */
+html.js .sur-discover-media {
+  opacity: calc(0.4 + var(--ps1, var(--p1, 0)) * 0.6);
+  transform: translate3d(0, calc((1 - var(--ps1, var(--p1, 0))) * 14vh + var(--ps2, var(--p2, 0)) * -6vh), 0)
+    scale(calc(0.8 + var(--ps1, var(--p1, 0)) * 0.2));
+}
+
+.sur-discover-glow {
+  background: radial-gradient(45% 45% at 50% 58%, rgba(255, 138, 91, 0.20) 0%, transparent 72%);
+  transform: translate3d(0, calc((var(--ps, var(--p, 0.5)) - 0.5) * -28px), 0);
+}
+
+/* 07 Listen (#listen) */
+html.js .sur-listen-crop-wrap {
+  opacity: calc(0.5 + var(--ps1, var(--p1, 0)) * 0.5);
+  transform: translate3d(0, calc((1 - var(--ps1, var(--p1, 0))) * 6vh + var(--ps2, var(--p2, 0)) * -4vh), 0)
+    scale(calc(0.94 + var(--ps1, var(--p1, 0)) * 0.06));
+}
+
+/* 08 Rhythm words (#rhythm) */
+html.js .sur-rhythm-word--1 {
+  opacity: clamp(0, calc(var(--p1, 0) - var(--p2, 0)), 1);
+  transform: translate3d(0, calc((1 - var(--p1, 0)) * 4vh + var(--p2, 0) * -4vh), 0);
+}
+
+html.js .sur-rhythm-word--2 {
+  opacity: clamp(0, calc(var(--p3, 0) - var(--p4, 0)), 1);
+  transform: translate3d(0, calc((1 - var(--p3, 0)) * 4vh + var(--p4, 0) * -4vh), 0);
+}
+
+html.js .sur-rhythm-word--3 {
+  opacity: clamp(0, calc(var(--p5, 0) - var(--p6, 0)), 1);
+  transform: translate3d(0, calc((1 - var(--p5, 0)) * 4vh + var(--p6, 0) * -4vh), 0);
+}
+
+html.js .sur-rhythm-word--4 {
+  opacity: clamp(0, calc(var(--p7, 0) - var(--p8, 0)), 1);
+  transform: translate3d(0, calc((1 - var(--p7, 0)) * 4vh + var(--p8, 0) * -4vh), 0);
+}
+
+@media (min-width: 768px) {
+  html.js .sur-rhythm-word--1 {
+    filter: blur(calc((1 - var(--p1, 0)) * 8px + var(--p2, 0) * 6px));
+  }
+  html.js .sur-rhythm-word--2 {
+    filter: blur(calc((1 - var(--p3, 0)) * 8px + var(--p4, 0) * 6px));
+  }
+  html.js .sur-rhythm-word--3 {
+    filter: blur(calc((1 - var(--p5, 0)) * 8px + var(--p6, 0) * 6px));
+  }
+  html.js .sur-rhythm-word--4 {
+    filter: blur(calc((1 - var(--p7, 0)) * 8px + var(--p8, 0) * 6px));
+  }
+}
+
+html.js .sur-rhythm-progress {
+  transform: scaleX(var(--ps, var(--p, 0)));
+}
+
+/* 09 Full player (#player) */
+html.js .sur-player-copy {
+  opacity: clamp(0, calc(var(--ps1, var(--p1, 0)) - var(--ps2, var(--p2, 0))), 1);
+  transform: translate3d(0, calc((1 - var(--ps1, var(--p1, 0))) * 4vh + var(--ps2, var(--p2, 0)) * -6vh), 0);
+}
+
+html.js .sur-player-shot {
+  transform: scale(calc(0.42 + var(--ps3, var(--p3, 0)) * 0.58));
+}
+
+html.js .sur-player-dim {
+  opacity: calc(var(--ps4, var(--p4, 0)) * 0.55);
+}
+
+.sur-player-glow {
+  background: radial-gradient(50% 50% at 50% 50%, rgba(255, 138, 91, 1) 0%, rgba(255, 177, 141, 0.32) 40%, transparent 72%);
+  opacity: calc(0.12 + var(--ps4, var(--p4, 0)) * 0.18);
+}
+
+/* 10 Player details (#details) — Pinned crossfade from 768px up */
+@media (min-width: 768px) {
+  html.js .sur-detail-panel--1 {
+    opacity: clamp(0, calc(var(--ps1, var(--p1, 0)) - var(--ps2, var(--p2, 0))), 1);
+    transform: translate3d(0, calc((1 - var(--ps1, var(--p1, 0))) * 4vh + var(--ps2, var(--p2, 0)) * -4vh), 0);
+  }
+  html.js .sur-detail-panel--2 {
+    opacity: clamp(0, calc(var(--ps3, var(--p3, 0)) - var(--ps4, var(--p4, 0))), 1);
+    transform: translate3d(0, calc((1 - var(--ps3, var(--p3, 0))) * 4vh + var(--ps4, var(--p4, 0)) * -4vh), 0);
+  }
+  html.js .sur-detail-panel--3 {
+    opacity: clamp(0, calc(var(--ps5, var(--p5, 0)) - var(--ps6, var(--p6, 0))), 1);
+    transform: translate3d(0, calc((1 - var(--ps5, var(--p5, 0))) * 4vh + var(--ps6, var(--p6, 0)) * -4vh), 0);
+  }
+  html.js .sur-detail-panel--4 {
+    opacity: clamp(0, calc(var(--ps7, var(--p7, 0)) - var(--ps8, var(--p8, 0))), 1);
+    transform: translate3d(0, calc((1 - var(--ps7, var(--p7, 0))) * 4vh + var(--ps8, var(--p8, 0)) * -4vh), 0);
+  }
+  html.js .sur-detail-panel--5 {
+    opacity: var(--ps9, var(--p9, 0));
+    transform: translate3d(0, calc((1 - var(--ps9, var(--p9, 0))) * 4vh), 0);
+  }
+}
+
+/* 11 Immersion (#immersion) */
+html.js .sur-immersion-shot {
+  opacity: var(--ps1, var(--p1, 0));
+  transform: scale(calc(0.86 + var(--ps1, var(--p1, 0)) * 0.14));
+}
+
+.sur-immersion-glow {
+  opacity: calc(0.10 + var(--ps2, var(--p2, 0)) * 0.12);
+}
+
+/* 12 Feature story (#features) — Desktop horizontal rail + chapter reveals */
+@media (min-width: 1024px) and (min-height: 600px) {
+  html.js .sur-features-rail {
+    transform: translate3d(calc(var(--ps, var(--p, 0)) * -75%), 0, 0);
+  }
+
+  /* Chapter 1 (0 - 0.25) */
+  html.js .sur-chapter--1 .sur-ch-num {
+    opacity: var(--ps1, var(--p1, 1));
+    transform: translate3d(0, calc((1 - var(--ps1, var(--p1, 1))) * 20px), 0);
+  }
+  html.js .sur-chapter--1 .sur-ch-title {
+    opacity: var(--ps1, var(--p1, 1));
+    transform: translate3d(0, calc((1 - var(--ps1, var(--p1, 1))) * 28px), 0);
+  }
+  html.js .sur-chapter--1 .sur-ch-desc {
+    opacity: var(--ps2, var(--p2, 1));
+    transform: translate3d(0, calc((1 - var(--ps2, var(--p2, 1))) * 24px), 0);
+  }
+  html.js .sur-chapter--1 .sur-ch-shot {
+    opacity: var(--ps2, var(--p2, 1));
+    transform: scale(calc(0.92 + var(--ps2, var(--p2, 1)) * 0.08));
+  }
+
+  /* Chapter 2 */
+  html.js .sur-chapter--2 .sur-ch-num {
+    opacity: var(--ps3, var(--p3, 0));
+    transform: translate3d(0, calc((1 - var(--ps3, var(--p3, 0))) * 20px), 0);
+  }
+  html.js .sur-chapter--2 .sur-ch-title {
+    opacity: var(--ps3, var(--p3, 0));
+    transform: translate3d(0, calc((1 - var(--ps3, var(--p3, 0))) * 28px), 0);
+  }
+  html.js .sur-chapter--2 .sur-ch-desc {
+    opacity: var(--ps4, var(--p4, 0));
+    transform: translate3d(0, calc((1 - var(--ps4, var(--p4, 0))) * 24px), 0);
+  }
+  html.js .sur-chapter--2 .sur-ch-shot {
+    opacity: var(--ps4, var(--p4, 0));
+    transform: scale(calc(0.92 + var(--ps4, var(--p4, 0)) * 0.08));
+  }
+
+  /* Chapter 3 */
+  html.js .sur-chapter--3 .sur-ch-num {
+    opacity: var(--ps5, var(--p5, 0));
+    transform: translate3d(0, calc((1 - var(--ps5, var(--p5, 0))) * 20px), 0);
+  }
+  html.js .sur-chapter--3 .sur-ch-title {
+    opacity: var(--ps5, var(--p5, 0));
+    transform: translate3d(0, calc((1 - var(--ps5, var(--p5, 0))) * 28px), 0);
+  }
+  html.js .sur-chapter--3 .sur-ch-desc {
+    opacity: var(--ps6, var(--p6, 0));
+    transform: translate3d(0, calc((1 - var(--ps6, var(--p6, 0))) * 24px), 0);
+  }
+  html.js .sur-chapter--3 .sur-ch-shot {
+    opacity: var(--ps6, var(--p6, 0));
+    transform: scale(calc(0.92 + var(--ps6, var(--p6, 0)) * 0.08));
+  }
+
+  /* Chapter 4 */
+  html.js .sur-chapter--4 .sur-ch-num {
+    opacity: var(--ps7, var(--p7, 0));
+    transform: translate3d(0, calc((1 - var(--ps7, var(--p7, 0))) * 20px), 0);
+  }
+  html.js .sur-chapter--4 .sur-ch-title {
+    opacity: var(--ps7, var(--p7, 0));
+    transform: translate3d(0, calc((1 - var(--ps7, var(--p7, 0))) * 28px), 0);
+  }
+  html.js .sur-chapter--4 .sur-ch-desc {
+    opacity: var(--ps8, var(--p8, 0));
+    transform: translate3d(0, calc((1 - var(--ps8, var(--p8, 0))) * 24px), 0);
+  }
+  html.js .sur-chapter--4 .sur-ch-shot {
+    opacity: var(--ps8, var(--p8, 0));
+    transform: scale(calc(0.92 + var(--ps8, var(--p8, 0)) * 0.08));
+  }
+}
+
+/* 13 Gallery (#gallery) parallax layers */
+@media (min-width: 768px) {
+  html.js .sur-gallery-item--1 {
+    transform: translate3d(0, calc((var(--ps, var(--p, 0.5)) - 0.5) * -36px), 0);
+  }
+  html.js .sur-gallery-item--2 {
+    transform: translate3d(0, calc((var(--ps, var(--p, 0.5)) - 0.5) * -68px), 0);
+  }
+  html.js .sur-gallery-item--3 {
+    transform: translate3d(0, calc((var(--ps, var(--p, 0.5)) - 0.5) * -96px), 0);
+  }
+}
+
+/* 16 Final brand (#final) */
+html.js .sur-final-tone {
+  opacity: var(--ps, var(--p, 0));
+}

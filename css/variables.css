@@ -1,0 +1,74 @@
+/* Purpose: Authoritative Sur design tokens for color, shape, motion, typography scale, and layout geometry. */
+
+:root {
+  /* surfaces */
+  --sur-bg: #090807;
+  --sur-bg-2: #0D0A08;
+  --sur-surface: #15100D;
+  --sur-surface-2: #1B1410;
+  --sur-deep: #050403;
+
+  /* orange (accent only) */
+  --sur-orange: #FF8A5B;
+  --sur-orange-soft: #FFB18D;
+  --sur-orange-tint: rgba(255, 138, 91, 0.16);
+  --sur-orange-glow: rgba(255, 138, 91, 0.22);
+
+  /* text */
+  --sur-white: #FFFFFF;
+  --sur-text-2: rgba(255, 255, 255, 0.72);
+  --sur-text-3: rgba(255, 255, 255, 0.46);   /* only for 18px+ or decorative text */
+  --sur-label: rgba(255, 255, 255, 0.62);    /* micro labels, passes AA */
+  --sur-line: rgba(255, 255, 255, 0.08);
+
+  /* shape */
+  --sur-radius-s: 12px;
+  --sur-radius-m: 20px;
+  --sur-radius-l: 28px;
+  --sur-radius-pill: 999px;
+
+  /* motion */
+  --sur-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --sur-ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 200ms;
+  --dur-btn: 260ms;
+  --dur-reveal: 700ms;
+  --dur-cine: 1000ms;
+
+  /* layout */
+  --gutter: clamp(20px, 5vw, 72px);
+  --container: 1360px;
+  --nav-h: 64px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --vh-full: 100vh;
+
+  /* fluid typography */
+  --fs-wordmark: clamp(3rem, 14vw, 11.25rem);
+  --fs-wordmark-final: clamp(4.2rem, 19.6vw, 28rem);
+  --fs-hero: clamp(2.5rem, 12vw, 4.5rem);
+  --fs-display: clamp(2.25rem, 10vw, 4.5rem);
+  --fs-giant: clamp(2.5rem, 13.5vw, 14rem);
+  --fs-title: clamp(1.75rem, 4vw, 3.5rem);
+  --fs-lead: clamp(1.0625rem, 1.4vw + 0.6rem, 1.5rem);
+  --fs-body: 1rem;
+  --fs-label: 0.75rem;
+
+  /* directional reveal offset */
+  --enter-y: 32px;
+}
+
+@supports (height: 100svh) {
+  :root {
+    --vh-full: 100svh;
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --fs-hero: clamp(3.5rem, 7.2vw + 0.5rem, 9.5rem);
+    --fs-display: clamp(3.5rem, 8vw, 8.5rem);
+  }
+}

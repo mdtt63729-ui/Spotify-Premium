@@ -1,0 +1,66 @@
+/* Purpose: Self-hosted Manrope font faces, metric-adjusted fallback, base body styling, and smooth hash scrolling. */
+
+@font-face {
+  font-family: 'Manrope';
+  src: url('../assets/fonts/manrope-latin-var.woff2') format('woff2');
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Manrope Fallback';
+  src: local('Segoe UI'), local('Roboto'), local('Helvetica Neue'), local('Arial');
+  size-adjust: 104%;
+  ascent-override: 98%;
+  descent-override: 24%;
+  line-gap-override: 0%;
+}
+
+html {
+  background-color: var(--sur-bg);
+  color: var(--sur-white);
+  font-family: 'Manrope', 'Manrope Fallback', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color-scheme: dark;
+}
+
+html.js {
+  scroll-behavior: smooth;
+}
+
+html[data-dir='down'] {
+  --enter-y: 32px;
+}
+
+html[data-dir='up'] {
+  --enter-y: -32px;
+}
+
+body {
+  background-color: var(--sur-bg);
+  color: var(--sur-white);
+  font-family: inherit;
+  font-weight: 400;
+  overflow-wrap: break-word;
+}
+
+body.is-menu-open {
+  overflow: hidden;
+}
+
+section[id] {
+  scroll-margin-top: calc(var(--nav-h) + 12px);
+}
+
+[hidden] {
+  display: none !important;
+}
+
+::selection {
+  background-color: var(--sur-orange);
+  color: var(--sur-bg);
+}

@@ -1,0 +1,96 @@
+/* Purpose: Fluid typographic hierarchy, overflow-proof headline wrapping, and editorial micro-label styles. */
+
+.sur-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  font-size: var(--fs-label);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sur-label);
+}
+
+.sur-wordmark {
+  font-size: var(--fs-wordmark);
+  font-weight: 700;
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+  color: var(--sur-white);
+  user-select: none;
+}
+
+.sur-wordmark--final {
+  font-size: var(--fs-wordmark-final);
+  line-height: 0.84;
+  letter-spacing: -0.045em;
+}
+
+.sur-hero-title {
+  font-size: var(--fs-hero);
+  font-weight: 650;
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+  color: var(--sur-white);
+  text-wrap: balance;
+  overflow-wrap: break-word;
+}
+
+.sur-display {
+  font-size: var(--fs-display);
+  font-weight: 650;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: var(--sur-white);
+  text-wrap: balance;
+  overflow-wrap: break-word;
+}
+
+.sur-giant {
+  font-size: var(--fs-giant);
+  font-weight: 700;
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  color: var(--sur-white);
+  text-align: center;
+}
+
+.sur-title {
+  font-size: var(--fs-title);
+  font-weight: 600;
+  line-height: 1.06;
+  letter-spacing: -0.025em;
+  color: var(--sur-white);
+  text-wrap: balance;
+}
+
+.sur-lead {
+  font-size: var(--fs-lead);
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--sur-text-2);
+  max-width: 34ch;
+}
+
+.sur-body {
+  font-size: var(--fs-body);
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--sur-text-2);
+}
+
+.sur-accent-soft {
+  color: var(--sur-orange-soft);
+}
+
+.br-phone {
+  display: inline;
+}
+
+@media (min-width: 768px) {
+  .br-phone {
+    display: none;
+  }
+}

@@ -1,0 +1,451 @@
+/* Purpose: Responsive breakpoints (tablet 600+, desktop 768+, laptop 1024+, desktop 1440+, ultrawide 1920+) and short-landscape fallback. */
+
+/* Tablet: 600px+ */
+@media (min-width: 600px) {
+  .sur-hero-shot {
+    width: min(56vw, calc(56svh * 9 / 20));
+    margin-bottom: -10%;
+  }
+
+  .sur-footer-inner {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+/* 768px+: Pinned track scale up & intermediate two-column compositions */
+@media (min-width: 768px) {
+  .sur-hero-track {
+    height: 200vh;
+    height: 200svh;
+  }
+
+  .sur-statement-track {
+    height: 260vh;
+    height: 260svh;
+  }
+
+  .sur-experience-track {
+    height: 400vh;
+    height: 400svh;
+  }
+
+  .sur-rhythm-track {
+    height: 400vh;
+    height: 400svh;
+  }
+
+  .sur-player-track {
+    height: 360vh;
+    height: 360svh;
+  }
+
+  .sur-discover {
+    min-height: 220vh;
+    min-height: 220svh;
+  }
+
+  .sur-listen {
+    min-height: 200vh;
+    min-height: 200svh;
+  }
+
+  .sur-immersion {
+    min-height: 220vh;
+    min-height: 220svh;
+  }
+
+  .sur-exp-statement {
+    min-height: 160vh;
+    min-height: 160svh;
+  }
+
+  /* Interface beats two-column layouts on tablet+ */
+  .sur-exp-beat--1 {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+
+  .sur-exp-beat--1 .sur-exp-shot {
+    width: min(44vw, calc(66svh * 9 / 20));
+  }
+
+  .sur-exp-beat--2 {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    gap: clamp(32px, 5vw, 80px);
+  }
+
+  .sur-exp-beat--2 .sur-exp-shot {
+    order: 1;
+    width: min(38vw, calc(74svh * 9 / 20));
+    justify-self: end;
+  }
+
+  .sur-exp-beat--2 .sur-exp-copy {
+    order: 2;
+    align-items: flex-start;
+    text-align: left;
+    justify-self: start;
+  }
+
+  .sur-exp-beat--3 {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    gap: clamp(32px, 5vw, 80px);
+  }
+
+  .sur-exp-beat--3 .sur-exp-copy {
+    order: 1;
+    align-items: flex-end;
+    text-align: right;
+    justify-self: end;
+  }
+
+  .sur-exp-beat--3 .sur-exp-shot {
+    order: 2;
+    width: min(38vw, calc(74svh * 9 / 20));
+    justify-self: start;
+  }
+
+  /* Listen two-column */
+  .sur-listen-grid {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+  }
+
+  .sur-listen-copy {
+    align-items: flex-start;
+  }
+
+  .sur-listen-crop-wrap {
+    width: min(44vw, 480px);
+  }
+
+  /* Full player shot scale on desktop/tablet */
+  .sur-player-shot {
+    width: min(44vw, calc(88svh * 9 / 20));
+  }
+
+  /* Player details pinned 500svh rail + single crop stage */
+  .sur-details {
+    padding-block: 0;
+  }
+
+  .sur-details-track {
+    height: 500vh;
+    height: 500svh;
+  }
+
+  .sur-details-stage {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100svh;
+    overflow: clip;
+    display: flex;
+    align-items: center;
+  }
+
+  .sur-details-layout {
+    display: grid;
+    grid-template-columns: minmax(240px, 0.85fr) 1.15fr;
+    gap: clamp(32px, 5vw, 88px);
+    align-items: center;
+    width: 100%;
+  }
+
+  .sur-details-head {
+    margin-bottom: 24px;
+  }
+
+  .sur-details-rail {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .sur-detail-tab {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-height: 48px;
+    padding-block: 6px;
+    font-size: clamp(1.25rem, 2.2vw, 2rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--sur-text-3);
+    text-align: left;
+    transition: color var(--dur-micro) var(--sur-ease);
+  }
+
+  .sur-detail-tab::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: var(--sur-orange);
+    opacity: 0;
+    transform: scale(0.4);
+    flex-shrink: 0;
+    transition:
+      opacity var(--dur-micro) var(--sur-ease),
+      transform var(--dur-micro) var(--sur-ease);
+  }
+
+  .sur-detail-tab.is-active {
+    color: var(--sur-white);
+  }
+
+  .sur-detail-tab.is-active::before {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .sur-details-panels {
+    position: relative;
+    height: min(68svh, 520px);
+    width: 100%;
+  }
+
+  .sur-detail-panel {
+    position: absolute;
+    inset: 0;
+    justify-content: center;
+  }
+
+  .sur-detail-crop {
+    width: min(44vw, 460px);
+  }
+
+  /* Gallery Tablet intermediate two-layer */
+  .sur-gallery-composition {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: clamp(24px, 4vw, 48px);
+  }
+
+  .sur-gallery-item {
+    width: 100%;
+    max-width: none;
+  }
+
+  .sur-gallery-item--2 {
+    margin-left: 0;
+    margin-top: -12%;
+  }
+
+  .sur-gallery-item--3 {
+    grid-column: 2;
+    justify-self: end;
+    width: 82%;
+  }
+}
+
+/* Laptop & Desktop: 1024px+ */
+@media (min-width: 1024px) {
+  .sur-hero-grid {
+    grid-template-columns: 7fr 5fr;
+    grid-template-rows: 1fr;
+    align-items: center;
+    padding-top: calc(var(--nav-h) + var(--safe-top));
+  }
+
+  .sur-hero-media {
+    align-self: center;
+    justify-content: flex-end;
+    margin-right: calc(-1 * var(--gutter) - 4vw);
+  }
+
+  /* Base 1.12x size so rest scale is 0.892 and scroll scales cleanly to 1.0 */
+  .sur-hero-shot {
+    width: min(36vw, calc(84svh * 9 / 20));
+    margin-bottom: 0;
+  }
+
+  /* Discover desktop: huge headline behind screenshot, phone overlaps lower 25% max */
+  .sur-discover-grid {
+    position: relative;
+    min-height: 82svh;
+    justify-content: center;
+  }
+
+  .sur-discover-copy {
+    position: relative;
+    z-index: 1;
+    margin-top: -12vh;
+  }
+
+  .sur-discover-media {
+    position: relative;
+    z-index: 2;
+    margin-top: -8vh;
+    width: min(26vw, 390px);
+  }
+
+  /* Gallery desktop: 3 depth layers, not a grid */
+  .sur-gallery-composition {
+    display: block;
+    position: relative;
+    min-height: clamp(580px, 78vh, 880px);
+  }
+
+  .sur-gallery-item--1 {
+    position: relative;
+    width: 40%;
+    margin-left: 6%;
+    z-index: 2;
+  }
+
+  .sur-gallery-item--2 {
+    position: absolute;
+    top: -4%;
+    right: 12%;
+    width: 26%;
+    margin-top: 0;
+    z-index: 3;
+  }
+
+  .sur-gallery-item--3 {
+    position: absolute;
+    bottom: -6%;
+    right: -6%;
+    width: 30%;
+    z-index: 1;
+  }
+}
+
+/* Feature Story Horizontal Rail only on Desktop >= 1024px & height >= 600px */
+@media (min-width: 1024px) and (min-height: 600px) {
+  .sur-features-track {
+    height: 500vh;
+    height: 500svh;
+  }
+
+  .sur-features-stage {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100svh;
+    overflow: clip;
+    display: flex;
+    align-items: center;
+  }
+
+  .sur-features-rail {
+    flex-direction: row;
+    width: 400%;
+    height: 100%;
+  }
+
+  .sur-chapter {
+    width: 25%;
+    height: 100%;
+    min-height: 0;
+    flex-shrink: 0;
+    padding-block: calc(var(--nav-h) + 20px) 64px;
+  }
+
+  .sur-chapter-inner {
+    grid-template-columns: 1.05fr 0.95fr;
+    text-align: left;
+    justify-items: start;
+    gap: clamp(32px, 5vw, 80px);
+  }
+
+  .sur-chapter-copy {
+    align-items: flex-start;
+  }
+
+  .sur-chapter-media {
+    justify-self: center;
+    width: min(26vw, calc(72svh * 9 / 20));
+  }
+
+  .sur-chapter-crop {
+    justify-self: center;
+    width: min(32vw, 440px);
+  }
+
+  .sur-features-ticks {
+    position: absolute;
+    bottom: calc(28px + var(--safe-bottom));
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .sur-feature-tick {
+    width: 36px;
+    height: 2px;
+    background-color: var(--sur-line);
+    transition:
+      background-color var(--dur-btn) var(--sur-ease),
+      transform var(--dur-btn) var(--sur-ease);
+  }
+
+  .sur-feature-tick.is-active {
+    background-color: var(--sur-orange);
+    transform: scaleY(1.5);
+  }
+}
+
+/* Ultrawide >= 1920px */
+@media (min-width: 1920px) {
+  .sur-hero-media {
+    margin-right: 0;
+  }
+}
+
+/* Short-landscape phone/tablet fallback */
+@media (max-height: 500px) and (orientation: landscape) {
+  .sur-track,
+  .sur-hero-track,
+  .sur-statement-track,
+  .sur-experience-track,
+  .sur-rhythm-track,
+  .sur-player-track,
+  .sur-details-track,
+  .sur-features-track {
+    height: auto !important;
+  }
+
+  .sur-stage,
+  .sur-details-stage,
+  .sur-features-stage {
+    position: relative !important;
+    height: auto !important;
+    min-height: 100svh;
+    padding-block: 72px 48px;
+  }
+
+  .sur-hero-grid {
+    grid-template-columns: 1.2fr 0.8fr;
+    grid-template-rows: 1fr;
+    align-items: center;
+  }
+
+  .sur-hero-title {
+    font-size: clamp(2rem, 6vw, 3rem);
+  }
+
+  .sur-hero-wordmark {
+    font-size: clamp(2rem, 6vw, 3.5rem);
+  }
+
+  .sur-hero-support,
+  .sur-scroll-cue {
+    display: none;
+  }
+
+  .sur-hero-shot {
+    width: min(34vw, 210px);
+    margin-bottom: 0;
+  }
+}

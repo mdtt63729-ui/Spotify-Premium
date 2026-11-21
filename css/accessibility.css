@@ -1,0 +1,249 @@
+/* Purpose: Skip link, visible focus rings, prefers-reduced-motion overrides, no-JS, and no-engine static fallbacks. */
+
+/* Skip to content link */
+.sur-skip {
+  position: fixed;
+  top: -120px;
+  left: 16px;
+  z-index: 400;
+  background-color: var(--sur-orange);
+  color: #090807;
+  font-size: 0.875rem;
+  font-weight: 700;
+  padding: 12px 20px;
+  border-radius: var(--sur-radius-pill);
+  transition: top var(--dur-micro) var(--sur-ease);
+}
+
+.sur-skip:focus {
+  top: calc(14px + var(--safe-top));
+}
+
+/* Focus-visible double ring */
+:focus-visible {
+  outline: 2px solid var(--sur-white);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px var(--sur-orange);
+}
+
+/* Reduced motion override */
+@media (prefers-reduced-motion: reduce) {
+  html,
+  html.js {
+    scroll-behavior: auto !important;
+  }
+
+  .sur-loader {
+    display: none !important;
+  }
+
+  .sur-scroll-cue,
+  .sur-hero-float {
+    animation: none !important;
+  }
+
+  .sur-track,
+  .sur-hero-track,
+  .sur-statement-track,
+  .sur-experience-track,
+  .sur-rhythm-track,
+  .sur-player-track,
+  .sur-details-track,
+  .sur-features-track {
+    height: auto !important;
+  }
+
+  .sur-stage,
+  .sur-details-stage,
+  .sur-features-stage {
+    position: relative !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding-block: clamp(64px, 10vh, 110px);
+  }
+
+  .sur-statement-inner,
+  .sur-statement-layer,
+  .sur-exp-intro,
+  .sur-exp-beat,
+  .sur-rhythm-words,
+  .sur-rhythm-word,
+  .sur-player-copy,
+  .sur-details-panels,
+  .sur-detail-panel {
+    position: relative !important;
+    inset: auto !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    height: auto !important;
+    margin-bottom: clamp(32px, 5vh, 56px);
+  }
+
+  .sur-features-rail {
+    flex-direction: column !important;
+    width: 100% !important;
+    transform: none !important;
+  }
+
+  .sur-chapter {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  html.js [data-reveal],
+  html.js .sur-hero-anim,
+  html.js .sur-hero-media-in,
+  html.js .sur-hero-copy,
+  html.js .sur-hero-shot,
+  html.js .sur-discover-media,
+  html.js .sur-listen-crop-wrap,
+  html.js .sur-player-shot,
+  html.js .sur-immersion-shot,
+  html.js .sur-chapter .sur-ch-num,
+  html.js .sur-chapter .sur-ch-title,
+  html.js .sur-chapter .sur-ch-desc,
+  html.js .sur-chapter .sur-ch-shot {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    animation: none !important;
+    transition: opacity 150ms linear !important;
+  }
+
+  .sur-details-rail,
+  .sur-features-ticks {
+    display: none !important;
+  }
+}
+
+/* No-JS and Scroll Engine Fallback (.no-js, .no-engine) */
+html.no-js .sur-loader,
+html.no-engine .sur-loader {
+  display: none !important;
+}
+
+html.no-js .sur-track,
+html.no-js .sur-hero-track,
+html.no-js .sur-statement-track,
+html.no-js .sur-experience-track,
+html.no-js .sur-rhythm-track,
+html.no-js .sur-player-track,
+html.no-js .sur-details-track,
+html.no-js .sur-features-track,
+html.no-engine .sur-track,
+html.no-engine .sur-hero-track,
+html.no-engine .sur-statement-track,
+html.no-engine .sur-experience-track,
+html.no-engine .sur-rhythm-track,
+html.no-engine .sur-player-track,
+html.no-engine .sur-details-track,
+html.no-engine .sur-features-track {
+  height: auto !important;
+}
+
+html.no-js .sur-stage,
+html.no-js .sur-details-stage,
+html.no-js .sur-features-stage,
+html.no-engine .sur-stage,
+html.no-engine .sur-details-stage,
+html.no-engine .sur-features-stage {
+  position: relative !important;
+  height: auto !important;
+  min-height: 0 !important;
+  padding-block: clamp(64px, 10vh, 110px);
+}
+
+html.no-js .sur-statement-inner,
+html.no-js .sur-statement-layer,
+html.no-js .sur-exp-intro,
+html.no-js .sur-exp-beat,
+html.no-js .sur-rhythm-words,
+html.no-js .sur-rhythm-word,
+html.no-js .sur-player-copy,
+html.no-js .sur-details-panels,
+html.no-js .sur-detail-panel,
+html.no-engine .sur-statement-inner,
+html.no-engine .sur-statement-layer,
+html.no-engine .sur-exp-intro,
+html.no-engine .sur-exp-beat,
+html.no-engine .sur-rhythm-words,
+html.no-engine .sur-rhythm-word,
+html.no-engine .sur-player-copy,
+html.no-engine .sur-details-panels,
+html.no-engine .sur-detail-panel {
+  position: relative !important;
+  inset: auto !important;
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+  height: auto !important;
+  margin-bottom: clamp(32px, 5vh, 56px);
+}
+
+html.no-js .sur-features-rail,
+html.no-engine .sur-features-rail {
+  flex-direction: column !important;
+  width: 100% !important;
+  transform: none !important;
+}
+
+html.no-js .sur-chapter,
+html.no-engine .sur-chapter {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+}
+
+html.no-js [data-reveal],
+html.no-js .sur-hero-anim,
+html.no-js .sur-hero-media-in,
+html.no-engine [data-reveal],
+html.no-engine .sur-hero-anim,
+html.no-engine .sur-hero-media-in {
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+html.no-js .sur-nav-links {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+html.no-js .sur-menu-btn {
+  display: none;
+}
+
+@media (scripting: none) {
+  .sur-loader {
+    display: none !important;
+  }
+  .sur-track,
+  .sur-stage {
+    height: auto !important;
+    position: relative !important;
+  }
+  .sur-statement-layer,
+  .sur-exp-intro,
+  .sur-exp-beat,
+  .sur-rhythm-word,
+  .sur-detail-panel {
+    position: relative !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .sur-features-rail {
+    flex-direction: column !important;
+    width: 100% !important;
+    transform: none !important;
+  }
+  .sur-nav-links {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .sur-menu-btn {
+    display: none;
+  }
+}
